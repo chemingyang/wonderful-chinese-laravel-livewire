@@ -18,7 +18,7 @@ class CourseForm extends Form
         $this->course = $course;
         $this->title = $course->title;
         $this->description = $course->description;
-        // $this->image = $course->image;
+        // $this->image = $course->image; // image is not set here TBD some handling reqiured for later
     }
 
     public function store() {
