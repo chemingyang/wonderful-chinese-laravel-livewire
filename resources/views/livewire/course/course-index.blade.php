@@ -45,7 +45,9 @@
                             {{ $course->description }}
                         </td>
                         <td class="px-5 py-2">
-                            <img src="{{ $course->image ? asset('storage/' . $course->image) : '' }}" alt="{{ $course->title }} image" class="h-4 w-4 rounded-xl object-fit"> 
+                            @if ($course->image)
+                            <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->title }} image" class="h-4 w-4 rounded-xl object-fit"> 
+                            @endif
                         </td>
                         <td class="px-5 py-2">
                             <a href="{{ route('courses.edit', $course) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Edit</a>

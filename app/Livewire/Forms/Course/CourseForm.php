@@ -18,8 +18,7 @@ class CourseForm extends Form
         $this->course = $course;
         $this->title = $course->title;
         $this->description = $course->description;
-        $this->image = $course->image;
-        $this->slug = $course->slug;
+        // $this->image = $course->image;
     }
 
     public function store() {
@@ -44,12 +43,14 @@ class CourseForm extends Form
             'description' => 'nullable|string',
             'image' => 'nullable|image|max:1024', // 1MB Max
         ]);
+        $data['slug'] = str()->slug($data['title']); //update the slug if the title has changed, but TBD how do we know it is unique?
+        $data['image'] = $this->course->image; // keep existing image if no new image is uploaded
 
         if ($this->image) {
+            Storage::disk('public')->delete($this->course->image); // delete old image
             $data['image'] = $this->image->store('courses', 'public');
         }
-        //update the slug if the title has changed, but TBD how do we know it is unique?
-        $data['slug'] = str()->slug($data['title']);
+       
         $this->course->update($data);
         session()->flash('message', 'Course updated successfully.');
         $this->reset();
