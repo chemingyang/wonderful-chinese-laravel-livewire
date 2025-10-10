@@ -48,6 +48,8 @@ class CourseForm extends Form
         if ($this->image) {
             $data['image'] = $this->image->store('courses', 'public');
         }
+        //update the slug if the title has changed, but TBD how do we know it is unique?
+        $data['slug'] = str()->slug($data['title']);
         $this->course->update($data);
         session()->flash('message', 'Course updated successfully.');
         $this->reset();

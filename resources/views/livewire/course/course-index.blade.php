@@ -45,13 +45,12 @@
                             {{ $course->description }}
                         </td>
                         <td class="px-5 py-2">
-                            {{-- <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->title }}" class="w-16 h-16 object-cover"> 
-                                --}}
+                            <img src="{{ $course->image ? asset('storage/' . $course->image) : '' }}" alt="{{ $course->title }} image" class="h-4 w-4 rounded-xl object-fit"> 
                         </td>
                         <td class="px-5 py-2">
                             <a href="{{ route('courses.edit', $course) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Edit</a>
                             {{--
-                            <form ction="{{ route('courses.destroy', $course) }}" method="POST" class="inline">
+                            <form action="{{ route('courses.destroy', $course) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-red-500 hover:text-red-700 font-medium ml-2">Delete</button>

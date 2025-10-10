@@ -3,10 +3,12 @@
 namespace App\Livewire\Course;
 
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use App\Livewire\Forms\Course\CourseForm;
 
 class CourseCreate extends Component
 {
+    use WithFileUploads;
     public CourseForm $form;
 
     public function store() {
