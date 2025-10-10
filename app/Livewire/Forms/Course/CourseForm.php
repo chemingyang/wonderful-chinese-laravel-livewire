@@ -5,6 +5,7 @@ namespace App\Livewire\Forms\Course;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 use App\Models\Course;
+use Illuminate\Support\Facades\Storage;
 
 class CourseForm extends Form
 {
@@ -47,7 +48,9 @@ class CourseForm extends Form
         $data['image'] = $this->course->image; // keep existing image if no new image is uploaded
 
         if ($this->image) {
-            Storage::disk('public')->delete($this->course->image); // delete old image
+            if ($this->course->image) {
+                Storage::disk('public')->delete($this->course->image); // delete old image
+            }
             $data['image'] = $this->image->store('courses', 'public');
         }
        
