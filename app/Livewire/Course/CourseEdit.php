@@ -18,6 +18,7 @@ class CourseEdit extends Component
 
     public function update() {
         $this->form->update();
+        session()->flash('message', 'Course updated successfully.');
         return redirect()->route('courses.index');
     }
 

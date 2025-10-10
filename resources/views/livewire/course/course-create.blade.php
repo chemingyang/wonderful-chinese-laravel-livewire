@@ -23,6 +23,11 @@
             type="file"
             accept="image/*" 
         />
+        @if ($form->image)
+            <div class="mt-2">
+                <img src="{{ $form->image->temporaryUrl() }}" alt="Image Preview" class="h-12 w-12 object-cover rounded-lg">
+            </div>
+        @endif
 
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">

@@ -34,7 +34,6 @@ class CourseForm extends Form
         }
         $data['slug'] = str()->slug($data['title']);
         Course::create($data);
-        session()->flash('message', 'Course created successfully.');
         $this->reset();
     }
 
@@ -55,7 +54,6 @@ class CourseForm extends Form
         }
        
         $this->course->update($data);
-        session()->flash('message', 'Course updated successfully.');
         $this->reset();
     }
 }

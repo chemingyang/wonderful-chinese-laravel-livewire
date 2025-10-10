@@ -22,6 +22,10 @@ class CourseIndex extends Component
         }
     }
     
+    public function clearSessionMessage() {
+        session()->forget('message');
+    }
+
     public function render()
     {
         return view('livewire.course.course-index', [
