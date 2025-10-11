@@ -37,14 +37,14 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('courses', \App\Livewire\Course\CourseIndex::class)->name('courses.index');
-    Route::get('courses/create', \App\Livewire\Course\CourseCreate::class)->name('courses.create');
     // Route::get('courses/{course:slug}', \App\Livewire\Course\CourseShow::class)->name('courses.show');
     Route::get('lessons', \App\Livewire\Lesson\LessonIndex::class)->name('lessons.index');
-    Route::get('lessons/create', \App\Livewire\Lesson\LessonCreate::class)->name('lessons.create');
     // Route::get('lessons/{lesson:slug}', \App\Livewire\Lesson\LessonShow::class)->name('lessons.show');
 });
 
-Route::middleware(['auth','ensureUserType'])->group(function () {
+Route::middleware(['auth','ensureUserType:admin'])->group(function () {
+    Route::get('courses/create', \App\Livewire\Course\CourseCreate::class)->name('courses.create');
+    Route::get('lessons/create', \App\Livewire\Lesson\LessonCreate::class)->name('lessons.create');
     Route::get('courses/{course}/edit', \App\Livewire\Course\CourseEdit::class)->name('courses.edit');
     Route::get('lessons/{lesson}/edit', \App\Livewire\Lesson\LessonEdit::class)->name('lessons.edit');
 });

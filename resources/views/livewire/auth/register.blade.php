@@ -48,6 +48,14 @@
             viewable
         />
 
+        <!-- User Type -->
+        <flux:select wire:model="type" :filter="false" label="User Type   ">
+            <flux:select.option value="" wire:key="">Select a user type</flux:select.option>
+            @foreach (\App\Models\User::VALID_USER_TYPES as $userType)
+                <flux:select.option value="{{ $userType }}" wire:key="{{ $userType }}">{{ ucfirst($userType) }}</flux:select.option>
+            @endforeach
+        </flux:select>
+
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">
                 {{ __('Create account') }}

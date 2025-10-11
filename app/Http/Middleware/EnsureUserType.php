@@ -14,10 +14,9 @@ class EnsureUserType
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next,...$privilegedTypes): Response
     {
-        $types = ['admin']; // Define allowed user types
-        if (empty(Auth::user()) || !in_array(@Auth::user()->type, $types)) {
+        if (empty(Auth::user()) || !in_array(@Auth::user()->type, $privilegedTypes)) {
             abort(403, 'Unauthorized action.'); // Or redirect to an error page
         }
         return $next($request);

@@ -15,6 +15,13 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable, HasChildren;
 
+    const VALID_USER_TYPES = [
+        'admin',
+        'teacher',
+        'student',
+        'guardian',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

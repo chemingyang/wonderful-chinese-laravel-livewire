@@ -18,6 +18,8 @@ class Register extends Component
 
     public string $email = '';
 
+    public string $type = '';
+
     public string $password = '';
 
     public string $password_confirmation = '';
@@ -29,6 +31,7 @@ class Register extends Component
     {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
+            'type' => ['required', 'string', 'lowercase','max:16', 'in:'.implode(',', User::VALID_USER_TYPES)   ],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
