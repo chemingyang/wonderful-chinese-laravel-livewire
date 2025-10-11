@@ -54,10 +54,10 @@
                             {{ $lesson->course->title  }}
                         </td>
                         <td class="px-5 py-2">
-                            {{ date('Y-m-d', strtotime($lesson->scheduled_at)) }}
+                            {{ $lesson->scheduled_at ? date('Y-m-d', strtotime($lesson->scheduled_at)) : '' }}
                         </td>
                         <td class="px-5 py-2">
-                            {{ date('Y-m-d', strtotime($lesson->completed_at)) }}
+                            {{ $lesson->completed_at ? date('Y-m-d', strtotime($lesson->completed_at)) : '' }}
                         </td>
                         <td class="px-5 py-2 space-x-2">
                             <a href="{{ route('lessons.edit', $lesson->id) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Edit</a>

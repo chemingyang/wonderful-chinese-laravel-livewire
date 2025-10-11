@@ -24,9 +24,8 @@
                 </flux:select.option>
             @endforeach
         </flux:select>
-
-        <flux:date-picker label="Scheduled At" wire:model="form.scheduled_at" />
-        <flux:date-picker label="Completed At" wire:model="form.completed_at" />
+        <flux:input type="date" label="Scheduled At" wire:model="form.scheduled_at" />
+        <flux:input type="date" label="Completed At" wire:model="form.completed_at" />
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">
                 {{ 'Create Lesson' }}
