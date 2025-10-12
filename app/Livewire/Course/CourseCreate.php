@@ -14,7 +14,7 @@ class CourseCreate extends Component
     public function store() {
         $this->form->store();
         session()->flash('message', 'Course created successfully.');
-        return redirect()->route('courses.index');
+        return redirect()->route('users.index');
     }
 
     public function render()
