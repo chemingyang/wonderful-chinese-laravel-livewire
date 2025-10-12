@@ -13,9 +13,8 @@
             required
             autofocus
             autocomplete="name"
-            :placeholder="__('Full name')"
+            :placeholder="__('full name')"
         />
-
         <!-- Email Address -->
         <flux:input
             wire:model="email"
@@ -25,20 +24,16 @@
             autocomplete="email"
             placeholder="email@example.com"
         />
-
-        
-
         <!-- User Type -->
         <flux:select wire:model="type" :filter="false" label="User Type   ">
-            <flux:select.option value="" wire:key="">Select a user type</flux:select.option>
+            <flux:select.option value="" wire:key="">select a user type</flux:select.option>
             @foreach (\App\Models\User::VALID_USER_TYPES as $userType)
                 <flux:select.option value="{{ $userType }}" wire:key="{{ $userType }}">{{ ucfirst($userType) }}</flux:select.option>
             @endforeach
         </flux:select>
-
         <div class="flex items-center justify-end">
             <flux:button type="submit" variant="primary" class="w-full">
-                {{ __('Create User Account') }}
+                {{ 'Register User' }}
             </flux:button>
         </div>
     </form>
