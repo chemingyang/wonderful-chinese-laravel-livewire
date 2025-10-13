@@ -9,11 +9,14 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Parental\HasChildren;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasChildren;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasChildren, HasRoles;
+
+    protected $guard_name = 'web';
 
     const VALID_USER_TYPES = [
         'admin',

@@ -5,6 +5,7 @@ namespace App\Livewire\Forms\User;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class UserForm extends Form
 {
@@ -20,7 +21,8 @@ class UserForm extends Form
             'type' => 'required|in:'.implode(',', User::VALID_USER_TYPES),
         ]);
         //$data['slug'] = str()->slug($data['title']);
-        User::create($data);
+        $user = User::create($data);
+        $user->assignRole($data['type']);
         $this->reset();
     }
 
@@ -40,6 +42,7 @@ class UserForm extends Form
         ]);
         // $data['slug'] = str()->slug($data['title']); //update the slug if the title has changed, but TBD how do we know it is unique?
         $this->user->update($data);
+        $this->user->assignRole($data['type']);
         $this->reset();
     }
 }
