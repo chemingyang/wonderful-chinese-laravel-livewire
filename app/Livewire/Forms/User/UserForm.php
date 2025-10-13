@@ -22,6 +22,7 @@ class UserForm extends Form
         ]);
         //$data['slug'] = str()->slug($data['title']);
         $user = User::create($data);
+        $user->roles()->detach();
         $user->assignRole($data['type']);
         $this->reset();
     }
@@ -42,6 +43,7 @@ class UserForm extends Form
         ]);
         // $data['slug'] = str()->slug($data['title']); //update the slug if the title has changed, but TBD how do we know it is unique?
         $this->user->update($data);
+        $this->user->roles()->detach();
         $this->user->assignRole($data['type']);
         $this->reset();
     }
