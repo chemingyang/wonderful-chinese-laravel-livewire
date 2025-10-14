@@ -5,9 +5,6 @@ use App\Livewire\Actions\Logout;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
-use App\Livewire\User\UserIndex;
-use App\Livewire\User\UserRegister;
-use App\Livewire\User\UserEdit;
 use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Auth\VerifyEmail;
 use Illuminate\Support\Facades\Route;
@@ -26,12 +23,6 @@ Route::middleware('auth')->group(function () {
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
         ->middleware(['signed', 'throttle:6,1'])
         ->name('verification.verify');
-});
-
-Route::middleware(['auth', 'ensureUserType:admin'])->group(function () {
-   Route::get('users/register', UserRegister::class)->name('users.register');
-   Route::get('users/index', UserIndex::class)->name('users.index');
-   Route::get('users/{user}/edit', UserEdit::class)->name('users.edit');
 });
 
 Route::post('logout', Logout::class)

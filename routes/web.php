@@ -6,7 +6,6 @@ use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
-use App\Http\Middleware\EnsureUserType;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,17 +35,21 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('courses', \App\Livewire\Course\CourseIndex::class)->name('courses.index');
-    // Route::get('courses/{course:slug}', \App\Livewire\Course\CourseShow::class)->name('courses.show');
-    Route::get('lessons', \App\Livewire\Lesson\LessonIndex::class)->name('lessons.index');
-    // Route::get('lessons/{lesson:slug}', \App\Livewire\Lesson\LessonShow::class)->name('lessons.show');
-});
-
-Route::middleware(['auth','ensureUserType:admin'])->group(function () {
-    Route::get('courses/create', \App\Livewire\Course\CourseCreate::class)->name('courses.create');
-    Route::get('lessons/create', \App\Livewire\Lesson\LessonCreate::class)->name('lessons.create');
-    Route::get('courses/{course}/edit', \App\Livewire\Course\CourseEdit::class)->name('courses.edit');
-    Route::get('lessons/{lesson}/edit', \App\Livewire\Lesson\LessonEdit::class)->name('lessons.edit');
+    Route::group(['middleware' => ['role:admin|teacher']], function () {
+        Route::get('courses', \App\Livewire\Course\CourseIndex::class)->name('courses.index');
+        // Route::get('courses/{course:slug}', \App\Livewire\Course\CourseShow::class)->name('courses.show');
+        Route::get('lessons', \App\Livewire\Lesson\LessonIndex::class)->name('lessons.index');
+        // Route::get('lessons/{lesson:slug}', \App\Livewire\Lesson\LessonShow::class)->name('lessons.show');
+    });
+    Route::group(['middleware' => ['role:admin']], function () {
+        Route::get('courses/create', \App\Livewire\Course\CourseCreate::class)->name('courses.create');
+        Route::get('lessons/create', \App\Livewire\Lesson\LessonCreate::class)->name('lessons.create');
+        Route::get('courses/{course}/edit', \App\Livewire\Course\CourseEdit::class)->name('courses.edit');
+        Route::get('lessons/{lesson}/edit', \App\Livewire\Lesson\LessonEdit::class)->name('lessons.edit');
+        Route::get('users/register', \App\Livewire\User\UserRegister::class)->name('users.register');
+        Route::get('users/index', \App\Livewire\User\UserIndex::class)->name('users.index');
+        Route::get('users/{user}/edit', \App\Livewire\User\UserEdit::class)->name('users.edit');
+    });
 });
 
 require __DIR__.'/auth.php';

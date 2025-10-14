@@ -14,9 +14,11 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    @hasanyrole('admin|teacher')
                     <flux:navlist.item icon="presentation-chart-bar" :href="route('courses.index')" :current="request()->routeIs('courses.*')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
                     <flux:navlist.item icon="book-open" :href="route('lessons.index')" :current="request()->routeIs('lessons.*')" wire:navigate>{{ __('Lessons') }}</flux:navlist.item>
                     <flux:navlist.item icon="users" :href="route('users.index')" :current="request()->routeIs('user.*')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
+                    @endrole
                 </flux:navlist.group>
             </flux:navlist>
 

@@ -1,4 +1,5 @@
 <section>
+    @role('admin')
     <div class="flex justify-end mr-6 pb-4">
         <!-- turn this into a button -->
         <a href="{{ route('lessons.create') }}" class="text-indigo-500 hover:text-indigo-700 font-medium">
@@ -11,6 +12,7 @@
         </span>
         </a>
     </div>
+    @endrole
     <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-600 dark:text-gray-400">
@@ -33,9 +35,13 @@
                     <th scope="col" class="px-6 py-3">
                         Completed At
                     </th>
+                    @role('admin')
                     <th scope="col" class="px-6 py-3">
                         Actions
                     </th>
+                    @else
+                    <th></th>
+                    @endrole
                 </tr>
             </thead>
             <tbody>
@@ -59,10 +65,14 @@
                         <td class="px-5 py-2">
                             {{ $lesson->completed_at ? date('Y-m-d', strtotime($lesson->completed_at)) : '' }}
                         </td>
+                        @role('admin')
                         <td class="px-5 py-2 space-x-2">
                             <a href="{{ route('lessons.edit', $lesson->id) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Edit</a>
                             <button wire:click="delete({{ $lesson->id }})" wire:confirm="Are you sure you want to delete this lesson?" class="text-red-500 hover:text-red-700 font-medium ms-4">Delete</button>
                         </td>
+                        @else
+                        <td></td>
+                        @endrole
                     </tr>
                @empty
                     <tr>  
