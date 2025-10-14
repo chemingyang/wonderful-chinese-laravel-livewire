@@ -47,8 +47,11 @@ Route::middleware('auth')->group(function () {
         Route::get('courses/{course}/edit', \App\Livewire\Course\CourseEdit::class)->name('courses.edit');
         Route::get('lessons/{lesson}/edit', \App\Livewire\Lesson\LessonEdit::class)->name('lessons.edit');
         Route::get('users/register', \App\Livewire\User\UserRegister::class)->name('users.register');
-        Route::get('users/index', \App\Livewire\User\UserIndex::class)->name('users.index');
+        Route::get('users', \App\Livewire\User\UserIndex::class)->name('users.index');
         Route::get('users/{user}/edit', \App\Livewire\User\UserEdit::class)->name('users.edit');
+        Route::get('enrollments/create', \App\Livewire\Enrollment\EnrollmentCreate::class)->name('enrollments.create');
+        Route::get('enrollments', \App\Livewire\Enrollment\EnrollmentIndex::class)->name('enrollments.index');
+        Route::get('enrollments/{enrollment}/edit', \App\Livewire\Enrollment\EnrollmentEdit::class)->name('enrollments.edit');
     });
 });
 
