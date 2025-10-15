@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('question');
             $table->text('answer_key')->nullable();
             $table->text('note')->nullable();
+            $table->smallInteger('weight');
             $table->timestamps();
         });
     }
