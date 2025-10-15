@@ -27,7 +27,7 @@
                         Description
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Course ID
+                        Course
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Scheduled At

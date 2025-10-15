@@ -14,7 +14,7 @@
     </div>
     @endrole
     <div class="relative overflow-x-auto">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table class="w-full text-sm text-left :text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-600 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
@@ -74,7 +74,7 @@
                         @role('admin')
                         <td class="px-5 py-2 space-x-2">
                             <a href="{{ route('lessonmodules.edit', $lessonmodule->id) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Edit</a>
-                            <button wire:click="delete({{ $lessonmodule->id }})" wire:confirm="Are you sure you want to withdraw from this course?" class="text-red-500 hover:text-red-700 font-medium ms-4">Withdraw</button>
+                            <button wire:click="delete({{ $lessonmodule->id }})" wire:confirm="Are you sure you want to delete this module from this lesson?" class="text-red-500 hover:text-red-700 font-medium ms-4">Delete</button>
                         </td>
                         @else
                         <td></td>
