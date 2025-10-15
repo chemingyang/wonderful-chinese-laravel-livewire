@@ -3,6 +3,7 @@
 namespace App\Livewire\LessonModule;
 
 use Livewire\Component;
+use App\Models\LessonModule;
 
 class LessonModuleIndex extends Component
 {
@@ -20,7 +21,7 @@ class LessonModuleIndex extends Component
     public function render()
     {
         return view('livewire.lesson-module.lesson-module-index', [
-            'lessonmodules' => \App\Models\LessonModule::with('lesson')->get()
+            'lessonmodules' => LessonModule::with('lesson')->get()
         ]);
     }
 
