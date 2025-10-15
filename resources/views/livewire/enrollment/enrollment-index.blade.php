@@ -8,7 +8,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 22" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 mr-1 p-0.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
-            <label>Add Enrollment</label>
+            <label>Enroll</label>
         </span>
         </a>
     </div>
@@ -54,13 +54,13 @@
                             {{ $enrollment->course->title }}
                         </td>
                         <td class="px-5 py-2">
-                            {{ $enrollment->user->name }}
+                            {{ $enrollment->student->name }}
                         </td>
                         <td class="px-5 py-2">
                             {{ $enrollment->semester  }}
                         </td>
                         <td class="px-5 py-2">
-                            {{ $enrollment->status  }}
+                            {{ $enrollment::VALID_STATUS[$enrollment->status] }}
                         </td>
                         <td class="px-5 py-2">
                             {{ $enrollment->note  }}
@@ -68,7 +68,7 @@
                         @role('admin')
                         <td class="px-5 py-2 space-x-2">
                             <a href="{{ route('enrollments.edit', $enrollment->id) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Edit</a>
-                            <button wire:click="delete({{ $enrollment->id }})" wire:confirm="Are you sure you want to delete this lesson?" class="text-red-500 hover:text-red-700 font-medium ms-4">Delete</button>
+                            <button wire:click="delete({{ $enrollment->id }})" wire:confirm="Are you sure you want to withdraw from this course?" class="text-red-500 hover:text-red-700 font-medium ms-4">Withdraw</button>
                         </td>
                         @else
                         <td></td>

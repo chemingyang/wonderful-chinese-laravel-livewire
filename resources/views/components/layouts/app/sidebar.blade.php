@@ -18,6 +18,7 @@
                     <flux:navlist.item icon="presentation-chart-bar" :href="route('courses.index')" :current="request()->routeIs('courses.*')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
                     <flux:navlist.item icon="book-open" :href="route('lessons.index')" :current="request()->routeIs('lessons.*')" wire:navigate>{{ __('Lessons') }}</flux:navlist.item>
                     <flux:navlist.item icon="users" :href="route('users.index')" :current="request()->routeIs('user.*')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
+                    <flux:navlist.item icon="folder-plus" :href="route('enrollments.index')" :current="request()->routeIs('enrollments.*')" wire:navigate>{{ __('Enrollments') }}</flux:navlist.item>
                     @endrole
                 </flux:navlist.group>
             </flux:navlist>
