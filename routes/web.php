@@ -56,6 +56,10 @@ Route::middleware('auth')->group(function () {
         Route::get('lessonmodules', \App\Livewire\LessonModule\LessonModuleIndex::class)->name('lessonmodules.index');
         Route::get('lessonmodules/{lessonmodule}/edit', \App\Livewire\LessonModule\LessonModuleEdit::class)->name('lessonmodules.edit');
     });
+
+    Route::group(['middleware' => ['role:student|admin']], function () {
+        Route::get('do-homework', \App\Livewire\Homework\DoHomework::class)->name('homeworks.do-homework');
+    });
 });
 
 require __DIR__.'/auth.php';

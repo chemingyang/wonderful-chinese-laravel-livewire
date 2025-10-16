@@ -21,6 +21,9 @@
                     <flux:navlist.item icon="folder-plus" :href="route('enrollments.index')" :current="request()->routeIs('enrollments.*')" wire:navigate>{{ __('Enrollments') }}</flux:navlist.item>
                     <flux:navlist.item icon="chat-bubble-bottom-center-text" :href="route('lessonmodules.index')" :current="request()->routeIs('lessonmodules.*')" wire:navigate>{{ __('Lesson Modules') }}</flux:navlist.item>
                     @endrole
+                    @hasanyrole('admin|student')
+                    <flux:navlist.item icon="pencil-square" :href="route('homeworks.do-homework')" :current="request()->routeIs('homeworks.do-homework')" wire:navigate>{{ __('Do Homework') }}</flux:navlist.item>
+                    @endrole
                 </flux:navlist.group>
             </flux:navlist>
 
