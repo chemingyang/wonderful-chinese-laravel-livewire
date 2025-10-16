@@ -5,16 +5,19 @@ namespace App\Livewire\Homework;
 use Livewire\Component;
 use App\Models\Lesson;
 use Illuminate\Support\Facades\DB;
+use App\Livewire\Forms\Homework\DoLessonForm;
 
 class DoLesson extends Component
 {
     public $lesson;
-    public $homework;
-    
+    public $lessonmodules;
+    public $answers = [];
+    public DoLessonForm $form;
+
     public function mount($lesson_id)
     {
         $this->lesson = Lesson::find($lesson_id);
-        $this->homework =
+        $this->lessonmodules =
             DB::table('lesson_modules as lm')
             ->leftJoin('lessons as l','lm.lesson_id','=','l.id')
             ->where('l.id','=', $lesson_id)
@@ -30,7 +33,7 @@ class DoLesson extends Component
         //dd($this->homework);
         return view('livewire.homework.do-lesson')->with([
             'lesson' => $this->lesson,
-            'homework' => $this->homework
+            'lessonmodules' => $this->lessonmodules,
         ]);
     }
 }
