@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 class DoHomework extends Component
 {
     public $homeworks;
+    public $uniqs;
     public $student;
     public $student_id;
 
@@ -31,14 +32,17 @@ class DoHomework extends Component
             ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight', 'c.title as course_title', 'l.title as lesson_title')
             ->get();
         
+        $this->uniqs = $this->homeworks->unique('lesson_title')->select('course_title','lesson_title','lesson_id');
+        //dd($this->uniqs);
     }
     
     public function render()
     {
-        dd($this->homeworks);
+        // dd($this->homeworks);
         
         return view('livewire.homework.do-homework')->with([
             'homeworks' => $this->homeworks,
+            'uniqs' => $this->uniqs,
             'student' => $this->student,
         ]);
     }

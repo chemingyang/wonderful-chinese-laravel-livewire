@@ -58,7 +58,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::group(['middleware' => ['role:student|admin']], function () {
-        Route::get('do-homework', \App\Livewire\Homework\DoHomework::class)->name('homeworks.do-homework');
+        Route::get('homeworks/do-homework', \App\Livewire\Homework\DoHomework::class)->name('homeworks.do-homework');
+        Route::get('homeworks/{lesson}/do-lesson', \App\Livewire\Homework\DoLesson::class)->name('homeworks.do-lesson');
     });
 });
 

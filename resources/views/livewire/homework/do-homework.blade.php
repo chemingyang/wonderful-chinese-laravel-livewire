@@ -16,16 +16,16 @@
                 </tr>
             </thead>
              <tbody>
-                @forelse (@$homeworks as $homework)
+                @forelse (@$uniqs as $uniq)
                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                         <th scope="row" class="px-5 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $homework->course_title }}
+                            {{ $uniq['course_title'] }}
                         </th>
                         <td class="px-5 py-2">
-                            {{ $homework->lesson_title }}
+                            {{ $uniq['lesson_title'] }}
                         </td>
                         <td class="px-5 py-2 space-x-2">
-                            <a href="#" class="text-indigo-500 hover:text-indigo-700 font-medium">Start Homework</a>
+                            <a href="{{ route('homeworks.do-lesson', $uniq['lesson_id']) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Start Lesson</a>
                         </td>
                     </tr>
                 @empty
