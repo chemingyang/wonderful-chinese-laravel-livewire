@@ -13,6 +13,7 @@ class StartHomework extends Component
     public $lesson;
     public $lessonmodules;
     public $answers = [];
+    public $wordorder = null;
     public HomeworkForm $form;
 
     public function mount($lesson_id)
@@ -43,5 +44,10 @@ class StartHomework extends Component
             'student_id' => Auth::id(),
             'lessonmodules' => $this->lessonmodules,
         ]);
+    }
+
+    public function updateWordOrder($val)
+    {
+        $this->wordorder = $val;
     }
 }

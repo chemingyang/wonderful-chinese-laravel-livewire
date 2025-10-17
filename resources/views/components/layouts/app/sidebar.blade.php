@@ -10,7 +10,7 @@
             <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
                 <x-app-logo />
             </a>
-            <div class="flex-1 text-sm font-small leading-none whitespace-nowrap">Welcome {{ ucfirst(auth()->user()->type) }} {{ auth()->user()->name }}</div>
+            <div class="flex text-sm font-small min-h-auto flex-col overflow-visible p-1">Welcome {{ ucfirst(auth()->user()->type) }} {{ auth()->user()->name }}</div>
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
@@ -141,5 +141,7 @@
         {{ $slot }}
 
         @fluxScripts
+        @livewireScripts
+        <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v1.x.x/dist/livewire-sortable.js"></script>
     </body>
 </html>

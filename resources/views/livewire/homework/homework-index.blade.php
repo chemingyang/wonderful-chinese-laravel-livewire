@@ -28,8 +28,10 @@
                                 <a href="{{ route('homeworks.start-homework', $uniq->lesson_id) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Start Homework</a>
                             @elseif (@empty($uniq->gradings))
                                 <span>Homework Submitted</span>
-                            @else
+                            @elseif (@empty($uniq->reviewd_at))
                                 <span>Homework Graded</span>
+                            @else
+                                <span>Homework Reviewed</span>
                             @endif
                         </td>
                     </tr>

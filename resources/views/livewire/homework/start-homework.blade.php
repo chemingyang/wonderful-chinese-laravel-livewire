@@ -18,7 +18,7 @@
                 <!-- Modal body -->
                 <div class="p-4 md:p-5 space-y-4">
                     <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    <div id="answer-div">Answer</div> 
+                    <div wire:ignore id="answer-div">Answer</div> 
                 </div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -57,35 +57,57 @@
     const maxCount = document.querySelectorAll('.answers').length;
     const submitButton = document.querySelector('#submit-button');
    
-
     function doNextStep(count) {
         
         let curr = count - 1;
         let prev = curr - 1;
 
         if (prev >= 0) {
-            let prevElements = document.querySelectorAll('[data-rel="a'+prev+'"]');
-            let inputDataID = document.querySelector('#a'+prev).getAttribute('data-id');
-            let inputVals = Array.from(prevElements).map(element => element.value);
             let hiddenElement = document.querySelector('#a'+prev);
-            // let hiddenElement = Livewire.find('a0');
-            //console.log(hiddenElement);
-            //hiddenElement.set('form.answers.'+inputDataID, inputVals.toString());
-            hiddenElement.value = inputVals.toString();
-            hiddenElement.dispatchEvent(new Event('input'));
+            let prevElements = document.querySelectorAll('[data-rel="a'+prev+'"]');
+
+            if (prevElements.length > 0 && hiddenElement !== null) {
+                let inputVals = Array.from(prevElements).map(element => element.value);
+                hiddenElement.value = inputVals.toString();
+                hiddenElement.dispatchEvent(new Event('input'));
+            } else {
+                console.log('cannot set hidden input field. abort.');
+                return;
+            }
             //console.log('element '+prev+' value '+hiddenElement.value);
             //@this.set('answers.'+prev, inputVals.toString());
+        } else {
+            console.log('skipping set prev input');
         }
 
         if (count <= maxCount) {
             let inputElement = document.querySelector('#a'+curr);
-            if (inputElement.getAttribute('data-type') == 'fill-in-blank') {
-                questionText.innerText = 'Q'+count+'. 請填寫空格:';
-                answerDiv.innerHTML = inputElement.getAttribute('data-question').replaceAll('<>','<input type="text" class="inline border-1 border-color:#fff" style="width:50px; padding:5px; margin: 5px" name="a'+curr+'" data-rel="a'+curr+'" />',);
-            } else if (inputElement.getAttribute('data-type') == 'answer-question') {
-                questionText.innerText = 'Q'+count+'. '+inputElement.getAttribute('data-question');
-                answerDiv.innerHTML = '<input type="textarea" rows="4" columns="25" class="inline border-1 border-color:#fff" padding:5px; margin: 5px" data-rel="a'+curr+'" />';
-            } // elseif (inputElement.getAttribute('data-type') == 'sort') {
+
+            if (inputElement !== null) {
+                if (inputElement.getAttribute('data-type') === 'fill-in-blank') {
+                    questionText.innerText = 'Q'+count+'. 請填寫空格:';
+                    answerDiv.innerHTML = inputElement.getAttribute('data-question').replaceAll('<>','<input type="text" class="inline border-1 border-color:#fff" style="width:50px; padding:5px; margin: 5px" name="a'+curr+'" data-rel="a'+curr+'" />',);
+                } else if (inputElement.getAttribute('data-type') === 'answer-question') {
+                    questionText.innerText = 'Q'+count+'. '+inputElement.getAttribute('data-question');
+                    answerDiv.innerHTML = '<input type="textarea" rows="4" columns="25" class="inline border-1 border-color:#fff" padding:5px; margin: 5px" data-rel="a'+curr+'" />';
+                } else if (inputElement.getAttribute('data-type') === 'sort') {
+                    questionText.innerText = 'Q'+count+'. 請排序下列的字格:';
+                    let dataQuestion = inputElement.getAttribute('data-question');
+                    let wordsArr = dataQuestion.split("|");
+                    let inner = '<ul wire:sortable="updateWordOrder">';
+                    wordsArr.forEach(function(word, index) {
+                        inner += '<li wire:sortable.item="'+index+'" wire:ignore><h4 wire:sortable.handle>'+word+'</h4></li>';
+                    });
+                    inner += '</ul>';
+                    answerDiv.innerHTML = inner;
+                } else {
+                    console.log('unknown lesson module type. abort');
+                    return;
+                }
+            } else {
+                console.log('input element with #a'+curr+" returned null");
+                return;
+            }
         } else {
             questionText.innerText = "You have reached the end. Ready to Submit?"
             answerDiv.innerHTML = '';
@@ -93,13 +115,12 @@
             submitButton.classList.remove('hidden');
             let inputStudentID = document.querySelector('#student-id');
             let inputLessonID = document.querySelector('#lesson-id');
-            //Livewire.find().set('student_id',studentID);
-            //Livewire.find().set('lesson_id',lessonID);
-            inputStudentID.value = studentID;
-            inputStudentID.dispatchEvent(new Event('input'));
-            inputLessonID.value = lessonID;
-            inputLessonID.dispatchEvent(new Event('input'));
-
+            if (inputStudentID.length > 0 && inputLessonID.length > 0) {
+                inputStudentID.value = studentID;
+                inputStudentID.dispatchEvent(new Event('input'));
+                inputLessonID.value = lessonID;
+                inputLessonID.dispatchEvent(new Event('input'));
+            }
         }
         // if we haven't reach the question question do next
         // otherwise hide the question and show the submit button        
@@ -110,7 +131,7 @@
         doNextStep(counter);
     });
 
-    document.addEventListener('livewire:initialized', () => {
+    document.addEventListener('DOMContentLoaded', () => {
     // Your JavaScript code to execute after the DOM is ready
         console.log('DOM is loaded! livewire initialized');
          
