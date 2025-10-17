@@ -24,7 +24,13 @@
                             {{ $uniq->lesson_title }}
                         </td>
                         <td class="px-5 py-2 space-x-2">
-                            <a href="{{ route('homeworks.start-homework', $uniq->lesson_id) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Start Homework</a>
+                            @if (@empty($uniq->answers))
+                                <a href="{{ route('homeworks.start-homework', $uniq->lesson_id) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Start Homework</a>
+                            @elseif (@empty($uniq->gradings))
+                                <span>Homework Submitted</span>
+                            @else
+                                <span>Homework Graded</span>
+                            @endif
                         </td>
                     </tr>
                 @empty

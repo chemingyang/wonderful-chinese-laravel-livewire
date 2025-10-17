@@ -13,6 +13,7 @@ class HomeworkIndex extends Component
     public $uniqs;
     public $user;
     public $student_id = null;
+    // public $state = '';
 
     public function mount()
     {
@@ -52,20 +53,49 @@ class HomeworkIndex extends Component
                     ->where('h.student_id', '=', $this->student_id);
                 });
             $cols[] = 'e.id as enroll_id';
-            $cols[] = 'h.id as homework_id';
+            $cols[] = 'h.answers';
+            $cols[] = 'h.gradings';
+            $cols[] = 'h.started_at';
+            $cols[] = 'h.submitted_at';
+            $cols[] = 'h.graded_at';
+            $cols[] = 'h.reviewed_at';
         }
         $this->uniqs = $this->uniqs->select($cols)->get();
-
-        // dd($this->uniqs);
-        // $this->uniqs = $this->homeworks->unique('lesson_title')->select('course_title','lesson_title','lesson_id');
-        // dd($this->uniqs);
+        
+        // turn json_encoded columns into array
+        foreach ($this->uniqs as $index => $uniq) {
+            $answers = json_decode($uniq->answers);
+            $gradings = json_decode($uniq->gradings);
+            $uniq->answers = $answers;
+            $uniq->gradings = $gradings;
+            $this->uniqs[$index] = $uniq;
+        }
+        // $this->status = $this->getState($this->uniqs);
     }
-    
+    /*
+    function getState($uniqs): string  {
+        if (empty($uniqs->gradings)) {
+            if (empty($uniqs->answers)) {
+                return 'new';
+            } else {
+                return 'submitted';
+            }
+        } else {
+            if (empty($uniqs->reviewed_at)) {
+                return 'graded';
+            } else {
+                return 'reviewed';
+            }
+        }
+    }
+    */
     public function render()
     { 
+        // dd($this->uniqs);
         return view('livewire.homework.homework-index')->with([
             // 'homeworks' => $this->homeworks,
-            'uniqs' => $this->uniqs
+            'uniqs' => $this->uniqs,
+            //'state' => $this->state,
         ]);
     }
 
