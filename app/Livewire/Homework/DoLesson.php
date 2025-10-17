@@ -23,7 +23,7 @@ class DoLesson extends Component
             ->where('l.id','=', $lesson_id)
             ->where('l.scheduled_at','<',now())
             ->where('l.completed_at','>',now())
-            ->orderBy('lm.weight','DESC')
+            ->orderBy('lm.weight','ASC')
             ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight')
             ->get();
     }
