@@ -32,7 +32,7 @@ class StartHomework extends Component
     public function store() { 
         $this->form->store();
         session()->flash('message', 'Homework submitted successfully.');
-        return redirect()->route('homeworks.do-homework');
+        return redirect()->route('homeworks.homework-index');
     }
 
     public function render()
