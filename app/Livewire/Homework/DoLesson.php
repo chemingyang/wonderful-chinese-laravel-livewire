@@ -5,6 +5,7 @@ namespace App\Livewire\Homework;
 use Livewire\Component;
 use App\Models\Lesson;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Livewire\Forms\Homework\DoLessonForm;
 
 class DoLesson extends Component
@@ -27,12 +28,19 @@ class DoLesson extends Component
             ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight')
             ->get();
     }
-    
+
+    public function store() { 
+        $this->form->store();
+        session()->flash('message', 'Homework submitted successfully.');
+        return redirect()->route('homeworks.do-homework');
+    }
+
     public function render()
     {
         //dd($this->homework);
         return view('livewire.homework.do-lesson')->with([
             'lesson' => $this->lesson,
+            'student_id' => Auth::id(),
             'lessonmodules' => $this->lessonmodules,
         ]);
     }

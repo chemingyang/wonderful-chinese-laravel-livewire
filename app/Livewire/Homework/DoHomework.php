@@ -55,4 +55,8 @@ class DoHomework extends Component
             'student' => $this->student,
         ]);
     }
+
+    public function clearSessionMessage() {
+        session()->forget('message');
+    }
 }
