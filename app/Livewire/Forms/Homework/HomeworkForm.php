@@ -6,7 +6,7 @@ use Livewire\Attributes\Validate;
 use App\Models\Homework;
 use Livewire\Form;
 
-class DoLessonForm extends Form
+class HomeworkForm extends Form
 {
     public $answers = [];
     public ?Homework $homework;

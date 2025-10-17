@@ -10,6 +10,7 @@
             <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
                 <x-app-logo />
             </a>
+            <div class="flex-1 text-sm font-small leading-none whitespace-nowrap">Welcome {{ ucfirst(auth()->user()->type) }} {{ auth()->user()->name }}</div>
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
@@ -17,12 +18,14 @@
                     @hasanyrole('admin|teacher')
                     <flux:navlist.item icon="presentation-chart-bar" :href="route('courses.index')" :current="request()->routeIs('courses.*')" wire:navigate>{{ __('Courses') }}</flux:navlist.item>
                     <flux:navlist.item icon="book-open" :href="route('lessons.index')" :current="request()->routeIs('lessons.*')" wire:navigate>{{ __('Lessons') }}</flux:navlist.item>
+                    @endrole
+                    @hasanyrole('admin')
                     <flux:navlist.item icon="users" :href="route('users.index')" :current="request()->routeIs('user.*')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
                     <flux:navlist.item icon="folder-plus" :href="route('enrollments.index')" :current="request()->routeIs('enrollments.*')" wire:navigate>{{ __('Enrollments') }}</flux:navlist.item>
                     <flux:navlist.item icon="chat-bubble-bottom-center-text" :href="route('lessonmodules.index')" :current="request()->routeIs('lessonmodules.*')" wire:navigate>{{ __('Lesson Modules') }}</flux:navlist.item>
                     @endrole
-                    @hasanyrole('admin|student')
-                    <flux:navlist.item icon="pencil-square" :href="route('homeworks.do-homework')" :current="request()->routeIs('homeworks.do-homework')" wire:navigate>{{ __('Do Homework') }}</flux:navlist.item>
+                    @hasanyrole('student')
+                    <flux:navlist.item icon="pencil-square" :href="route('homeworks.homework-index')" :current="request()->routeIs('homeworks.*')" wire:navigate>{{ __('Homework') }}</flux:navlist.item>
                     @endrole
                 </flux:navlist.group>
             </flux:navlist>

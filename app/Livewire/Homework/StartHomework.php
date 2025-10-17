@@ -6,14 +6,14 @@ use Livewire\Component;
 use App\Models\Lesson;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Livewire\Forms\Homework\DoLessonForm;
+use App\Livewire\Forms\Homework\HomeworkForm;
 
-class DoLesson extends Component
+class StartHomework extends Component
 {
     public $lesson;
     public $lessonmodules;
     public $answers = [];
-    public DoLessonForm $form;
+    public HomeworkForm $form;
 
     public function mount($lesson_id)
     {
@@ -38,7 +38,7 @@ class DoLesson extends Component
     public function render()
     {
         //dd($this->homework);
-        return view('livewire.homework.do-lesson')->with([
+        return view('livewire.homework.start-homework')->with([
             'lesson' => $this->lesson,
             'student_id' => Auth::id(),
             'lessonmodules' => $this->lessonmodules,

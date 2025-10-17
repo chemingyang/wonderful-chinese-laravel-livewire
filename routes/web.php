@@ -57,9 +57,9 @@ Route::middleware('auth')->group(function () {
         Route::get('lessonmodules/{lessonmodule}/edit', \App\Livewire\LessonModule\LessonModuleEdit::class)->name('lessonmodules.edit');
     });
 
-    Route::group(['middleware' => ['role:student|admin']], function () {
-        Route::get('homeworks/do-homework', \App\Livewire\Homework\DoHomework::class)->name('homeworks.do-homework');
-        Route::get('homeworks/{lesson_id}/do-lesson', \App\Livewire\Homework\DoLesson::class)->name('homeworks.do-lesson');
+    Route::group(['middleware' => ['role:student']], function () {
+        Route::get('homeworks/homework-index', \App\Livewire\Homework\HomeworkIndex::class)->name('homeworks.homework-index');
+        Route::get('homeworks/{lesson_id}/start-homework', \App\Livewire\Homework\StartHomework::class)->name('homeworks.start-homework');
     });
 });
 
