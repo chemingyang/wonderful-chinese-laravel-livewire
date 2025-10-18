@@ -141,7 +141,6 @@
         {{ $slot }}
 
         @fluxScripts
-        @livewireScripts
-        <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v1.x.x/dist/livewire-sortable.js"></script>
+        <script src="https://sortablejs.github.io/Sortable/Sortable.js"></script>
     </body>
 </html>

@@ -18,7 +18,7 @@
                 <!-- Modal body -->
                 <div class="p-4 md:p-5 space-y-4">
                     <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    <div wire:ignore id="answer-div">Answer</div> 
+                    <div id="answer-div">Answer</div> 
                 </div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -51,24 +51,33 @@
     let counter = 1;
     const studentID = {{ @$student_id }};
     const lessonID = {{ @$lesson->id }};
-    const questionText = document.querySelector('#question-text');
-    const answerDiv = document.querySelector('#answer-div');
-    const nextButton = document.querySelector('#next-button');
+    const questionText = document.getElementById('question-text');
+    const answerDiv = document.getElementById('answer-div');
+    const nextButton = document.getElementById('next-button');
     const maxCount = document.querySelectorAll('.answers').length;
-    const submitButton = document.querySelector('#submit-button');
+    const submitButton = document.getElementById('submit-button');
    
+    function initSort(elemID) {
+        let el = document.getElementById(elemID);
+        new Sortable(el, {
+            animation: 150,
+            ghostClass: 'blue-background-class'
+        });
+    }
+
     function doNextStep(count) {
         
         let curr = count - 1;
         let prev = curr - 1;
 
         if (prev >= 0) {
-            let hiddenElement = document.querySelector('#a'+prev);
+            let hiddenElement = document.getElementById('a'+prev);
             let prevElements = document.querySelectorAll('[data-rel="a'+prev+'"]');
 
             if (prevElements.length > 0 && hiddenElement !== null) {
-                let inputVals = Array.from(prevElements).map(element => element.value);
+                let inputVals = Array.from(prevElements).map(element => (element.value ?? element.getAttribute('data-val')));
                 hiddenElement.value = inputVals.toString();
+                console.log('set #a'+prev+' value to '+inputVals.toString());
                 hiddenElement.dispatchEvent(new Event('input'));
             } else {
                 console.log('cannot set hidden input field. abort.');
@@ -81,7 +90,7 @@
         }
 
         if (count <= maxCount) {
-            let inputElement = document.querySelector('#a'+curr);
+            let inputElement = document.getElementById('a'+curr);
 
             if (inputElement !== null) {
                 if (inputElement.getAttribute('data-type') === 'fill-in-blank') {
@@ -93,13 +102,15 @@
                 } else if (inputElement.getAttribute('data-type') === 'sort') {
                     questionText.innerText = 'Q'+count+'. 請排序下列的字格:';
                     let dataQuestion = inputElement.getAttribute('data-question');
+                    let dataID = inputElement.getAttribute('data-id');
                     let wordsArr = dataQuestion.split("|");
-                    let inner = '<ul wire:sortable="updateWordOrder">';
+                    let inner = '<div id="sort'+dataID+'" class="flex list-group">';
                     wordsArr.forEach(function(word, index) {
-                        inner += '<li wire:sortable.item="'+index+'" wire:ignore><h4 wire:sortable.handle>'+word+'</h4></li>';
+                        inner += '<div data-val="'+(index+1)+'" data-rel="a'+curr+'" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>'+word+'</span></div>';
                     });
-                    inner += '</ul>';
+                    inner += '</div>';
                     answerDiv.innerHTML = inner;
+                    initSort('sort'+dataID);
                 } else {
                     console.log('unknown lesson module type. abort');
                     return;
@@ -109,18 +120,22 @@
                 return;
             }
         } else {
-            questionText.innerText = "You have reached the end. Ready to Submit?"
-            answerDiv.innerHTML = '';
-            nextButton.classList.add('hidden');
-            submitButton.classList.remove('hidden');
-            let inputStudentID = document.querySelector('#student-id');
-            let inputLessonID = document.querySelector('#lesson-id');
-            if (inputStudentID.length > 0 && inputLessonID.length > 0) {
+            let inputStudentID = document.getElementById('student-id');
+            let inputLessonID = document.getElementById('lesson-id');
+            if (inputStudentID !== null && inputLessonID !== null) {
                 inputStudentID.value = studentID;
                 inputStudentID.dispatchEvent(new Event('input'));
                 inputLessonID.value = lessonID;
                 inputLessonID.dispatchEvent(new Event('input'));
+                console.log('set student and lesson id');
+            } else {
+                console.log('cannot set student and lesson id');
+                return;
             }
+            questionText.innerText = "You have reached the end. Ready to Submit?"
+            answerDiv.innerHTML = '';
+            nextButton.classList.add('hidden');
+            submitButton.classList.remove('hidden');
         }
         // if we haven't reach the question question do next
         // otherwise hide the question and show the submit button        
@@ -132,11 +147,7 @@
     });
 
     document.addEventListener('DOMContentLoaded', () => {
-    // Your JavaScript code to execute after the DOM is ready
         console.log('DOM is loaded! livewire initialized');
-         
         doNextStep(counter);
-        // Example: Manipulate an element
-        // document.getElementById('myElement').textContent = 'Content changed!';
     });
 </script>

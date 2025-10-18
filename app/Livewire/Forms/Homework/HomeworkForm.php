@@ -33,9 +33,8 @@ class HomeworkForm extends Form
             'graded_at' => 'nullable|date',
             'reviewed_at' => 'nullable|date',
         ]);
-        $data['answers'] = json_encode($data['answers']);
-        $data['gradings'] = json_encode($data['gradings']);
-
+        $data['answers'] = !empty($data['answers']) ? json_encode($data['answers']) : null;
+        $data['gradings'] = !empty($data['gradings']) ? json_encode($data['gradings']) : null;
         Homework::create($data);
         $this->reset();
     }
@@ -65,9 +64,8 @@ class HomeworkForm extends Form
             'graded_at' => 'nullable|date',
             'reviewed_at' => 'nullable|date',
         ]);
-        $data['answers'] = json_encode($data['answers']);
-        $data['gradings'] = json_encode($data['gradings']);
-
+        $data['answers'] = !empty($data['answers']) ? json_encode($data['answers']) : null;
+        $data['gradings'] = !empty($data['gradings']) ? json_encode($data['gradings']) : null;
         $this->homework->update($data);
         $this->reset();
     }
