@@ -57,11 +57,17 @@
     const maxCount = document.querySelectorAll('.answers').length;
     const submitButton = document.getElementById('submit-button');
    
-    function initSort(elemID) {
-        let el = document.getElementById(elemID);
-        new Sortable(el, {
-            animation: 150,
-            ghostClass: 'blue-background-class'
+    function initSort(elemIDArr) {
+        elemIDArr.forEach(function(elemID, index) {
+            let el = document.getElementById(elemID);
+            new Sortable(el, {
+                animation: 150,
+                group: {
+                    name: 'shared',
+                    pull: 'clone'
+                },
+                ghostClass: 'blue-background-class'
+            });
         });
     }
 
@@ -92,15 +98,16 @@
         if (count <= maxCount) {
             let inputElement = document.getElementById('a'+curr);
 
-            if (inputElement !== null) {
-                if (inputElement.getAttribute('data-type') === 'fill-in-blank') {
+            if (inputElement !== null ) {
+                let elemDataType = inputElement.getAttribute('data-type');
+
+                if (elemDataType === 'fill-in-blank') {
                     questionText.innerText = 'Q'+count+'. 請填寫空格:';
                     answerDiv.innerHTML = inputElement.getAttribute('data-question').replaceAll('<>','<input type="text" class="inline border-1 border-color:#fff" style="width:50px; padding:5px; margin: 5px" name="a'+curr+'" data-rel="a'+curr+'" />',);
-                } else if (inputElement.getAttribute('data-type') === 'answer-question') {
+                } else if (elemDataType === 'answer-question') {
                     questionText.innerText = 'Q'+count+'. '+inputElement.getAttribute('data-question');
                     answerDiv.innerHTML = '<input type="textarea" rows="4" columns="25" class="inline border-1 border-color:#fff" padding:5px; margin: 5px" data-rel="a'+curr+'" />';
-                } else if (inputElement.getAttribute('data-type') === 'sort') {
-                    questionText.innerText = 'Q'+count+'. 請排序下列的字格:';
+                } else if (elemDataType === 'sort') {
                     let dataQuestion = inputElement.getAttribute('data-question');
                     let dataID = inputElement.getAttribute('data-id');
                     let wordsArr = dataQuestion.split("|");
@@ -109,14 +116,28 @@
                         inner += '<div data-val="'+(index+1)+'" data-rel="a'+curr+'" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>'+word+'</span></div>';
                     });
                     inner += '</div>';
+                    questionText.innerText = 'Q'+count+'. 請排序下列的字格:';
                     answerDiv.innerHTML = inner;
-                    initSort('sort'+dataID);
+                    initSort(['sort'+dataID]);
+                } else if (elemDataType === 'drop') {
+                    let dataQuestion = inputElement.getAttribute('data-question');
+                    let dataID = inputElement.getAttribute('data-id');
+                    let tmpArr = dataQuestion.split(":");
+                    let wordsArr = tmpArr[1].split("|");
+                    let inner = '<div class="grid w-full gap-6 md:grid-cols-2"><div id="sort'+dataID+'-left" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left">';
+                    wordsArr.forEach(function(word, index) {
+                        inner += '<div data-val="'+(index+1)+'" data-rel="a'+curr+'" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>'+word+'</span></div>';
+                    });
+                    inner += '</div><div id="sort'+dataID+'-right" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-right"></div><div>';
+                    questionText.innerText = 'Q'+count+'.'+tmpArr[0];
+                    answerDiv.innerHTML = inner;
+                    initSort(['sort'+dataID+'-left','sort'+dataID+'-right']);
                 } else {
-                    console.log('unknown lesson module type. abort');
+                    console.log('unknown or unable to get lesson module type. abort');
                     return;
                 }
             } else {
-                console.log('input element with #a'+curr+" returned null");
+                console.log('input element with #a'+curr+" returned null.");
                 return;
             }
         } else {

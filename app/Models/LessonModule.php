@@ -9,7 +9,7 @@ class LessonModule extends Model
 {   
     protected $fillable = ['type', 'lesson_id', 'question', 'answer_key', 'weight', 'note'];
 
-    const VALID_LESSON_MODULE_TYPES = ['fill-in-blank','answer-question', 'sort'];
+    const VALID_LESSON_MODULE_TYPES = ['fill-in-blank','answer-question', 'sort', 'drop'];
 
     public function lesson()
     {
