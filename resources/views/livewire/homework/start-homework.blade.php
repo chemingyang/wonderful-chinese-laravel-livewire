@@ -132,6 +132,26 @@
                     questionText.innerText = 'Q'+count+'.'+tmpArr[0];
                     answerDiv.innerHTML = inner;
                     initSort(['sort'+dataID+'-left','sort'+dataID+'-right']);
+                } else if (elemDataType === 'match') {
+                    let dataQuestion = inputElement.getAttribute('data-question');
+                    console.log(dataQuestion)
+                    let dataID = inputElement.getAttribute('data-id');
+                    let tmpArr = dataQuestion.split(":");
+                    console.log(tmpArr);
+                    let wordsArr = tmpArr[0].split("|");
+                    let boxesArr = tmpArr[1].split("|");
+                    let inner = '<div class="grid w-full gap-6 md:grid-cols-2"><div id="sort'+dataID+'-left" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left">';
+                    wordsArr.forEach(function(word, index) {
+                        inner += '<div data-val="'+(index+1)+'" data-rel="a'+curr+'" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>'+word+'</span></div>';
+                    });
+                    inner += '</div><div class="flex justify-right">';
+                    boxesArr.forEach(function(box, index) {
+                        inner += '<div id="sort'+dataID+'-right-'+index+'" data-val="'+(index+1)+'" data-rel="b'+curr+'" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1"><label>'+box+'</label></div>';
+                    });
+                    inner += '</div></div>';
+                    questionText.innerText = 'please match words to boxes.';
+                    answerDiv.innerHTML = inner;
+                    initSort(['sort'+dataID+'-left','sort'+dataID+'-right-1','sort'+dataID+'-right-2','sort'+dataID+'-right-3','sort'+dataID+'-right-4','sort'+dataID+'-right-0']);
                 } else {
                     console.log('unknown or unable to get lesson module type. abort');
                     return;
