@@ -63,8 +63,7 @@
             new Sortable(el, {
                 animation: 150,
                 group: {
-                    name: 'shared',
-                    pull: 'clone'
+                    name: 'shared'
                 },
                 ghostClass: 'blue-background-class'
             });
@@ -83,16 +82,16 @@
             if (prevElements.length > 0 && hiddenElement !== null) {
                 let inputVals = Array.from(prevElements).map(element => (element.value ?? element.getAttribute('data-val')));
                 hiddenElement.value = inputVals.toString();
-                console.log('set #a'+prev+' value to '+inputVals.toString());
+                // console.log('set #a'+prev+' value to '+inputVals.toString());
                 hiddenElement.dispatchEvent(new Event('input'));
             } else {
-                console.log('cannot set hidden input field. abort.');
+                // console.log('cannot set hidden input field. abort.');
                 return;
             }
-            //console.log('element '+prev+' value '+hiddenElement.value);
+            // console.log('element '+prev+' value '+hiddenElement.value);
             //@this.set('answers.'+prev, inputVals.toString());
         } else {
-            console.log('skipping set prev input');
+            // console.log('skipping set prev input');
         }
 
         if (count <= maxCount) {
@@ -128,16 +127,16 @@
                     wordsArr.forEach(function(word, index) {
                         inner += '<div data-val="'+(index+1)+'" data-rel="a'+curr+'" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>'+word+'</span></div>';
                     });
-                    inner += '</div><div id="sort'+dataID+'-right" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-right"></div><div>';
+                    inner += '</div><div><label>Family</label><div id="sort'+dataID+'-right" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-right"><label>&nbsp;</label></div><div></div>';
                     questionText.innerText = 'Q'+count+'.'+tmpArr[0];
                     answerDiv.innerHTML = inner;
                     initSort(['sort'+dataID+'-left','sort'+dataID+'-right']);
                 } else if (elemDataType === 'match') {
                     let dataQuestion = inputElement.getAttribute('data-question');
-                    console.log(dataQuestion)
+                    // console.log(dataQuestion)
                     let dataID = inputElement.getAttribute('data-id');
                     let tmpArr = dataQuestion.split(":");
-                    console.log(tmpArr);
+                    // console.log(tmpArr);
                     let wordsArr = tmpArr[0].split("|");
                     let boxesArr = tmpArr[1].split("|");
                     let inner = '<div class="grid w-full gap-6 md:grid-cols-2"><div id="sort'+dataID+'-left" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left">';
@@ -146,18 +145,18 @@
                     });
                     inner += '</div><div class="flex justify-right">';
                     boxesArr.forEach(function(box, index) {
-                        inner += '<div id="sort'+dataID+'-right-'+index+'" data-val="'+(index+1)+'" data-rel="b'+curr+'" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1"><label>'+box+'</label></div>';
+                        inner += '<div><label>'+box+'</label><div id="sort'+dataID+'-right-'+index+'" data-val="'+(index+1)+'" data-rel="b'+curr+'" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1"><label>&nbsp;</label></div></div>';
                     });
                     inner += '</div></div>';
                     questionText.innerText = 'please match words to boxes.';
                     answerDiv.innerHTML = inner;
-                    initSort(['sort'+dataID+'-left','sort'+dataID+'-right-1','sort'+dataID+'-right-2','sort'+dataID+'-right-3','sort'+dataID+'-right-4','sort'+dataID+'-right-0']);
+                    initSort(['sort'+dataID+'-left','sort'+dataID+'-right-0','sort'+dataID+'-right-1','sort'+dataID+'-right-2']);
                 } else {
-                    console.log('unknown or unable to get lesson module type. abort');
+                    // console.log('unknown or unable to get lesson module type. abort');
                     return;
                 }
             } else {
-                console.log('input element with #a'+curr+" returned null.");
+                // console.log('input element with #a'+curr+" returned null.");
                 return;
             }
         } else {
@@ -168,9 +167,9 @@
                 inputStudentID.dispatchEvent(new Event('input'));
                 inputLessonID.value = lessonID;
                 inputLessonID.dispatchEvent(new Event('input'));
-                console.log('set student and lesson id');
+                // console.log('set student and lesson id');
             } else {
-                console.log('cannot set student and lesson id');
+                // console.log('cannot set student and lesson id');
                 return;
             }
             questionText.innerText = "You have reached the end. Ready to Submit?"
@@ -188,7 +187,7 @@
     });
 
     document.addEventListener('DOMContentLoaded', () => {
-        console.log('DOM is loaded! livewire initialized');
+        // console.log('DOM is loaded! livewire initialized');
         doNextStep(counter);
     });
 </script>

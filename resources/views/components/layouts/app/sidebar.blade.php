@@ -141,6 +141,6 @@
         {{ $slot }}
 
         @fluxScripts
-        <script src="https://sortablejs.github.io/Sortable/Sortable.js"></script>
+        <script src="/js/Sortable.js"></script>
     </body>
 </html>
