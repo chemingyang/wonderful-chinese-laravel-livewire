@@ -25,6 +25,9 @@
                         Description
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Teacher
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Image
                     </th>
                     @role('admin')
@@ -49,6 +52,9 @@
                             {{ $course->description }}
                         </td>
                         <td class="px-5 py-2">
+                            {{ $course->teacher_name ?? "unassigned" }}
+                        </td>
+                        <td class="px-5 py-2">
                             @if ($course->image)
                             <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->title }} image" class="h-8 w-8 rounded-md object-fit"> 
                             @endif
@@ -64,7 +70,7 @@
                     </tr>
                @empty\App\Liveware\User\
                     <tr>  
-                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">
                             No courses available.
                         </td>
                     </tr>

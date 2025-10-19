@@ -12,6 +12,7 @@ class CourseForm extends Form
     public ?Course $course;
     public $title = '';
     public $description = '';
+    public $teacher_id;
     public $image = null; 
     public $slug = '';
 
@@ -19,6 +20,7 @@ class CourseForm extends Form
         $this->course = $course;
         $this->title = $course->title;
         $this->description = $course->description;
+        $this->teacher_id = $course->teacher_id;
         // $this->image = $course->image; // image is not set here TBD some handling reqiured for later
     }
 
@@ -26,6 +28,7 @@ class CourseForm extends Form
         $data = $this->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'teacher_id' => 'nullable|exists:users,id', // TBD make sure it's a teacher
             'image' => 'nullable|image|max:1024', // 1MB Max
         ]);
 
@@ -41,10 +44,13 @@ class CourseForm extends Form
         $data = $this->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'teacher_id' => 'nullable|exists:users,id',
             'image' => 'nullable|image|max:1024', // 1MB Max
         ]);
         $data['slug'] = str()->slug($data['title']); //update the slug if the title has changed, but TBD how do we know it is unique?
         $data['image'] = $this->course->image; // keep existing image if no new image is uploaded
+
+        if (empty($data['teacher_id'])) $data['teacher_id'] = null;
 
         if ($this->image) {
             if ($this->course->image) {

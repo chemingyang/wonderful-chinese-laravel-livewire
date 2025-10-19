@@ -17,6 +17,16 @@
             placeholder="description"
         />
 
+         <!-- Teacher -->
+        <flux:select wire:model="form.teacher_id" :filter="false" label="Teacher">
+            <flux:select.option value="" wire:key="">Select a teacher</flux:select.option>
+            @foreach ($this->teachers as $teacher)
+                <flux:select.option value="{{ $teacher->id }}" wire:key="{{ $teacher->id }}">
+                    {{ $teacher->name }}
+                </flux:select.option>
+            @endforeach
+        </flux:select>
+
         <flux:input
             wire:model="form.image"
             label="Image"

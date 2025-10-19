@@ -12,16 +12,16 @@ class HomeworkIndex extends Component
     // public $homeworks;
     public $uniqs;
     public $user;
-    public $student_id = null;
+    public $user_id;
+    public $user_type;
     // public $state = '';
 
     public function mount()
     {
         // get the logged in student
         $this->user = Auth::user();
-        if ($this->user->type == 'student') {
-            $this->student_id = Auth::id();
-        } 
+        $this->user_type = $this->user->type;
+        $this->user_id = $this->user->id;
         // get this week's homework
         /* $this->homeworks = 
             DB::table('lesson_modules as lm')
@@ -39,27 +39,30 @@ class HomeworkIndex extends Component
         $this->uniqs = 
         DB::table('lessons as l')
             ->Join('courses as c','l.course_id','=','c.id')
+            ->Join('enrollments as e','c.id', '=','e.course_id')
             ->where('l.scheduled_at','<',now())
             ->where('l.completed_at','>',now());
 
-        if (!empty($this->student_id)) {
+        if ($this->user_type === "student") {
             $this->uniqs
-                ->Join('enrollments as e', function ($join) {
-                    $join->on('c.id', '=', 'e.course_id')
-                    ->where('e.student_id', '=', $this->student_id);
-                })
+                ->where('e.student_id', '=', $this->user_id)
                 ->leftJoin('homework as h', function ($join) {
                     $join->on('l.id', '=', 'h.lesson_id')
-                    ->where('h.student_id', '=', $this->student_id);
+                    ->where('h.student_id', '=', $this->user_id);
                 });
-            $cols[] = 'e.id as enroll_id';
-            $cols[] = 'h.answers';
-            $cols[] = 'h.gradings';
-            $cols[] = 'h.started_at';
-            $cols[] = 'h.submitted_at';
-            $cols[] = 'h.graded_at';
-            $cols[] = 'h.reviewed_at';
+        } else if ($this->user_type === "teacher") {
+            $this->uniqs
+                ->where('c.teacher_id', '=', $this->user_id)
+                ->leftJoin('homework as h','l.id', '=', 'h.lesson_id')
+                ->groupBy('h.lesson_id','e.student_id');
+            $cols[] = 'e.student_id';
         }
+        $cols[] = 'h.answers';
+        $cols[] = 'h.gradings';
+        $cols[] = 'h.started_at';
+        $cols[] = 'h.submitted_at';
+        $cols[] = 'h.graded_at';
+        $cols[] = 'h.reviewed_at';
         $this->uniqs = $this->uniqs->select($cols)->get();
         
         // turn json_encoded columns into array
@@ -72,30 +75,13 @@ class HomeworkIndex extends Component
         }
         // $this->status = $this->getState($this->uniqs);
     }
-    /*
-    function getState($uniqs): string  {
-        if (empty($uniqs->gradings)) {
-            if (empty($uniqs->answers)) {
-                return 'new';
-            } else {
-                return 'submitted';
-            }
-        } else {
-            if (empty($uniqs->reviewed_at)) {
-                return 'graded';
-            } else {
-                return 'reviewed';
-            }
-        }
-    }
-    */
+
     public function render()
     { 
         // dd($this->uniqs);
         return view('livewire.homework.homework-index')->with([
-            // 'homeworks' => $this->homeworks,
             'uniqs' => $this->uniqs,
-            //'state' => $this->state,
+            'user_type' => $this->user->type,
         ]);
     }
 

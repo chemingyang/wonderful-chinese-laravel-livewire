@@ -4,6 +4,7 @@ namespace App\Livewire\Course;
 
 use Livewire\Component;
 use App\Models\Course;
+use App\Models\Teacher;
 use Illuminate\Support\Facades\Storage;
 
 class CourseIndex extends Component
@@ -28,8 +29,14 @@ class CourseIndex extends Component
 
     public function render()
     {
+        $courses = \App\Models\Course::all();
+        foreach ($courses as $course) {
+            $teacher = Teacher::find($course->teacher_id);
+            $course->teacher_name = $teacher ? $teacher->name : null;
+        }
+        
         return view('livewire.course.course-index', [
-            'courses' => \App\Models\Course::all()
+            'courses' => $courses,
         ]);
     }
 }
