@@ -31,10 +31,10 @@ class CourseForm extends Form
             'teacher_id' => 'nullable|exists:users,id', // TBD make sure it's a teacher
             'image' => 'nullable|image|max:1024', // 1MB Max
         ]);
-
         if ($this->image) {
             $data['image'] = $this->image->store('courses', 'public');
         }
+        if (empty($data['teacher_id'])) $data['teacher_id'] = null;
         $data['slug'] = str()->slug($data['title']);
         Course::create($data);
         $this->reset();
@@ -49,16 +49,14 @@ class CourseForm extends Form
         ]);
         $data['slug'] = str()->slug($data['title']); //update the slug if the title has changed, but TBD how do we know it is unique?
         $data['image'] = $this->course->image; // keep existing image if no new image is uploaded
-
+        // tried handled through middleware convertemptystringtonull but no good
         if (empty($data['teacher_id'])) $data['teacher_id'] = null;
-
         if ($this->image) {
             if ($this->course->image) {
                 Storage::disk('public')->delete($this->course->image); // delete old image
             }
             $data['image'] = $this->image->store('courses', 'public');
         }
-       
         $this->course->update($data);
         $this->reset();
     }

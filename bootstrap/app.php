@@ -15,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
             //'ensureUserType' => \App\Http\Middleware\EnsureUserType::class, // Alias for route middleware
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
-            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class
+            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            //'convert_empty_string_to null' => \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
