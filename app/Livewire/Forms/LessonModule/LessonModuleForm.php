@@ -30,7 +30,7 @@ class LessonModuleForm extends Form
 
     public function store() {
         $data = $this->validate([
-            'type' => 'required|in:'.implode(',', LessonModule::VALID_LESSON_MODULE_TYPES),
+            'type' => 'required|in:'.implode(',', array_keys(LessonModule::VALID_LESSON_MODULE_TYPES)),
             'lesson_id' => 'required|exists:lessons,id',
             'question' => 'required|string|max:255',
             'answer_key' => 'nullable|string|max:255',
@@ -43,7 +43,7 @@ class LessonModuleForm extends Form
 
     public function update() {
          $data = $this->validate([
-            'type' => 'required|in:'.implode(',', LessonModule::VALID_LESSON_MODULE_TYPES),
+            'type' => 'required|in:'.implode(',', array_keys(LessonModule::VALID_LESSON_MODULE_TYPES)),
             'lesson_id' => 'required|exists:lessons,id',
             'question' => 'required|string|max:255',
             'answer_key' => 'nullable|string|max:255',

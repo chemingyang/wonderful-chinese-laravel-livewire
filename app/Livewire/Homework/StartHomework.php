@@ -4,6 +4,7 @@ namespace App\Livewire\Homework;
 
 use Livewire\Component;
 use App\Models\Lesson;
+use App\Models\LessonModule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Livewire\Forms\Homework\HomeworkForm;
@@ -39,10 +40,17 @@ class StartHomework extends Component
     public function render()
     {
         //dd($this->homework);
-        return view('livewire.homework.start-homework')->with([
+        //prepare lessonmodules for display
+        $lms = null;
+        foreach ($this->lessonmodules as $lm) {
+            $lm->prompt = LessonModule::VALID_LESSON_MODULE_TYPES[$lm->type];
+            $lms[] = $lm;
+        }
+
+        return view('livewire.homework.start-homework-flux')->with([
             'lesson' => $this->lesson,
             'student_id' => Auth::id(),
-            'lessonmodules' => $this->lessonmodules,
+            'lessonmodules' => $lms,
         ]);
     }
 

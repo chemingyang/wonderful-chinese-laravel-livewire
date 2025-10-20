@@ -2,7 +2,7 @@
     <form method="PUT" wire:submit="update" class="flex flex-col max-w-md mx-auto gap-6 bg-slate-900 shadow-2xl rounded-2xl p-4">
         <flux:select wire:model="form.type" :filter="false" label="Module Type">
             <flux:select.option value="" wire:key="">select a lesson module type</flux:select.option>
-            @foreach (\App\Models\LessonModule::VALID_LESSON_MODULE_TYPES as $type)
+            @foreach (array_keys(\App\Models\LessonModule::VALID_LESSON_MODULE_TYPES) as $type)
                 <flux:select.option value="{{ $type }}" wire:key="{{ $type }}">{{ ucfirst($type) }}</flux:select.option>
             @endforeach
         </flux:select>
