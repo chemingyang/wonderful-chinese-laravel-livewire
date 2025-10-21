@@ -2,7 +2,7 @@
 <div class="space-y-6 p-3">
     <flux:heading size="xl">{{ @$lesson->title }}</flux:heading>
 </div>
-<div id="static-modal" data-modal-backdrop="static" tabindex="-1" class="overflow-y-auto overflow-x-hidden top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-w-2xl max-h-full">
+<div id="static-modal" data-modal-backdrop="static" tabindex="-1" class="overflow-y-auto overflow-x-hidden top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-w-3xl max-h-full">
     @forelse (@$lessonmodules as $index => $lessonmodule)
     <div class="space-y-6 p-3">
         <flux:heading size="lg">{{ $lessonmodule->prompt }} </flux:text>

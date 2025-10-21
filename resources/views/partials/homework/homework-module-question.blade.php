@@ -59,15 +59,15 @@
     <div class="grid w-full gap-6 md:grid-cols-2">
         <div>
             <div id="sort-2-left" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left h-full">
-                <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-3 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1"><span>item 1</span></div>
-                <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-3 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1"><span>item 2</span></div>
-                <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-3 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1"><span>item 3</span></div>
+                <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-4 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1; opacity:75%;"><span>item 1</span></div>
+                <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-4 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1; opacity:75%;"><span>item 2</span></div>
+                <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-4 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1; opacity:75%;"><span>item 3</span></div>
             </div>
         </div>
         <div class="flex justify-right">
-            <div id="sort-2-right-1" data-val="{{ $idx }}" data-rel="" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mr-2 h-full w-full space-x-1"><span style="position:absolute; opacity: 50%;" class="px-4 py-1 filtered">box1</span></div>
-            <div id="sort-2-right-2" data-val="{{ $idx }}" data-rel="" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mr-2 h-full w-full space-x-1"><span style="position:absolute; opacity: 50%;" class="px-4 py-1 filtered">box2</span></div>
-            <div id="sort-2-right-3" data-val="{{ $idx }}" data-rel="" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mr-2 h-full w-full space-x-1"><span style="position:absolute; opacity: 50%;" class="px-4 py-1 filtered">box3</span></div>
+            <div id="sort-2-right-1" data-val="{{ $idx }}" data-rel="" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mr-2 h-full w-full space-x-1"><span style="position:absolute; opacity: 50%;" class="px-6 py-0 filtered">box1</span></div>
+            <div id="sort-2-right-2" data-val="{{ $idx }}" data-rel="" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mr-2 h-full w-full space-x-1"><span style="position:absolute; opacity: 50%;" class="px-6 py-0 filtered">box2</span></div>
+            <div id="sort-2-right-3" data-val="{{ $idx }}" data-rel="" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mr-2 h-full w-full space-x-1"><span style="position:absolute; opacity: 50%;" class="px-6 py-0 filtered">box3</span></div>
         </div>
     </div>
     <script>
