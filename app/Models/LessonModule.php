@@ -13,7 +13,7 @@ class LessonModule extends Model
         'fill-in-blank' => '請輸入空格',
         'answer-question' => '請回答問題',
         'sort' => '請重新排序',
-        'drop' => '請挑選副合的項目',
+        'drop' => '請挑選適合的項目',
         'match' => '請放至正確的格子',
     ];
 

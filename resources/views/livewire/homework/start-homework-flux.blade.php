@@ -8,10 +8,6 @@
         <flux:heading size="lg">{{ $lessonmodule->prompt }} </flux:text>
     </div>
     <div class="space-y-6 p-3">
-        <!--
-        <flux:text class="mt-2" size="md">Q{{ ($index+1) }}. {{ $lessonmodule->question }} </flux:text>
-        <flux:textarea rows="10" columns="35" label="Answer:" />
-        -->
         @include('partials.homework.homework-module-question',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'idx' => $index + 1 ])
     </div>
     <flux:separator class="my-4"/>
@@ -24,8 +20,22 @@
 <div>
 </section>
 <script>
+    /*
+    function initSort(elemIDArr) {
+        elemIDArr.forEach(function(elemID, index) {
+            let el = document.getElementById(elemID);
+            new Sortable(el, {
+                animation: 150,
+                group: {
+                    name: 'shared'
+                },
+                ghostClass: 'blue-background-class'
+            });
+        });
+    }
     document.addEventListener('DOMContentLoaded', () => {
         // console.log('DOM is loaded! livewire initialized');
         //document.getElementById('start-homework').show();
     });
+    */
 </script>
