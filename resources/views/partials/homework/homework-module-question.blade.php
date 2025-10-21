@@ -58,9 +58,7 @@
 @elseif (@$type === 'match')
     <div class="grid w-full gap-6 md:grid-cols-2">
         <div id="sort-2-left" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left">
-            <d&nbsp;
-&nbsp;
-&nbsp;iv data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>item 1</span></div>
+            <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>item 1</span></div>
             <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>item 2</span></div>
             <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>item 3</span></div>
         </div>
@@ -72,9 +70,7 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            le&nbsp;
-&nbsp;
-&nbsp;t elemIDArr = ['sort-2-left','sort-2-right-1','sort-2-right-2','sort-2-right-3'];
+            elemIDArr = ['sort-2-left','sort-2-right-1','sort-2-right-2','sort-2-right-3'];
             elemIDArr.forEach(function(elemID, index) {
                 let el = document.getElementById(elemID);
                 new Sortable(el, {
