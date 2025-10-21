@@ -34,9 +34,9 @@
             <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>item 4</span></div>
         </div>
         <div>
-            <label>Family</label>
+            <span>Family</span>
             <div id="sort-{{ $idx }}-right" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-right">
-                <label>&nbsp;</label>
+                <span>&nbsp;</span>
             </div>
         </div>
     </div>
@@ -57,27 +57,45 @@
     </script>
 @elseif (@$type === 'match')
     <div class="grid w-full gap-6 md:grid-cols-2">
-        <div id="sort-2-left" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left">
-            <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>item 1</span></div>
-            <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>item 2</span></div>
-            <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><span>item 3</span></div>
+        <div>
+            <div id="sort-2-left" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left h-full">
+                <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-3 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1"><span>item 1</span></div>
+                <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-3 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1"><span>item 2</span></div>
+                <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-3 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1"><span>item 3</span></div>
+            </div>
         </div>
         <div class="flex justify-right">
-            <div><label>Box1</label><div id="sort-2-right-1" data-val="{{ $idx }}" data-rel="" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1"><label>&nbsp;&nbsp;&nbsp;</label></div></div>
-            <div><label>Box2</label><div id="sort-2-right-2" data-val="{{ $idx }}" data-rel="" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1"><label>&nbsp;&nbsp;&nbsp;</label></div></div>
-            <div><label>Box3</label><div id="sort-2-right-3" data-val="{{ $idx }}" data-rel="" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1"><label>&nbsp;&nbsp;&nbsp;</label></div></div>
+            <div id="sort-2-right-1" data-val="{{ $idx }}" data-rel="" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mr-2 h-full w-full space-x-1"><span style="position:absolute; opacity: 50%;" class="px-4 py-1 filtered">box1</span></div>
+            <div id="sort-2-right-2" data-val="{{ $idx }}" data-rel="" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mr-2 h-full w-full space-x-1"><span style="position:absolute; opacity: 50%;" class="px-4 py-1 filtered">box2</span></div>
+            <div id="sort-2-right-3" data-val="{{ $idx }}" data-rel="" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mr-2 h-full w-full space-x-1"><span style="position:absolute; opacity: 50%;" class="px-4 py-1 filtered">box3</span></div>
         </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            elemIDArr = ['sort-2-left','sort-2-right-1','sort-2-right-2','sort-2-right-3'];
+            elemIDArr = ['sort-2-left'];
             elemIDArr.forEach(function(elemID, index) {
                 let el = document.getElementById(elemID);
                 new Sortable(el, {
                     animation: 150,
                     group: {
-                        name: 'shared'
+                        name: 'origin',
+                        sort: false,
                     },
+                    ghostClass: 'blue-background-class'
+                });
+            });
+            elemIDArr = ['sort-2-right-1','sort-2-right-2','sort-2-right-3'];
+            elemIDArr.forEach(function(elemID, index) {
+                let el = document.getElementById(elemID);
+                new Sortable(el, {
+                    animation: 150,
+                    group: {
+                        name: 'origin',
+                        put: function (to) {
+                            return to.el.children.length <= 1;
+                        },
+                    },
+                    filter: '.filtered',
                     ghostClass: 'blue-background-class'
                 });
             });
