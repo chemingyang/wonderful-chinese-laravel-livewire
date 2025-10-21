@@ -5,7 +5,7 @@
     <flux:text class="mt-2" size="md">Q{{ $idx }}. {{ $question }} </flux:text>
     <flux:textarea rows="10" columns="35" label="Answer:" />
 @elseif (@$type === 'sort')
-    <div class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full" id="sort0">
+    <div class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mt-2 min-h-18" id="sort0">
         <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-4 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1; opacity:75%;"><span>1. item 1</span></div>
         <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-4 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1; opacity:75%;"><span>2. item 2</span></div>
         <div data-val="" data-rel="" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-4 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1; opacity:75%;"><span>3. item 3</span></div>
