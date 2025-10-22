@@ -39,23 +39,6 @@
     </form>
 </div>
 <script>
-    /*
-    function initSort(elemIDArr) {
-        elemIDArr.forEach(function(elemID, index) {
-            let el = document.getElementById(elemID);
-            new Sortable(el, {
-                animation: 150,
-                group: {
-                    name: 'shared'
-                },
-                ghostClass: 'blue-background-class'
-            });
-        });
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-        // console.log('DOM is loaded! livewire initialized');
-        //document.getElementById('start-homework').show();
-    });</section>
-    */
+
 </script>
 </section>
