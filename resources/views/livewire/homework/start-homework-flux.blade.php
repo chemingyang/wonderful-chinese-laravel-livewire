@@ -24,7 +24,7 @@
         @foreach (@$lessonmodules as $key => $lessonmodule)
             <flux:input
                 class="answers"
-                id="a{{$key}}"
+                id="a{{$key+1}}"
                 {{-- wire:model="form.answers.{{$lessonmodule->id}}" --}}
                 data-question="{{ $lessonmodule->question }}"
                 data-type="{{ $lessonmodule->type }}"

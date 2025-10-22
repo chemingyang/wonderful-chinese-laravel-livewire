@@ -2,11 +2,19 @@
 @if (@$type === 'fill-in-blank')
     <div data-rel="{{$rel}}">Q{{ ($index) }}.{!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}</div>
 <script>
-    console.log('DOM is loaded!');
+    // console.log('DOM is loaded!');
     document.addEventListener('DOMContentLoaded', () => {
-        var data_rel = document.querySelector('[data-rel="{{$rel}}"]');
+        let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
+        let rel = {{$rel}};
+        let idx = {{$index}};
         data_rel.addEventListener('change', function(event) {
-            console.log("Selected value changed to: " + event.target.value);
+            // console.log("Selected value changed to: " + event.target.value);
+            let childs = this.children;
+            let vals = [];
+            for (const child of childs) {
+                vals.push(child.value);
+            }
+            document.getElementById('a'+idx).value = vals.join(',');
         });
     });
 </script>
@@ -16,9 +24,12 @@
 <script>
     console.log('DOM is loaded!');
     document.addEventListener('DOMContentLoaded', () => {
-        var data_rel = document.querySelector('[data-rel="{{$rel}}"]');
+        let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
+        let rel = {{$rel}};
+        let idx = {{$index}};
         data_rel.addEventListener('change', function(event) {
-            console.log("Selected value changed to: " + event.target.value);
+            //console.log("Selected value changed to: " + event.target.value);
+            document.getElementById('a'+idx).value = event.target.value;
         });
     });
 </script>
@@ -32,7 +43,7 @@
         <div data-val="{{($i+1)}}" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-4 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1; opacity:75%;"><span>{{$word}}</span></div>
     @endforeach
     </div>
-    <script>/*
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             elemIDArr = {!! json_encode( $sorts) !!};
             elemIDArr.forEach(function(elemID, index) {
@@ -45,7 +56,18 @@
                     ghostClass: 'blue-background-class'
                 });
             });
-        });*/
+            let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
+            let rel = {{$rel}};
+            let idx = {{$index}};
+            data_rel.addEventListener('change', function(event) {
+                let childs = this.children;
+                let vals = [];
+                for (const child of childs) {
+                    vals.push(child.getAttribute('data-val'));
+                }
+                document.getElementById('a'+idx).value = vals.join(',');
+            });
+        });
     </script>
 @elseif (@$type === 'drop')
     @php
