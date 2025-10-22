@@ -13,6 +13,15 @@
 @elseif (@$type === 'answer-question')
     <label>Q{{ ($index) }}. {{ $question }}</label>
     <div data-rel="{{$rel}}"><flux:textarea rows="10" columns="35" />
+<script>
+    console.log('DOM is loaded!');
+    document.addEventListener('DOMContentLoaded', () => {
+        var data_rel = document.querySelector('[data-rel="{{$rel}}"]');
+        data_rel.addEventListener('change', function(event) {
+            console.log("Selected value changed to: " + event.target.value);
+        });
+    });
+</script>
 @elseif (@$type === 'sort')
     @php
         $words = explode('|',$question);
