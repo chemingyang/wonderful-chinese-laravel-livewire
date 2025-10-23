@@ -73,7 +73,12 @@
         let incr = this.getAttribute('data-incr');
         let prevIndex = currentIndex;
         let moduleCount = {{$moduleCount}};
-
+        /* disallow click if the answers are empty */
+        let currentInputValue = document.getElementById('a'+currentIndex).value;
+        if (currentInputValue == null || currentInputValue == "") {
+            alert('empty value not allowed');
+            return;
+        }
         currentIndex += parseInt(incr);
         /* set the student-id, and lesson-id inputs upon the last step reached; cannot do this in page load somehow*/
         if (currentIndex == moduleCount) {
