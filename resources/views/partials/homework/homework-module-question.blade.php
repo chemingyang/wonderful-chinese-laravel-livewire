@@ -22,7 +22,7 @@
     <label>Q{{ ($index) }}. {{ $question }}</label>
     <div data-rel="{{$rel}}"><flux:textarea rows="10" columns="35" />
 <script>
-    console.log('DOM is loaded!');
+    // console.log('DOM is loaded!');
     document.addEventListener('DOMContentLoaded', () => {
         let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
         let rel = {{$rel}};
@@ -92,8 +92,7 @@
             elemIDArr.forEach(function(elemID, i) {
                 let el = document.getElementById(elemID);
                 //console.log(i+elemID);
-
-                let obj = {
+                let settings = {
                     animation: 150,
                     group: {
                         name: 'shared'
@@ -111,8 +110,7 @@
                     },
                     ghostClass: 'blue-background-class'
                 };
-
-                new Sortable(el, obj);
+                new Sortable(el, settings);
             });
             // let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
             //  console.log('data_rel'.data_rel.length);
@@ -127,6 +125,7 @@
         $boxes = explode('|',$qparts[1]);
         $sortsleft = ['sort-'.$index.'-left'];
         $sortsright = [];
+        $sortsrightgroup = 'sort-'.$index.'-rightgroup'
     @endphp
     <!--<div class="grid w-full gap-6 md:grid-cols-2"> -->
         <div>
@@ -136,7 +135,7 @@
             @endforeach
             </div>
         </div>
-        <div class="flex justify-right">
+        <div id="{{$sortsrightgroup}}" class="flex justify-right">
             @foreach($boxes as $i => $box)
             @php
                 $sortsright[] = 'sort-'.$index.'-right'.$i;
@@ -145,36 +144,49 @@
             @endforeach
         </div>
     <!-- </div> -->
-    <script>/*
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
-            elemIDArr = {!! json_encode($sortsleft) !!};
+            let elemIDArr = {!! json_encode($sortsleft) !!};
+            let sortsRightGroup = "{{$sortsrightgroup}}";
+            let settings = {
+                animation: 150,
+                group: {
+                    name: 'origin',
+                    sort: false,
+                },
+                onEnd: function (evt) {
+                    let parent = document.getElementById(sortsRightGroup);
+                    let childs = parent.getElementsByClassName('list-group');
+                    let idx = {{$index}};
+                    //console.log(childs.length);
+                    let vals = [];
+                    for (const child of childs) {
+                        let buttons = child.getElementsByClassName('list-group-item');
+                        let val = 0;
+                        if (buttons !== null && buttons.length == 1) { 
+                            val = parseInt(buttons[0].getAttribute('data-val'));
+                        }
+                        console.log(val);
+                        vals.push(val);
+                    }
+                    document.getElementById('a'+idx).value = vals.join(',');
+                },
+                ghostClass: 'blue-background-class'
+            };
             elemIDArr.forEach(function(elemID, i) {
                 let el = document.getElementById(elemID);
-                new Sortable(el, {
-                    animation: 150,
-                    group: {
-                        name: 'origin',
-                        sort: false,
-                    },
-                    ghostClass: 'blue-background-class'
-                });
+                new Sortable(el, settings);
             });
             elemIDArr = {!! json_encode($sortsright) !!};
+            settings.filter = 'filtered';
+            settings.group.put = function (to) {
+                return to.el.children.length <= 1;
+            }
             elemIDArr.forEach(function(elemID, i) {
                 let el = document.getElementById(elemID);
-                new Sortable(el, {
-                    animation: 150,
-                    group: {
-                        name: 'origin',
-                        put: function (to) {
-                            return to.el.children.length <= 1;
-                        },
-                    },
-                    filter: '.filtered',
-                    ghostClass: 'blue-background-class'
-                });
+                new Sortable(el, settings);
             });
-        }); */
+        }); 
     </script>
 @else
     <span>invalid question type</span>
