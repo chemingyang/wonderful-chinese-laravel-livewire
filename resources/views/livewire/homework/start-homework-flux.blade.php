@@ -1,6 +1,6 @@
 <section>
 <div class="space-y-6 p-3">
-    <flux:heading size="xl">{{ @$lesson->title }}</flux:heading>
+    <flux:heading size="xl">{{ @$lesson_title }}</flux:heading>
 </div>
 <div id="static-modal" data-modal-backdrop="static" tabindex="-1" class="overflow-y-auto overflow-x-hidden top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-w-3xl max-h-full">
     @php
@@ -75,16 +75,26 @@
         let moduleCount = {{$moduleCount}};
 
         currentIndex += parseInt(incr);
+        /* set the student-id, and lesson-id inputs upon the last step reached; cannot do this in page load somehow*/
+        if (currentIndex == moduleCount) {
+            let lesson_id = {{$lesson_id}};
+            let student_id = {{$student_id}};
+            let lesson_id_input = document.getElementById('lesson-id');
+            lesson_id_input.value = lesson_id;
+            lesson_id_input.dispatchEvent(new Event('input'));
+            let student_id_input = document.getElementById('student-id');
+            student_id_input.value = student_id;
+            student_id_input.dispatchEvent(new Event('input')); 
+        }
+
         if (currentIndex >= 0 && currentIndex <= moduleCount) {
             setSection(currentIndex);
         } else {
             currentIndex = prevIndex;
         }
     }
-
     document.getElementById('previous-btn').addEventListener('click', handleClick);
     document.getElementById('next-btn').addEventListener('click', handleClick);
-
     document.addEventListener('DOMContentLoaded', () => {
         currentIndex = 0;
         setSection(currentIndex);

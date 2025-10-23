@@ -48,7 +48,8 @@ class StartHomework extends Component
         }
 
         return view('livewire.homework.start-homework-flux')->with([
-            'lesson' => $this->lesson,
+            'lesson_id' => $this->lesson->id,
+            'lesson_title' => $this->lesson->title,
             'student_id' => Auth::id(),
             'lessonmodules' => $lms,
         ]);
