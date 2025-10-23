@@ -1,12 +1,13 @@
 <flux:fieldset>
 @if (@$type === 'fill-in-blank')
-    <div data-rel="{{$rel}}">Q{{ ($index) }}.{!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}</div>
+    <div id="q{{$index}}" data-rel="{{$rel}}">Q{{ ($index+1) }}.{!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}</div>
 <script>
     // console.log('DOM is loaded!');
     document.addEventListener('DOMContentLoaded', () => {
-        let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
+        // let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
         let rel = {{$rel}};
         let idx = {{$index}};
+        let data_rel = document.getElementById('q'+idx);
         data_rel.addEventListener('change', function(event) {
             // console.log("Selected value changed to: " + event.target.value);
             let childs = this.children;
@@ -14,22 +15,29 @@
             for (const child of childs) {
                 vals.push(child.value);
             }
-            document.getElementById('a'+idx).value = vals.join(',');
+            //document.getElementById('a'+idx).value = vals.join(',');
+            let inputElem = document.getElementById('a'+idx);
+            inputElem.value = vals.join(',');
+            inputElem.dispatchEvent(new Event('input'));
         });
     });
 </script>
 @elseif (@$type === 'answer-question')
-    <label>Q{{ ($index) }}. {{ $question }}</label>
-    <div data-rel="{{$rel}}"><flux:textarea rows="10" columns="35" />
+    <span>Q{{ ($index+1) }}. {{ $question }}</span>
+    <div id="q{{$index}}" data-rel="{{$rel}}"><flux:textarea rows="10" columns="35" />
 <script>
     // console.log('DOM is loaded!');
     document.addEventListener('DOMContentLoaded', () => {
-        let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
+        // let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
         let rel = {{$rel}};
         let idx = {{$index}};
+        let data_rel = document.getElementById('q'+idx);
         data_rel.addEventListener('change', function(event) {
             //console.log("Selected value changed to: " + event.target.value);
-            document.getElementById('a'+idx).value = event.target.value;
+            //document.getElementById('a'+idx).value =  event.target.value;
+            let inputElem = document.getElementById('a'+idx);
+            inputElem.value = event.target.value;
+            inputElem.dispatchEvent(new Event('input'));
         });
     });
 </script>
@@ -38,6 +46,7 @@
         $words = explode('|',$question);
         $sorts = ['sort-'.$index];
     @endphp
+    <span>Q{{ ($index+1) }}.</span>
     <div id="{{$sorts[0]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mt-2 min-h-18">
     @foreach ($words as $i => $word)
         <div data-val="{{($i+1)}}" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-4 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1; opacity:75%;"><span>{{($i+1)}}. {{$word}}</span></div>
@@ -61,7 +70,9 @@
                         for (const child of childs) {
                             vals.push(child.getAttribute('data-val'));
                         }
-                        document.getElementById('a'+idx).value = vals.join(',');
+                        let inputElem = document.getElementById('a'+idx);
+                        inputElem.value = vals.join(',');
+                        inputElem.dispatchEvent(new Event('input'));
                     },
                     ghostClass: 'blue-background-class'
                 });
@@ -75,6 +86,7 @@
         $words = explode('|',$qparts[1]);
         $sorts = ['sort-'.$index.'-left','sort-'.$index.'-right'];
     @endphp
+        <span>Q{{ ($index+1) }}.</span>
     <!--<div class="grid w-full gap-6 md:grid-cols-2"> -->
         <div id="{{$sorts[0]}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-18 mt-2" >
         @foreach ($words as $i => $word)
@@ -106,7 +118,9 @@
                         for (const child of childs) {
                             vals.push(child.getAttribute('data-val'));
                         }
-                        document.getElementById('a'+idx).value = vals.join(',');
+                        let inputElem = document.getElementById('a'+idx);
+                        inputElem.value = vals.join(',');
+                        inputElem.dispatchEvent(new Event('input'));
                     },
                     ghostClass: 'blue-background-class'
                 };
@@ -131,6 +145,7 @@
         $sortsright = [];
         $sortsrightgroup = 'sort-'.$index.'-rightgroup'
     @endphp
+        <span>Q{{ ($index+1) }}.</span>
     <!--<div class="grid w-full gap-6 md:grid-cols-2"> -->
         <div>
             <div id="{{$sortsleft[0]}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-18 mt-2">
@@ -173,7 +188,9 @@
                         console.log(val);
                         vals.push(val);
                     }
-                    document.getElementById('a'+idx).value = vals.join(',');
+                    let inputElem = document.getElementById('a'+idx);
+                    inputElem.value = vals.join(',');
+                    inputElem.dispatchEvent(new Event('input'));
                 },
                 ghostClass: 'blue-background-class'
             };

@@ -54,8 +54,8 @@ class HomeworkIndex extends Component
             $this->uniqs
                 ->where('c.teacher_id', '=', $this->user_id)
                 ->leftJoin('homework as h','l.id', '=', 'h.lesson_id')
-                ->groupBy('h.lesson_id','e.student_id');
-            $cols[] = 'e.student_id';
+                ->leftJoin('users as u','e.student_id', '=', 'u.id');
+            $cols[] = 'u.name as student_name';
         }
         $cols[] = 'h.answers';
         $cols[] = 'h.gradings';

@@ -8,7 +8,7 @@
         <flux:heading size="lg">{{ $lessonmodule->prompt }} </flux:text>
     </div>
     <div class="space-y-6 p-3">
-        @include('partials.homework.homework-module-question',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'index' => $index + 1, 'rel' => $lessonmodule->id])
+        @include('partials.homework.homework-module-question',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'index' => $index, 'rel' => $lessonmodule->id])
     </div>
     <flux:separator class="my-4"/>
     @empty
@@ -24,18 +24,21 @@
         @foreach (@$lessonmodules as $key => $lessonmodule)
             <flux:input
                 class="answers"
-                id="a{{$key+1}}"
-                {{-- wire:model="form.answers.{{$lessonmodule->id}}" --}}
+                id="a{{$key}}"
+                wire:model="form.answers.{{$lessonmodule->id}}"
                 data-question="{{ $lessonmodule->question }}"
                 data-type="{{ $lessonmodule->type }}"
                 data-id="{{$lessonmodule->id}}"
                 type="text"
                 placeholder="your answer"
             />
-        @endforeach
+        @endforeach let data_rel = document.getElementById('a'.idx);
         <flux:input id="student-id" type="text" wire:model="form.student_id" placeholder="student id" />
         <flux:input id="lesson-id" type="text" wire:model="form.lesson_id" placeholder="lesson id"/>
         <button id="submit-button" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-8 py-4 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit Homework</button>
     </form>
+
+
+
 </div>
 </section>
