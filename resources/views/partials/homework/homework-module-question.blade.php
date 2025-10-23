@@ -46,28 +46,27 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             elemIDArr = {!! json_encode( $sorts) !!};
-            elemIDArr.forEach(function(elemID, index) {
+            elemIDArr.forEach(function(elemID, i) {
                 let el = document.getElementById(elemID);
                 new Sortable(el, {
                     animation: 150,
                     group: {
                         name: 'shared'
                     },
+                    onEnd: function (evt) {
+                        let parent = document.getElementById(elemIDArr[0]);
+                        let childs = parent.getElementsByTagName('div');
+                        let idx = {{$index}};
+                        let vals = [];
+                        for (const child of childs) {
+                            vals.push(child.getAttribute('data-val'));
+                        }
+                        document.getElementById('a'+idx).value = vals.join(',');
+                    },
                     ghostClass: 'blue-background-class'
                 });
             });
-            let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
-            let rel = {{$rel}};
-            let idx = {{$index}};
-            data_rel.addEventListener('change', function(event) {
-                let childs = this.children;
-                let vals = [];
-                for (const child of childs) {
-                    vals.push(child.getAttribute('data-val'));
-                }
-                document.getElementById('a'+idx).value = vals.join(',');
-            });
-        });
+        }); 
     </script>
 @elseif (@$type === 'drop')
     @php
@@ -86,20 +85,40 @@
             <span style="position:absolute; opacity: 50%;" class="px-6 py-0 filtered">{{$prompt}}</span>
         </div>
     <!-- </div> -->
-    <script> /*
+    <script> 
         document.addEventListener('DOMContentLoaded', () => {
-            elemIDArr = {!! json_encode($sorts) !!};
-            elemIDArr.forEach(function(elemID, index) {
+            let elemIDArr = {!! json_encode($sorts) !!};
+            
+            elemIDArr.forEach(function(elemID, i) {
                 let el = document.getElementById(elemID);
-                new Sortable(el, {
+                //console.log(i+elemID);
+
+                let obj = {
                     animation: 150,
                     group: {
                         name: 'shared'
                     },
+                    onEnd: function (evt) {
+                        let parent = document.getElementById(elemIDArr[1]);
+                        let childs = parent.getElementsByTagName('div');
+                        let idx = {{$index}};
+                        // console.log(childs.length);
+                        let vals = [];
+                        for (const child of childs) {
+                            vals.push(child.getAttribute('data-val'));
+                        }
+                        document.getElementById('a'+idx).value = vals.join(',');
+                    },
                     ghostClass: 'blue-background-class'
-                });
+                };
+
+                new Sortable(el, obj);
             });
-        });*/
+            // let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
+            //  console.log('data_rel'.data_rel.length);
+            //let tmp = "{{$sorts[1]}}";
+            //console.log(tmp);
+        });
     </script>
 @elseif (@$type === 'match')
     @php
@@ -129,7 +148,7 @@
     <script>/*
         document.addEventListener('DOMContentLoaded', () => {
             elemIDArr = {!! json_encode($sortsleft) !!};
-            elemIDArr.forEach(function(elemID, index) {
+            elemIDArr.forEach(function(elemID, i) {
                 let el = document.getElementById(elemID);
                 new Sortable(el, {
                     animation: 150,
@@ -141,7 +160,7 @@
                 });
             });
             elemIDArr = {!! json_encode($sortsright) !!};
-            elemIDArr.forEach(function(elemID, index) {
+            elemIDArr.forEach(function(elemID, i) {
                 let el = document.getElementById(elemID);
                 new Sortable(el, {
                     animation: 150,
