@@ -110,6 +110,10 @@
                     },
                     ghostClass: 'blue-background-class'
                 };
+                //ensure the dropped items are always sorted
+                if (i == 1) {
+                    settings.sort = false;
+                }
                 new Sortable(el, settings);
             });
             // let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
