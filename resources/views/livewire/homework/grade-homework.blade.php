@@ -26,7 +26,7 @@
         <flux:input id="lesson-id" type="text" wire:model="form.lesson_id" />
         <flux:input id="answers" type="text" wire:model="form.answers" />
         <flux:input id="gradings" type="text" wire:model="form.gradings" />
-        <button id="submit-btn" type="submit" class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-8 py-4 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit Homework</button>
+        <button id="submit-btn" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-8 py-4 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit Homework</button>
     </form>
 </div>
 </section>
