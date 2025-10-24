@@ -124,10 +124,10 @@
                     },
                     ghostClass: 'blue-background-class'
                 };
-                //ensure the dropped items are always sorted
-                if (i == 1) {
+                //this doesn't work :( ensure the dropped items are always sorted
+                /* if (i == 1) {
                     settings.sort = false;
-                }
+                }*/
                 new Sortable(el, settings);
             });
             // let data_rel = document.querySelector('[data-rel="{{$rel}}"]');
@@ -135,7 +135,7 @@
             //let tmp = "{{$sorts[1]}}";
             //console.log(tmp);
         });
-    </script>
+    </script>'partials.homework.homework-grade-module'
 @elseif (@$type === 'match')
     @php
         $qparts = explode(':',$question);

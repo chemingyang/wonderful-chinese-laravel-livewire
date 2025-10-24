@@ -38,8 +38,9 @@ class HomeworkIndex extends Component
         $cols = ["c.title as course_title","l.title as lesson_title","l.id as lesson_id"];
         $this->uniqs = 
         DB::table('lessons as l')
-            ->Join('courses as c','l.course_id','=','c.id')
-            ->Join('enrollments as e','c.id', '=','e.course_id')
+            ->Join('courses as c','c.id','=','l.course_id')
+            ->Join('enrollments as e','e.course_id', '=','c.id')
+            ->Join('users as u','e.student_id', '=', 'u.id')
             ->where('l.scheduled_at','<',now())
             ->where('l.completed_at','>',now());
 
@@ -48,15 +49,19 @@ class HomeworkIndex extends Component
                 ->where('e.student_id', '=', $this->user_id)
                 ->leftJoin('homework as h', function ($join) {
                     $join->on('l.id', '=', 'h.lesson_id')
-                    ->where('h.student_id', '=', $this->user_id);
+                         ->where('h.student_id', '=', $this->user_id);
                 });
         } else if ($this->user_type === "teacher") {
             $this->uniqs
                 ->where('c.teacher_id', '=', $this->user_id)
-                ->leftJoin('homework as h','l.id', '=', 'h.lesson_id')
-                ->leftJoin('users as u','e.student_id', '=', 'u.id');
+                ->leftJoin('homework as h', function ($join) {
+                    $join->on('l.id', '=', 'h.lesson_id')
+                         ->on('h.student_id', '=', 'e.student_id');
+                });
+            //$cols[] = 'h.student_id';
             $cols[] = 'u.name as student_name';
         }
+        $cols[] = 'h.id as homework_id';
         $cols[] = 'h.answers';
         $cols[] = 'h.gradings';
         $cols[] = 'h.started_at';
@@ -78,7 +83,7 @@ class HomeworkIndex extends Component
 
     public function render()
     { 
-        // dd($this->uniqs);
+        //dd($this->uniqs);
         return view('livewire.homework.homework-index')->with([
             'uniqs' => $this->uniqs,
             'user_type' => $this->user->type,

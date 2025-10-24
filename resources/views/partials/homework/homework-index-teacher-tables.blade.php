@@ -29,9 +29,9 @@
                 </td>
                 <td class="px-5 py-2 space-x-2">
                     @if (@empty($uniq->answers))
-                        <a href="{{ route('homeworks.start-homework', $uniq->lesson_id) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Start Homework</a>
-                    @elseif (@empty($uniq->gradings))
                         <span>Homework Submitted</span>
+                    @elseif (@empty($uniq->gradings))
+                        <a href="{{ route('homeworks.grade-homework', $uniq->homework_id) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Grade Homework</a>
                     @elseif (@empty($uniq->reviewd_at))
                         <span>Homework Graded</span>
                     @else
