@@ -2,7 +2,7 @@
 <div class="space-y-6 p-3">
     <flux:heading size="xl">{{ @$lesson_title }}</flux:heading>
 </div>
-<div class="overflow-y-auto overflow-x-hidden top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-w-3xl max-h-full">
+<div id="main-content" class="overflow-y-auto overflow-x-hidden top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-w-3xl max-h-full">
     @php
         $moduleCount = count($lessonmodules);
     @endphp
@@ -31,7 +31,7 @@
     <form method="POST" wire:submit="store">
         @foreach (@$lessonmodules as $key => $lessonmodule)
             <flux:input
-                class="answers hidden"
+                class="answers"
                 id="a{{$key}}"
                 wire:model="form.answers.{{$lessonmodule->id}}"
                 data-question="{{ $lessonmodule->question }}"
@@ -50,7 +50,7 @@
     var currentIndex = null;
 
     function setSection(currentidx) {
-        for (const section of document.getElementById('static-modal').getElementsByClassName('section')) {
+        for (const section of document.getElementById('main-content').getElementsByClassName('section')) {
             section.classList.add('hidden');
         }
         document.getElementById('prompt-'+currentidx).classList.remove('hidden');

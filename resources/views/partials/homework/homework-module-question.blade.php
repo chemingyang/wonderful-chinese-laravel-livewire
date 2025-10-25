@@ -135,7 +135,7 @@
             //let tmp = "{{$sorts[1]}}";
             //console.log(tmp);
         });
-    </script>'partials.homework.homework-grade-module'
+    </script>
 @elseif (@$type === 'match')
     @php
         $qparts = explode(':',$question);

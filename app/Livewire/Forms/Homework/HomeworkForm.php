@@ -24,10 +24,10 @@ class HomeworkForm extends Form
         $data = $this->validate([
             'lesson_id' => 'required|exists:lessons,id',
             'student_id' => 'required|exists:users,id', // could this be students.id?
-            'answers' => 'required|array',
-            'answers.*' => 'required|string|max:225',
+            'answers' => 'nullable|array',
+            'answers.*' => 'nullable|string|max:225',
             'gradings' => 'nullable|array',
-            'gradings.*' => 'required|string|max:225',
+            'gradings.*' => 'nullable|string|max:225',
             'started_at' => 'nullable|date',
             'submitted_at' => 'nullable|date',
             'graded_at' => 'nullable|date',
@@ -43,10 +43,10 @@ class HomeworkForm extends Form
         $this->homework = $homework;
         $this->lesson_id = $homework->lesson_id;
         $this->student_id = $homework->student_id;
-        $this->answers = $homework->answers;
-        $this->gradings = $homework->gradings;
-        //$this->answers = !empty($homework->answers) ? json_decode($homework->answers) : [];
-        //$this->gradings = !empty($homework->gradings) ? json_decode($homework->gradings) : [];
+        $this->answers = $homework->answers ?? null;
+        $this->gradings = $homework->gradings ?? null;
+        //$this->answers = !empty($homework->answers) ? json_encode($homework->answers) : [];
+        //$this->gradings = !empty($homework->gradings) ? json_encode($homework->gradings) : [];
         $this->started_at = $homework->started_at;
         $this->submitted_at = $homework->submitted_at;
         $this->graded_at = $homework->graded_at;
@@ -57,10 +57,10 @@ class HomeworkForm extends Form
         $data = $this->validate([
             'lesson_id' => 'required|exists:lessons,id',
             'student_id' => 'required|exists:users,id', // could this be students.id?
-            'answers' => 'required|array',
-            'answers.*' => 'required|string|max:225',
+            'answers' => 'nullable|array',
+            'answers.*' => 'nullable|string|max:225',
             'gradings' => 'nullable|array',
-            'gradings.*' => 'required|string|max:225',
+            'gradings.*' => 'nullable|string|max:225',
             'started_at' => 'nullable|date',
             'submitted_at' => 'nullable|date',
             'graded_at' => 'nullable|date',
@@ -68,6 +68,8 @@ class HomeworkForm extends Form
         ]);
         $data['answers'] = !empty($data['answers']) ? json_encode($data['answers']) : null;
         $data['gradings'] = !empty($data['gradings']) ? json_encode($data['gradings']) : null;
+        //dd($data);
+        
         $this->homework->update($data);
         $this->reset();
     }

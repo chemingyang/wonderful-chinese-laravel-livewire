@@ -27,8 +27,8 @@ class GradeHomework extends Component
 
     public function update() {
         $this->form->update();
-        session()->flash('message', 'Course updated successfully.');
-        return redirect()->route('courses.index');
+        session()->flash('message', 'Homework graded updated successfully.');
+        return redirect()->route('homeworks.homework-index');
     }
 
     public function render()

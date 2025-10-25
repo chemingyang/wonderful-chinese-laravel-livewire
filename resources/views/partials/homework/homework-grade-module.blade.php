@@ -9,7 +9,7 @@
     <flux:label>Q{{$index}} {{$question}}</flux:label>
     <flux:textarea rows="3" columns="10" disabled>{{$answer}}</flux:textarea>
     <flux:label>Teacher's comment</flux:label>
-    @include('partials.homework.homework-teacher-comment', ['index' => $index])
+    @include('partials.homework.homework-teacher-comment', ['index' => $index, 'rel' => $rel])
 
 @elseif (@$type === 'sort')
     @php

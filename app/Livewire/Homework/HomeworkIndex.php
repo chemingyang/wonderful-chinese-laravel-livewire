@@ -71,6 +71,7 @@ class HomeworkIndex extends Component
         $this->uniqs = $this->uniqs->select($cols)->get();
         
         // turn json_encoded columns into array
+        /*
         foreach ($this->uniqs as $index => $uniq) {
             $answers = json_decode($uniq->answers);
             $gradings = json_decode($uniq->gradings);
@@ -78,6 +79,7 @@ class HomeworkIndex extends Component
             $uniq->gradings = $gradings;
             $this->uniqs[$index] = $uniq;
         }
+        */
         // $this->status = $this->getState($this->uniqs);
     }
 
