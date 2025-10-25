@@ -31,7 +31,7 @@
     <form method="POST" wire:submit="store">
         @foreach (@$lessonmodules as $key => $lessonmodule)
             <flux:input
-                class="answers"
+                class="answers hidden"
                 id="a{{$key}}"
                 wire:model="form.answers.{{$lessonmodule->id}}"
                 data-question="{{ $lessonmodule->question }}"

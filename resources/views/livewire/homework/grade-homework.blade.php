@@ -25,22 +25,22 @@
     <form method="PUT" wire:submit="update">
         @foreach (@$lessonmodules as $key => $lessonmodule)
             <flux:input
-                class="answers"
+                class="hidden"
                 id="a{{$lessonmodule->id}}"
                 wire:model="form.answers.{{$lessonmodule->id}}"
                 type="text"
                 placeholder="student's answer"
             />
             <flux:input
-                class="gradings"
+                class="hidden"
                 id="g{{$lessonmodule->id}}"
                 wire:model="form.gradings.{{$lessonmodule->id}}"
                 type="text"
                 placeholder="teacher's comment"
             />
         @endforeach
-        <flux:input id="student-id" type="text" wire:model="form.student_id" />
-        <flux:input id="lesson-id" type="text" wire:model="form.lesson_id" />
+        <flux:input id="student-id" type="text" wire:model="form.student_id" class="hidden" />
+        <flux:input id="lesson-id" type="text" wire:model="form.lesson_id" class="hidden" />
         <button id="submit-btn" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-8 py-4 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Grade Homework</button>
     </form>
 </div>
