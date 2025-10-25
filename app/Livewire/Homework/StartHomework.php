@@ -32,6 +32,8 @@ class StartHomework extends Component
     }
 
     public function store() { 
+        $this->form->answers = !empty($this->form->answers) ? json_encode($this->form->answers) : null;
+        $this->form->gradings = !empty($this->form->gradings) ? json_encode($this->form->gradings) : null;
         $this->form->store();
         session()->flash('message', 'Homework submitted successfully.');
         return redirect()->route('homeworks.homework-index');
