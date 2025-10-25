@@ -21,6 +21,9 @@
     <div id="qa-{{$index+1}}" class="space-y-6 p-3 section hidden">
         <flux:heading size="sm">Would you like to hand in your homework now?</flux:heading>
     </div>
+    <div id="celebration" class="space-y-6 p-3 section hidden">
+        <img src="https://media.tenor.com/ZoZqWaSnN5UAAAAm/diwali-sparkles-stars.webp" width="262.5" height="262.5" alt="a bunch of colorful stars and sprinkles are flying in the air" loading="lazy">
+    </div>
     <flux:separator class="my-4"/>
     <div class="space-y-6 p-3">
         <flux:button id="previous-btn" variant="filled" class="w-2xs" data-incr="-1">Previous</flux:button>
@@ -79,7 +82,8 @@
             if (currentInputValue == null || currentInputValue == "") {
                 alert('empty value not allowed');
                 return;
-            }
+            } 
+            /* else if (currentInputValue == answerKey) then show animation */
         }
         currentIndex += parseInt(incr);
         /* set the student-id, and lesson-id inputs upon the last step reached; cannot do this in page load somehow*/
