@@ -11,7 +11,7 @@
         <flux:heading size="lg">{{ $lessonmodule->prompt }} </flux:heading>
     </div>
     <div id="qa-{{$index}}" class="space-y-6 p-3 section hidden">
-        @include('partials.homework.homework-module-question',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'index' => $index, 'rel' => $lessonmodule->id])
+        @include('partials.homework.homework-start-module',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'index' => $index, 'rel' => $lessonmodule->id])
     </div>
     @empty
     @endforelse
@@ -21,23 +21,31 @@
     <div id="qa-{{$index+1}}" class="space-y-6 p-3 section hidden">
         <flux:heading size="sm">Would you like to hand in your homework now?</flux:heading>
     </div>
-    <div id="celebration" class="space-y-6 p-3 section hidden">
-        <img src="https://media.tenor.com/ZoZqWaSnN5UAAAAm/diwali-sparkles-stars.webp" width="262.5" height="262.5" alt="a bunch of colorful stars and sprinkles are flying in the air" loading="lazy">
-    </div>
     <flux:separator class="my-4"/>
     <div class="space-y-6 p-3">
         <flux:button id="previous-btn" variant="filled" class="w-2xs" data-incr="-1">Previous</flux:button>
         <flux:button id="next-btn" variant="primary" class="w-2xs float-end" data-incr="1">Next</flux:button>
     </div>
 </div>
+<flux:modal name="celebration" class="md:w-80" closable="false">
+    <div class="space-y-6 p-3 section justify center">
+        <img src="https://media.tenor.com/ZoZqWaSnN5UAAAAm/diwali-sparkles-stars.webp" width="200" height="200" alt="a bunch of colorful stars and sprinkles are flying in the air" style="margin: 0 auto; padding-top:15px;" loading="lazy">
+    </div>
+</flux:modal>
+<flux:modal name="try-again" class="md:w-80" closable="false">
+    <div class="space-y-6 p-3 section justify center">
+        <img src="https://media.baamboozle.com/uploads/images/599509/1660662180_69405_gif-url.gif" width="200" height="198.5" alt="a bunch of colorful stars and sprinkles are flying in the air" style="margin: 0 auto; padding-top:15px; padding-right:10px;" loading="lazy">
+    </div>
+</flux:modal>
 <div>
     <form method="POST" wire:submit="store">
         @foreach (@$lessonmodules as $key => $lessonmodule)
             <flux:input
-                class="answers hidden"
+                class="answers"
                 id="a{{$key}}"
                 wire:model="form.answers.{{$lessonmodule->id}}"
                 data-question="{{ $lessonmodule->question }}"
+                data-answer-key="{{ $lessonmodule->answer_key }}"
                 data-type="{{ $lessonmodule->type }}"
                 data-id="{{$lessonmodule->id}}"
                 type="text"
@@ -79,11 +87,22 @@
         /* disallow 'next' click if the answers are empty */
         if (this.id == 'next-btn') {
             let currentInputValue = document.getElementById('a'+currentIndex).value;
-            if (currentInputValue == null || currentInputValue == "") {
-                alert('empty value not allowed');
+            let currentAnswerKey = document.getElementById('a'+currentIndex).getAttribute('data-answer-key');
+            //console.log([currentInputValue+' - '+currentAnswerKey]);
+
+            if (currentInputValue != null && currentInputValue != "" && 
+                (currentAnswerKey == null || currentAnswerKey == "" || currentAnswerKey == currentInputValue)) {
+                Flux.modal('celebration').show();
+                setTimeout(() => {
+                    Flux.modal('celebration').close();
+                }, "1000");
+            } else {
+               Flux.modal('try-again').show();
+                setTimeout(() => {
+                    Flux.modal('try-again').close();
+                }, "1000");
                 return;
-            } 
-            /* else if (currentInputValue == answerKey) then show animation */
+            }
         }
         currentIndex += parseInt(incr);
         /* set the student-id, and lesson-id inputs upon the last step reached; cannot do this in page load somehow*/

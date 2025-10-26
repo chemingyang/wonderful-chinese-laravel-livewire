@@ -16,16 +16,18 @@ class LessonForm extends Form
     public $scheduled_at = null;
     public $completed_at = null;
     public $slug = '';
+    private $validation_rule = [
+        'title' => 'required|string|max:255',
+        'description' => 'required|regex:/^[\w\-\s]+$/|unique:lessons,description',
+        'course_id' => 'required|exists:courses,id',
+        'scheduled_at' => 'nullable|date',
+        'completed_at' => 'nullable|date',
+    ];
 
     public function store() {
-        $data = $this->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'course_id' => 'required|exists:courses,id',
-            'scheduled_at' => 'nullable|date',
-            'completed_at' => 'nullable|date',
-        ]);
+        $data = $this->validate($this->validation_rule);
         $data['slug'] = str()->slug($data['title']);
+        if (empty($data['slug'])) $data['slug'] = str()->slug($data['description']);
         Lesson::create($data);
         $this->reset();
     }
@@ -41,14 +43,13 @@ class LessonForm extends Form
     }
 
     public function update() {
-        $data = $this->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'course_id' => 'required|exists:courses,id',
-            'scheduled_at' => 'nullable|date',
-            'completed_at' => 'nullable|date',
-        ]);
-        $data['slug'] = str()->slug($data['title']); //update the slug if the title has changed, but TBD how do we know it is unique?
+        $update_rule = $this->validation_rule;
+        $update_rule['description'] .= ','.$this->lesson->id;
+        $data = $this->validate($update_rule);
+
+        // to allow all chinesee title; description needs to contain alphanumeric TBD
+        $data['slug'] = str()->slug($data['title']);
+        if (empty($data['slug'])) $data['slug'] = str()->slug($data['description']);
         $this->lesson->update($data);
         $this->reset();
     }
