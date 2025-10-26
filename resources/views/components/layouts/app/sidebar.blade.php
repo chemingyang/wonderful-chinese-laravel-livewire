@@ -21,6 +21,7 @@
                     <flux:navlist.item icon="users" :href="route('users.index')" :current="request()->routeIs('user.*')" wire:navigate>{{ __('Users') }}</flux:navlist.item>
                     <flux:navlist.item icon="folder-plus" :href="route('enrollments.index')" :current="request()->routeIs('enrollments.*')" wire:navigate>{{ __('Enrollments') }}</flux:navlist.item>
                     <flux:navlist.item icon="chat-bubble-bottom-center-text" :href="route('lessonmodules.index')" :current="request()->routeIs('lessonmodules.*')" wire:navigate>{{ __('Lesson Modules') }}</flux:navlist.item>
+                    <flux:navlist.item icon="language" :href="route('characters.index')" :current="request()->routeIs('characters.*')" wire:navigate>{{ __('Characters') }}</flux:navlist.item>
                     @endrole
                     @hasanyrole('student|teacher')
                     <flux:navlist.item icon="pencil-square" :href="route('homeworks.homework-index')" :current="request()->routeIs('homeworks.*')" wire:navigate>{{ __('Homework') }}</flux:navlist.item>
