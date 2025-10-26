@@ -54,6 +54,9 @@ Route::middleware('auth')->group(function () {
         Route::get('enrollments/create', \App\Livewire\Enrollment\EnrollmentCreate::class)->name('enrollments.create');
         Route::get('enrollments', \App\Livewire\Enrollment\EnrollmentIndex::class)->name('enrollments.index');
         Route::get('enrollments/{enrollment}/edit', \App\Livewire\Enrollment\EnrollmentEdit::class)->name('enrollments.edit');
+        Route::get('lessonmodules/create', \App\Livewire\LessonModule\LessonModuleCreate::class)->name('lessonmodules.create');
+        Route::get('lessonmodules', \App\Livewire\LessonModule\LessonModuleIndex::class)->name('lessonmodules.index');
+        Route::get('lessonmodules/{lessonmodule}/edit', \App\Livewire\LessonModule\LessonModuleEdit::class)->name('lessonmodules.edit');
         Route::get('characters/create', \App\Livewire\Characters\CharacterCreate::class)->name('characters.create');
         Route::get('characters/{character}/edit', \App\Livewire\Characters\CharacterEdit::class)->name('characters.edit');
     });
