@@ -43,8 +43,8 @@
 </section>
 <script>
     let counter = 1;
-    const studentID = {{ @$student_id }};
-    const lessonID = {{ @$lesson->id }};
+    const studentID = "{{ @$student_id }}";
+    const lessonID = "{{ @$lesson->id }}";
     const questionText = document.getElementById('question-text');
     const answerDiv = document.getElementById('answer-div');
     const nextButton = document.getElementById('next-button');

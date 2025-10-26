@@ -46,7 +46,7 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            let elemIDArr = {!! json_encode($sorts) !!};
+            let elemIDArr = @json($sorts);
             elemIDArr.forEach(function(elemID, i) {
                 let el = document.getElementById(elemID);
                 new Sortable(el, {
@@ -80,18 +80,18 @@
     @endphp
         <span>Q{{ ($index+1) }}.</span>
     <!--<div class="grid w-full gap-6 md:grid-cols-2"> -->
-        <div id="{{$dropsorts[0]}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-18 mt-2" >
+        <div id="{{$drops[0]}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-18 mt-2" >
         @foreach ($dropwords as $i => $word)
             <div data-val="{{($i+1)}}" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-4 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1; opacity:75%;"><span class="p-1">{{($i+1)}}. {{$word}}</span></div>
         @endforeach
         </div>
-        <div id="{{$sorts[1]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-center min-h-18 mt-2">
-            <span style="position:absolute; opacity: 50%;" class="px-6 py-0 filtered">{{$prompt}}</span>
+        <div id="{{$drops[1]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-center min-h-18 mt-2">
+            <span style="position:absolute; opacity: 50%;" class="px-6 py-0 filtered">{{$dropprompt}}</span>
         </div>
     <!-- </div> -->
     <script> 
         document.addEventListener('DOMContentLoaded', () => {
-            let elemIDArr = {!! json_encode($drops) !!};
+            let elemIDArr = @json($drops);
             
             elemIDArr.forEach(function(elemID, i) {
                 let el = document.getElementById(elemID);
@@ -151,7 +151,7 @@
     <!-- </div> -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            let elemIDArr = {!! json_encode($sortsleft) !!};
+            let elemIDArr = @json($sortsleft);
             let sortsRightGroup = "{{$sortsrightgroup}}";
             let settings = {
                 animation: 150,
@@ -182,7 +182,7 @@
                 let el = document.getElementById(elemID);
                 new Sortable(el, settings);
             });
-            elemIDArr = {!! json_encode($sortsright) !!};
+            elemIDArr = @json($sortsright);
             settings.filter = 'filtered';
             settings.group.put = function (to) {
                 return to.el.children.length <= 1;

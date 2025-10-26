@@ -5,6 +5,7 @@
 <div id="main-content" class="overflow-y-auto overflow-x-hidden top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-w-3xl max-h-full">
     @php
         $moduleCount = count($lessonmodules);
+        $index = 0;
     @endphp
     @forelse (@$lessonmodules as $index => $lessonmodule)
     <div id="prompt-{{$index}}" class="space-y-6 p-3 section hidden">
@@ -66,7 +67,7 @@
         }
         document.getElementById('prompt-'+currentidx).classList.remove('hidden');
         document.getElementById('qa-'+currentidx).classList.remove('hidden');
-        let moduleCount = {{$moduleCount}};
+        let moduleCount = "{{$moduleCount}}";
         /* add some visual cues to the previous and next button when reaching edges */
         if (currentIndex == moduleCount) {
             document.getElementById('submit-btn').classList.remove('hidden');
@@ -83,7 +84,7 @@
     function handleClick(evt) {
         let incr = this.getAttribute('data-incr');
         let prevIndex = currentIndex;
-        let moduleCount = {{$moduleCount}};
+        let moduleCount = "{{$moduleCount}}";
         /* disallow 'next' click if the answers are empty */
         if (this.id == 'next-btn') {
             let currentInputValue = document.getElementById('a'+currentIndex).value;
@@ -107,8 +108,8 @@
         currentIndex += parseInt(incr);
         /* set the student-id, and lesson-id inputs upon the last step reached; cannot do this in page load somehow*/
         if (currentIndex == moduleCount) {
-            let lesson_id = {{$lesson_id}};
-            let student_id = {{$student_id}};
+            let lesson_id = "{{$lesson_id}}";
+            let student_id = "{{$student_id}}";
             let lesson_id_input = document.getElementById('lesson-id');
             lesson_id_input.value = lesson_id;
             lesson_id_input.dispatchEvent(new Event('input'));
