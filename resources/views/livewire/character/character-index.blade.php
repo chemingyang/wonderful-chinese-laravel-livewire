@@ -46,7 +46,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse (@$characters as $character)
+                @forelse (@$characters as $i => $character)
                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                         <th scope="row" class="px-5 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $character->id }}
@@ -68,7 +68,13 @@
                         </td>
                         <td class="px-5 py-2">
                             @if ($character->audio)
-                            <img src="{{ asset('storage/' . $character->audio) }}" alt="{{ $character->title }} audio" class="h-8 w-8 rounded-md object-fit"> 
+                            <audio id="player{{$i}}" src="{{ asset('storage/' . $character->audio) }}"></audio>
+                            <flux:button size="xs" onclick="document.getElementById('player{{$i}}').play()" class="p-0 border-0 bg-transparent">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+                            </svg>
+                            </flux:button>
                             @endif
                         </td>
                         @role('admin')
