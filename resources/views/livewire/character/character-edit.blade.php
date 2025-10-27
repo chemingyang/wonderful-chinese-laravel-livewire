@@ -22,13 +22,6 @@
             placeholder="pinyin"  
         />
         <flux:input
-            wire:model="form.zhuyin"
-            label="Chinese"
-            type="text"
-            autofocus
-            placeholder="zhuyin"  
-        />
-        <flux:input
             wire:model="form.english_translation"
             label="Translation"
             type="text"

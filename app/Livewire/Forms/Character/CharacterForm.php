@@ -42,9 +42,6 @@ class CharacterForm extends Form
             $data['audio'] = $this->audio->store('characters', 'public');
         }
         // see function update
-        $data['slug'] = str()->slug($data['title']);
-        if (empty($data['slug'])) $data['slug'] = str()->slug($data['description']);
-
         Character::create($data);
         $this->reset();
     }
