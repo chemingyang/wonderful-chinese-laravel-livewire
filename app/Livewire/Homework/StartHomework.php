@@ -13,11 +13,8 @@ class StartHomework extends Component
 {
     public $lesson;
     public $lessonmodules;
-    public $answers = [];
     //public $wordorder = null;
     public HomeworkForm $form;
-    public $index;
-    public $maxindex;
 
     public function mount($lesson_id)
     {
@@ -31,8 +28,6 @@ class StartHomework extends Component
             ->orderBy('lm.weight','ASC')
             ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight')
             ->get();
-        $this->index = 0;
-        $this->maxindex = count($this->lessonmodules);
     }
 
     public function store() { 
@@ -41,20 +36,6 @@ class StartHomework extends Component
         $this->form->store();
         session()->flash('message', 'Homework submitted successfully.');
         return redirect()->route('homeworks.homework-index');
-    }
-
-    public function nextStep()
-    {
-        //$this->validateStep();
-        if($this->index <= $this->maxindex){
-            $this->index++;
-        }
-    }
-    public function prevStep()
-    {
-        if($this->index > 0){
-            $this->index--;
-        }
     }
 
     public function render()
@@ -67,13 +48,10 @@ class StartHomework extends Component
             $lms[] = $lm;
         }
 
-        return view('livewire.homework.start-homework-lw')->with([
+        return view('livewire.homework.start-homework-flux')->with([
             'lesson_id' => $this->lesson->id,
             'lesson_title' => $this->lesson->title,
-            'index'=> $this->index,
-            'maxindex'=> $this->maxindex,
             'student_id' => Auth::id(),
-            'student_name' => Auth::user()->name,
             'lessonmodules' => $lms,
         ]);
     }

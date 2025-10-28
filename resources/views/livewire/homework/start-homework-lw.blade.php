@@ -18,7 +18,7 @@
         <flux:heading size="lg">{{ $lessonmodule->prompt }} </flux:heading>
     </div>
     <div id="qa-{{$index}}" class="space-y-6 p-3 section">
-        @include('partials.homework.homework-start-module',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'index' => $index, 'rel' => $lessonmodule->id])
+        @include('partials.homework.homework-start-module-lw',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'index' => $index, 'rel' => $lessonmodule->id])
     </div>
     @else
     <div id="prompt-{{$maxindex}}" class="space-y-6 p-3 section">
@@ -55,26 +55,25 @@
     </div>
 </flux:modal>
 <div>
+    @include('partials.message-modal')
+</div>
+<div>
     <form method="POST" wire:submit="store">
-        @foreach (@$lessonmodules as $key => $lessonmodule)
-            <flux:input
-                class="answers"
-                id="a{{$key}}"
-                wire:model="form.answers.{{$lessonmodule->id}}"
-                data-question="{{ $lessonmodule->question }}"
-                data-answer-key="{{ $lessonmodule->answer_key }}"
-                data-type="{{ $lessonmodule->type }}"
-                data-id="{{$lessonmodule->id}}"
-                type="text"
-                placeholder="your answer"
-            />
-        @endforeach
-        <flux:input id="student-id" type="text" wire:model="form.student_id" class="hidden" />
-        <flux:input id="lesson-id" type="text" wire:model="form.lesson_id" class="hidden"/>
-        <button id="submit-btn" type="submit" class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-8 py-4 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit Homework</button>
+    <flux:input id="student-id" type="text" wire:model="form.student_id" />
+    <flux:input id="lesson-id" type="text" wire:model="form.lesson_id" />
+    <flux:input id="started-at" type="text" wire:model="form.started_at" />
+    <button id="submit-btn" type="submit" class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-8 py-4 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit Homework</button>
     </form>
 </div>
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 <script>
-
 </script>
 </section>

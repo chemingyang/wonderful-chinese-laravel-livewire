@@ -81,6 +81,16 @@
         }
     }
 
+    function matchStrArr(str1, str2, type) {
+        let arr1 = str1.split(',');
+        let arr2 = str2.split(',');
+        if (type == 'drop') {
+            arr1.sort((a, b) => a - b);
+            arr2.sort((a, b) => a - b);
+        }
+        return JSON.stringify(arr1) === JSON.stringify(arr2);
+    }
+
     function handleClick(evt) {
         let incr = this.getAttribute('data-incr');
         let prevIndex = currentIndex;
@@ -89,16 +99,17 @@
         if (this.id == 'next-btn') {
             let currentInputValue = document.getElementById('a'+currentIndex).value;
             let currentAnswerKey = document.getElementById('a'+currentIndex).getAttribute('data-answer-key');
+            let currentType = document.getElementById('a'+currentIndex).getAttribute('data-type');
             //console.log([currentInputValue+' - '+currentAnswerKey]);
 
             if (currentInputValue != null && currentInputValue != "" && 
-                (currentAnswerKey == null || currentAnswerKey == "" || currentAnswerKey == currentInputValue)) {
+                (currentAnswerKey == null || currentAnswerKey == "" || matchStrArr(currentInputValue, currentAnswerKey, currentType))) {
                 Flux.modal('celebration').show();
                 setTimeout(() => {
                     Flux.modal('celebration').close();
                 }, "1000");
             } else {
-               Flux.modal('try-again').show();
+                Flux.modal('try-again').show();
                 setTimeout(() => {
                     Flux.modal('try-again').close();
                 }, "1000");
