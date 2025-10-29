@@ -1,5 +1,5 @@
 <section>
-    <flux:textarea id="comment-{{$index}}"  data-rel="g{{$rel}}" rows="5" columns="15" />
+    <flux:input id="comment-{{$index}}"  data-rel="g{{$rel}}" />
     <ul class="list-group hidden m-2 p-2" id="commentListID-{{$index}}" style="cursor:pointer; background:grey;">
         <li>Awesome!</li>
         <li>Wonderful!</li>
@@ -8,22 +8,23 @@
     </ul>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        let commentID{{$index}} = "comment-{{$index}}";
-        let commentListID{{$index}} = "commentListID-{{$index}}";
-        let commentArea{{$index}} = document.getElementById(commentID{{$index}});
-        let commentList{{$index}} = document.getElementById(commentListID{{$index}});
+        let i = "{{$index}}";
+        commentID[i] = "comment-"+i;
+        commentListID[i] = "commentListID-"+i;
+        commentArea[i] = document.getElementById(commentID[i]);
+        commentList[i] = document.getElementById(commentListID[i]);
 
-        commentArea{{$index}}.addEventListener('focus', function(event) {
-            if (commentArea{{$index}}.value == null || commentArea{{$index}}.value == "") {
-                commentList{{$index}}.classList.remove('hidden');
+        commentArea[i].addEventListener('focus', function(event) {
+            if (commentArea[i].value == null || commentArea[i].value == "") {
+                commentList[i].classList.remove('hidden');
             }
         });
     
-        commentArea{{$index}}.addEventListener('keyup', function(event) {
+        commentArea[i].addEventListener('keyup', function(event) {
             if (this.value == null || this.value == "") {
-                commentList{{$index}}.classList.remove('hidden');
+                commentList[i].classList.remove('hidden');
             } else {
-                commentList{{$index}}.classList.add('hidden');
+                commentList[i].classList.add('hidden');
                 setVal(this);
             }
         });
@@ -35,7 +36,7 @@
             input.dispatchEvent(new Event('input'));
         }
 /*
-        commentArea{{$index}}.addEventListener('change', function(event) {
+        commentArea[i].addEventListener('change', function(event) {
             //console.log('yep');
             let rel = this.getAttribute('data-rel');
             let input = document.getElementById(rel);
@@ -45,13 +46,13 @@
             input.dispatchEvent(new Event('input')); 
         });
 */
-        commentList{{$index}}.addEventListener("click", function(event) {
+        commentList[i].addEventListener("click", function(event) {
             //event.preventDefault();
             if (event.target.tagName === "LI") {
                 const selectedComment = event.target.textContent;
-                commentArea{{$index}}.value = selectedComment;
-                commentList{{$index}}.classList.add('hidden');
-                setVal(commentArea{{$index}});
+                commentArea[i].value = selectedComment;
+                commentList[i].classList.add('hidden');
+                setVal(commentArea[i]);
             }
         });
     });

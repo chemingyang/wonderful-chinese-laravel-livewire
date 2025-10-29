@@ -1,4 +1,10 @@
 <flux:fieldset>
+<script>
+    var commentID = {};    
+    var commentListID = {};
+    var commentArea = {};
+    var commentList = {};
+</script>
 @if (@$type === 'fill-in-blank')
     <flux:label>Q{{$index}} {{$question}}</flux:label>
     <flux:input type="text" value="{{$answer}}" disabled/>

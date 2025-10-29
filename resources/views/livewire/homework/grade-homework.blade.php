@@ -39,6 +39,15 @@
                 placeholder="teacher's comment"
             />
         @endforeach
+        <div class="mt-2 p-3">
+            <flux:textarea row="3" column="25"
+                label="Teacher's General Comment"
+                class=""
+                wire:model="form.gradings.general"
+                type="text"
+                placeholder="teacher's general comment"
+            />
+        </div>
         <flux:input id="student-id" type="text" wire:model="form.student_id" class="hidden" />
         <flux:input id="lesson-id" type="text" wire:model="form.lesson_id" class="hidden" />
         <button id="submit-btn" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-8 py-4 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Grade Homework</button>

@@ -43,8 +43,7 @@ class HomeworkForm extends Form
         $this->student_id = $homework->student_id;
         $this->answers = $homework->answers ? json_decode($homework->answers) : [];
         $this->gradings = $homework->gradings ? json_decode($homework->gradings) : [];
-        //$this->answers = $homework->answers;
-        //$this->gradings = $homework->gradings;
+
         $this->started_at = $homework->started_at;
         $this->submitted_at = $homework->submitted_at;
         $this->graded_at = $homework->graded_at;
@@ -67,5 +66,4 @@ class HomeworkForm extends Form
         $this->homework->update($data);
         $this->reset();
     }
-
 }

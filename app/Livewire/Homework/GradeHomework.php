@@ -28,6 +28,7 @@ class GradeHomework extends Component
     public function update() {
         $this->form->answers = !empty($this->form->answers) ? json_encode($this->form->answers) : null;
         $this->form->gradings = !empty($this->form->gradings) ? json_encode($this->form->gradings) : null;
+        $this->form->graded_at = date('Y-m-d H:i:s');
         $this->form->update();
         session()->flash('message', 'Homework graded updated successfully.');
         return redirect()->route('homeworks.homework-index');
