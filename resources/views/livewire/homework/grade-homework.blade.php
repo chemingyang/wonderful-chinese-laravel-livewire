@@ -15,14 +15,14 @@
     $counter++;
 @endphp
     <div class="space-y-6 p-3 section">
-        @include('partials.homework.homework-grade-module',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'answer' => $answer, 'index' => $counter, 'rel' => $lessonmodule->id, 'homework_id' => $i])
+        @include('partials.homework.homework-grade-module',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'answer' => $answer, 'answerkey' => $lessonmodule->answer_key, 'index' => $counter, 'rel' => $lessonmodule->id, 'homework_id' => $i])
     </div>
 @empty
     <span>no answer found</span>
 @endforelse
 </div>
 <div class="">
-    <form method="PUT" wire:submit="update">
+    <form method="PUT" wire:submit="update" class="p-3">
         @foreach (@$lessonmodules as $key => $lessonmodule)
             <flux:input
                 class="hidden"
@@ -39,18 +39,23 @@
                 placeholder="teacher's comment"
             />
         @endforeach
-        <div class="mt-2 p-3">
-            <flux:textarea row="3" column="25"
-                label="Teacher's General Comment"
-                class=""
-                wire:model="form.gradings.general"
-                type="text"
-                placeholder="teacher's general comment"
-            />
-        </div>
+        <flux:textarea row="4" column="25" id="comment-general"
+            label="Teacher's General Comment"
+            class="w-xl mb-4"
+            wire:model="form.gradings.general"
+            type="text"
+            placeholder="teacher's general comment"
+        />
+        <ul class="list-group hidden p-2 w-xl" id="commentList-general" style="cursor:pointer; background:grey;">
+            <li>Awesome!</li>
+            <li>Wonderful!</li>
+            <li>Try Again!</li>
+            <li>You Can Do It!</li>
+        </ul>
+        @include('partials.homework.homework-teacher-comment-js', ['index' => 'general'])
         <flux:input id="student-id" type="text" wire:model="form.student_id" class="hidden" />
         <flux:input id="lesson-id" type="text" wire:model="form.lesson_id" class="hidden" />
-        <button id="submit-btn" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-8 py-4 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Grade Homework</button>
+        <button id="submit-btn" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-8 py-4 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit Grade</button>
     </form>
 </div>
 </section>
