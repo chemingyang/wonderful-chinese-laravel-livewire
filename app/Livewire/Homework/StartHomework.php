@@ -32,6 +32,12 @@ class StartHomework extends Component
             ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight')
             ->get();
 
+        // this is fine but maybe the start homework link on homework-index should not have been there
+        if (count($this->lessonmodules) === 0) {
+            session()->flash('message', 'homework is not available.');
+            return redirect()->route('homeworks.homework-index');
+        }
+
         // try to get ongoing homework, one that is not submitted
         $this->homework = Homework::where('lesson_id', $lesson_id)->where('student_id', Auth::id())->first();
         if (!empty($this->homework)) {

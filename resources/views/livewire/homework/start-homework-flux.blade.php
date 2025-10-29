@@ -13,15 +13,14 @@
     <div id="qa--1" class="space-y-6 p-3 section hidden">
         <flux:heading size="md">Please click "Begin Homework" to start.</flux:heading>
     </div>
-    @forelse (@$lessonmodules as $index => $lessonmodule)
+    @foreach (@$lessonmodules as $index => $lessonmodule)
     <div id="prompt-{{$index}}" class="space-y-6 p-3 section hidden">
         <flux:heading size="lg">{{ $lessonmodule->prompt }} </flux:heading>
     </div>
     <div id="qa-{{$index}}" class="space-y-6 p-3 section hidden">
         @include('partials.homework.homework-start-module',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'index' => $index, 'rel' => $lessonmodule->id])
     </div>
-    @empty
-    @endforelse
+    @endforeach
     <div id="prompt-{{$index+1}}" class="space-y-6 p-3 section hidden">
         <flux:heading size="lg">Your have reached the end of the questions. </flux:heading>
     </div>
@@ -30,8 +29,8 @@
     </div>
     <flux:separator class="my-4"/>
     <div class="space-y-6 p-3">
-        <flux:button id="previous-btn" variant="filled" class="w-2xs hidden" data-incr="-1">Previous</flux:button>
-        <flux:button id="next-btn" variant="primary" class="w-2xs float-end hidden" data-incr="1">Next</flux:button>
+        <flux:button id="previous-btn" variant="filled" class="w-2xs" data-incr="-1" style="display:none;">Previous</flux:button>
+        <flux:button id="next-btn" variant="primary" class="w-2xs float-end" data-incr="1" style="display:none;">Next</flux:button>
     </div>
 </div>
 <flux:modal name="celebration" class="md:w-80" closable="false">
@@ -67,14 +66,15 @@
 <script>
     var currentIndex = null;
 
-    function setSection(currentidx) {
-        console.log('in secs:'+currentidx);
-
+    function setSection() {
+        // console.log('in secs:'+currentIndex);
         for (const section of document.getElementById('main-content').getElementsByClassName('section')) {
             section.classList.add('hidden');
         }
-        document.getElementById('prompt-'+currentidx).classList.remove('hidden');
-        document.getElementById('qa-'+currentidx).classList.remove('hidden');
+        let promptID = 'prompt-'+currentIndex;
+        let qaID = 'qa-'+currentIndex;
+        document.getElementById(promptID).classList.remove('hidden');
+        document.getElementById(qaID).classList.remove('hidden');
         let moduleCount = "{{$moduleCount}}";
         /* add some visual cues to the previous and next button when reaching edges */
         if (currentIndex == moduleCount) {
@@ -82,9 +82,10 @@
             document.getElementById('next-btn').style.opacity = '25%';
         } else if (currentIndex == 0) {
             document.getElementById('previous-btn').style.opacity = '25%';
+            document.getElementById('submit-btn').innerText = "Submit Homework";
             document.getElementById('submit-btn').classList.add('hidden');
-            document.getElementById('next-btn').classList.remove('hidden');
-            document.getElementById('previous-btn').classList.remove('hidden');
+            document.getElementById('next-btn').style.display = 'inline-block';
+            document.getElementById('previous-btn').style.display = 'inline-block';
         } else {
             //document.getElementById('submit-btn').classList.add('hidden');
             document.getElementById('next-btn').style.opacity = '100%';
@@ -129,7 +130,7 @@
         }
         currentIndex += parseInt(incr);
         /* set the student-id, and lesson-id inputs upon the last step reached; cannot do this in page load somehow*/
-        if (currentIndex == 0 || currentIndex == moduleCount) {
+        if (currentIndex == moduleCount) {
             let lesson_id = "{{$lesson_id}}";
             let student_id = "{{$student_id}}";
             let lesson_id_input = document.getElementById('lesson-id');
@@ -150,8 +151,8 @@
     document.getElementById('next-btn').addEventListener('click', handleClick);
     document.addEventListener('DOMContentLoaded', () => {
         currentIndex = parseInt("{{$currentindex}}");
-        console.log('in dom'+currentIndex);
-        setSection(currentIndex);
+        // console.log('in dom:'+currentIndex);
+        setSection();
     });
 </script>
 </section>
