@@ -37,11 +37,11 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::group(['middleware' => ['role:admin|teacher']], function () {
         Route::get('courses', \App\Livewire\Course\CourseIndex::class)->name('courses.index');
-        // Route::get('courses/{course:slug}', \App\Livewire\Course\CourseShow::class)->name('courses.show');
         Route::get('lessons', \App\Livewire\Lesson\LessonIndex::class)->name('lessons.index');
-        // Route::get('lessons/{lesson:slug}', \App\Livewire\Lesson\LessonShow::class)->name('lessons.show');
         Route::get('characters', \App\Livewire\Character\CharacterIndex::class)->name('characters.index');
-
+        Route::get('users', \App\Livewire\User\UserIndex::class)->name('users.index');
+        Route::get('enrollments', \App\Livewire\Enrollment\EnrollmentIndex::class)->name('enrollments.index');
+        Route::get('lessonmodules', \App\Livewire\LessonModule\LessonModuleIndex::class)->name('lessonmodules.index');
     });
     Route::group(['middleware' => ['role:admin']], function () {
         Route::get('courses/create', \App\Livewire\Course\CourseCreate::class)->name('courses.create');
@@ -49,13 +49,10 @@ Route::middleware('auth')->group(function () {
         Route::get('courses/{course}/edit', \App\Livewire\Course\CourseEdit::class)->name('courses.edit');
         Route::get('lessons/{lesson}/edit', \App\Livewire\Lesson\LessonEdit::class)->name('lessons.edit');
         Route::get('users/register', \App\Livewire\User\UserRegister::class)->name('users.register');
-        Route::get('users', \App\Livewire\User\UserIndex::class)->name('users.index');
         Route::get('users/{user}/edit', \App\Livewire\User\UserEdit::class)->name('users.edit');
         Route::get('enrollments/create', \App\Livewire\Enrollment\EnrollmentCreate::class)->name('enrollments.create');
-        Route::get('enrollments', \App\Livewire\Enrollment\EnrollmentIndex::class)->name('enrollments.index');
         Route::get('enrollments/{enrollment}/edit', \App\Livewire\Enrollment\EnrollmentEdit::class)->name('enrollments.edit');
         Route::get('lessonmodules/create', \App\Livewire\LessonModule\LessonModuleCreate::class)->name('lessonmodules.create');
-        Route::get('lessonmodules', \App\Livewire\LessonModule\LessonModuleIndex::class)->name('lessonmodules.index');
         Route::get('lessonmodules/{lessonmodule}/edit', \App\Livewire\LessonModule\LessonModuleEdit::class)->name('lessonmodules.edit');
         Route::get('characters/create', \App\Livewire\Character\CharacterCreate::class)->name('characters.create');
         Route::get('characters/{character}/edit', \App\Livewire\Character\CharacterEdit::class)->name('characters.edit');

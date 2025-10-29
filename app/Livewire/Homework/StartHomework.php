@@ -63,6 +63,7 @@ class StartHomework extends Component
             $this->form->started_at = date('Y-m-d H:i:s');
             $backToIndex = false;
         } else /*if ($this->form->answers != null && $this->form->gradings == null)*/{
+            //leave room for reviewed_at timestamp flow.
             $this->form->submitted_at = date('Y-m-d H:i:s');
         }
         $this->form->store();
