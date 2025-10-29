@@ -7,6 +7,12 @@
         $moduleCount = count($lessonmodules);
         $index = 0;
     @endphp
+    <div id="prompt--1" class="space-y-6 p-3 section hidden">
+        <flux:heading size="xl">Hi {{Auth::user()->name}}. Are you ready to begin this lesson?</flux:heading>
+    </div>
+    <div id="qa--1" class="space-y-6 p-3 section hidden">
+        <flux:heading size="md">Please click "Begin Homework" to start.</flux:heading>
+    </div>
     @forelse (@$lessonmodules as $index => $lessonmodule)
     <div id="prompt-{{$index}}" class="space-y-6 p-3 section hidden">
         <flux:heading size="lg">{{ $lessonmodule->prompt }} </flux:heading>
@@ -24,8 +30,8 @@
     </div>
     <flux:separator class="my-4"/>
     <div class="space-y-6 p-3">
-        <flux:button id="previous-btn" variant="filled" class="w-2xs" data-incr="-1">Previous</flux:button>
-        <flux:button id="next-btn" variant="primary" class="w-2xs float-end" data-incr="1">Next</flux:button>
+        <flux:button id="previous-btn" variant="filled" class="w-2xs hidden" data-incr="-1">Previous</flux:button>
+        <flux:button id="next-btn" variant="primary" class="w-2xs float-end hidden" data-incr="1">Next</flux:button>
     </div>
 </div>
 <flux:modal name="celebration" class="md:w-80" closable="false">
@@ -53,15 +59,17 @@
                 placeholder="your answer"
             />
         @endforeach
-        <flux:input id="student-id" type="text" wire:model="form.student_id" class="hidden" />
-        <flux:input id="lesson-id" type="text" wire:model="form.lesson_id" class="hidden"/>
-        <button id="submit-btn" type="submit" class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-8 py-4 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit Homework</button>
+        <flux:input id="student-id" type="text" wire:model="form.student_id" class="" />
+        <flux:input id="lesson-id" type="text" wire:model="form.lesson_id" class=""/>
+        <button id="submit-btn" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-8 py-4 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Begin Homework</button>
     </form>
 </div>
 <script>
     var currentIndex = null;
 
     function setSection(currentidx) {
+        console.log('in secs:'+currentidx);
+
         for (const section of document.getElementById('main-content').getElementsByClassName('section')) {
             section.classList.add('hidden');
         }
@@ -74,8 +82,11 @@
             document.getElementById('next-btn').style.opacity = '25%';
         } else if (currentIndex == 0) {
             document.getElementById('previous-btn').style.opacity = '25%';
-        } else {
             document.getElementById('submit-btn').classList.add('hidden');
+            document.getElementById('next-btn').classList.remove('hidden');
+            document.getElementById('previous-btn').classList.remove('hidden');
+        } else {
+            //document.getElementById('submit-btn').classList.add('hidden');
             document.getElementById('next-btn').style.opacity = '100%';
             document.getElementById('previous-btn').style.opacity = '100%';
         }
@@ -96,7 +107,7 @@
         let prevIndex = currentIndex;
         let moduleCount = "{{$moduleCount}}";
         /* disallow 'next' click if the answers are empty */
-        if (this.id == 'next-btn') {
+        if (this.id == 'next-btn' && currentIndex >= 0) {
             let currentInputValue = document.getElementById('a'+currentIndex).value;
             let currentAnswerKey = document.getElementById('a'+currentIndex).getAttribute('data-answer-key');
             let currentType = document.getElementById('a'+currentIndex).getAttribute('data-type');
@@ -118,7 +129,7 @@
         }
         currentIndex += parseInt(incr);
         /* set the student-id, and lesson-id inputs upon the last step reached; cannot do this in page load somehow*/
-        if (currentIndex == moduleCount) {
+        if (currentIndex == 0 || currentIndex == moduleCount) {
             let lesson_id = "{{$lesson_id}}";
             let student_id = "{{$student_id}}";
             let lesson_id_input = document.getElementById('lesson-id');
@@ -138,7 +149,8 @@
     document.getElementById('previous-btn').addEventListener('click', handleClick);
     document.getElementById('next-btn').addEventListener('click', handleClick);
     document.addEventListener('DOMContentLoaded', () => {
-        currentIndex = 0;
+        currentIndex = parseInt("{{$currentindex}}");
+        console.log('in dom'+currentIndex);
         setSection(currentIndex);
     });
 </script>
