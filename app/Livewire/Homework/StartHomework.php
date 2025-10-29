@@ -45,6 +45,7 @@ class StartHomework extends Component
                 session()->flash('message', 'Homework already graded.');
                 return redirect()->route('homeworks.homework-index');
             } else {
+                $this->form->setHomework($this->homework);
                 $this->currentindex = 0;
             }
         } else {

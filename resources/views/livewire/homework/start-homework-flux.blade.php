@@ -60,6 +60,7 @@
         @endforeach
         <flux:input id="student-id" type="text" wire:model="form.student_id" class="" />
         <flux:input id="lesson-id" type="text" wire:model="form.lesson_id" class=""/>
+        <flux:input id="started-at" type="text" wire:model="form.started_at" class=""/>
         <button id="submit-btn" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-md px-8 py-4 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Begin Homework</button>
     </form>
 </div>
@@ -130,6 +131,7 @@
         }
         currentIndex += parseInt(incr);
         /* set the student-id, and lesson-id inputs upon the last step reached; cannot do this in page load somehow*/
+        /*
         if (currentIndex == moduleCount) {
             let lesson_id = "{{$lesson_id}}";
             let student_id = "{{$student_id}}";
@@ -140,7 +142,7 @@
             student_id_input.value = student_id;
             student_id_input.dispatchEvent(new Event('input')); 
         }
-
+        */
         if (currentIndex >= 0 && currentIndex <= moduleCount) {
             setSection(currentIndex);
         } else {
