@@ -43,7 +43,7 @@
         }
     @endphp
     <flux:label class="w-full">Q{{$index}} {{$question}}</flux:label>
-    <flux:input type="text" value="{{$parsedanswer}}" class="w-xl inline-block" />
+    <flux:input type="text" value="{{$parsedanswer}}" disabled class="w-xl inline-block" />
     @if (@$matched = $answer == $answerkey)
     <div class="justify-end inline-block w-12">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

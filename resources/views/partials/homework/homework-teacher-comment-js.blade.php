@@ -25,20 +25,18 @@
         /* cannot seem to get this to work properly*/
         /* teacher forced to select one or type something */
         commentDiv[i].addEventListener('blur', function(event) {
-            //console.log('blur...');
-            //if (commentArea[i].value == null || commentArea[i].value == "") {
             commentList[i].classList.add('hidden');
-            //}
+    
         });
 
         commentArea[i].addEventListener('keyup', function(event) {
             if (/^([\\x30-\\x39]|[\\x61-\\x7a])$/i.test(event.key)) {
-                //console.log('char key');
                 commentList[i].classList.add('hidden');
                 setFormVal(this);
             } else {
-                //console.log('non char');
-                if (this.value == null || this.value == "") {
+                if (event.key === 'Escape') { // escape key
+                    commentList[i].classList.add('hidden');
+                } else if (this.value == null || this.value == "") {
                     commentList[i].classList.remove('hidden');
                 }
             }
