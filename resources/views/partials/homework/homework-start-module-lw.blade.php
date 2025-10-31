@@ -1,7 +1,6 @@
 <flux:fieldset>
 @if (@$type === 'fill-in-blank')
     <div id="q{{$idx}}">Q{{ ($idx+1) }}.{!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}</div>
-    <input id="a{{$idx}}" wire:model="form.answers.{{$rel}}" class="data-target inline border-1 border-color:#fff" style="width:200px; padding:5px; margin:5px" type="text" />
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         // console.log('abc');
