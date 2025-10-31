@@ -22,11 +22,13 @@
                     {{ $uniq->lesson_title }}
                 </td>
                 <td class="px-5 py-2 space-x-2">
-                    @if (@empty($uniq->answers))
+                    @if (@empty($uniq->started_at))
                         <a href="{{ route('homeworks.start-homework', $uniq->lesson_id) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Start Homework</a>
-                    @elseif (@empty($uniq->gradings))
+                    @elseif (@!empty($uniq->started_at) && @empty($uniq->submitted_at))
+                        <a href="{{ route('homeworks.start-homework', $uniq->lesson_id) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">Resume Homework</a>
+                    @elseif (@!empty($uniq->submitted_at) && @empty($uniq->graded_at))
                         <span>Homework Submitted</span>
-                    @elseif (@empty($uniq->reviewd_at))
+                    @elseif (@!empty($uniq->graded_at) && @empty($uniq->reviewd_at))
                         <span>Homework Graded</span>
                     @else
                         <span>Homework Reviewed</span>

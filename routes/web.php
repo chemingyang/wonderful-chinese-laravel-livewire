@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
         Route::get('homeworks/homework-index', \App\Livewire\Homework\HomeworkIndex::class)->name('homeworks.homework-index');
     });
     Route::group(['middleware' => ['role:student']], function () {
-        Route::get('homeworks/{lesson_id}/start-homework', \App\Livewire\Homework\StartHomework::class)->name('homeworks.start-homework');
+        Route::get('homeworks/{lesson_id}/start-homework', \App\Livewire\Homework\StartHomeworklw::class)->name('homeworks.start-homework');
     });
     Route::group(['middleware' => ['role:teacher']], function () {
         Route::get('homeworks/{homework_id}/grade-homework', \App\Livewire\Homework\GradeHomework::class)->name('homeworks.grade-homework');

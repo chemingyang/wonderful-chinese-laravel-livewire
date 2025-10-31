@@ -19,7 +19,7 @@ class HomeworkForm extends Form
     public $reviewed_at = null;
 
 
-    public function store() {
+    public function store():Homework {
         //dd($this);
         $data = $this->validate([
             'lesson_id' => 'required|exists:lessons,id',
@@ -33,8 +33,8 @@ class HomeworkForm extends Form
             'graded_at' => 'nullable|date',
             'reviewed_at' => 'nullable|date',
         ]);
-        Homework::updateOrCreate(['lesson_id' => $this->lesson_id, 'student_id' => $this->student_id], $data);
-        $this->reset();
+        $obj = Homework::updateOrCreate(['lesson_id' => $this->lesson_id, 'student_id' => $this->student_id], $data);
+        return $obj;
     }
 
     public function setHomework(Homework $homework) {
@@ -43,7 +43,6 @@ class HomeworkForm extends Form
         $this->student_id = $homework->student_id;
         $this->answers = $homework->answers ? json_decode($homework->answers) : [];
         $this->gradings = $homework->gradings ? json_decode($homework->gradings) : [];
-
         $this->started_at = $homework->started_at;
         $this->submitted_at = $homework->submitted_at;
         $this->graded_at = $homework->graded_at;
@@ -64,6 +63,6 @@ class HomeworkForm extends Form
             'reviewed_at' => 'nullable|date',
         ]);
         $this->homework->update($data);
-        $this->reset();
+        //$this->reset();
     }
 }

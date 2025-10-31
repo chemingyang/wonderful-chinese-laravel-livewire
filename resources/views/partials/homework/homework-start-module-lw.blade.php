@@ -1,11 +1,11 @@
 <flux:fieldset>
 @if (@$type === 'fill-in-blank')
-    <div id="q{{$index}}">Q{{ ($index+1) }}.{!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}</div>
-    <input id="a{{$index}}" wire:model="form.answers.{{$rel}}" class="data-target inline border-1 border-color:#fff" style="width:200px; padding:5px; margin:5px" type="text" />
+    <div id="q{{$idx}}">Q{{ ($idx+1) }}.{!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}</div>
+    <input id="a{{$idx}}" wire:model="form.answers.{{$rel}}" class="data-target inline border-1 border-color:#fff" style="width:200px; padding:5px; margin:5px" type="text" />
 <script>
     //document.addEventListener('DOMContentLoaded', () => {
     /*    console.log('abc');
-        let idx = "{{$index}}";
+        let idx = "{{$idx}}";
         let data_rel = document.getElementById('q'+idx);
         console.log(data_rel);
         data_rel.addEventListener('keyup', function(event) {
@@ -23,12 +23,13 @@
     //});
 </script>
 @elseif (@$type === 'answer-question')
-    <span>Q{{ ($index+1) }}. {{ $question }}</span>
-    <div id="q{{$index}}" data-rel="{{$rel}}"><flux:textarea rows="10" columns="35" />
+    <span>Q{{ ($idx+1) }}. {{ $question }}</span>
+    <div id="q{{$idx}}" data-rel="{{$rel}}"><flux:textarea rows="10" columns="35" />
 <script>
+    /*
     document.addEventListener('DOMContentLoaded', () => {
         let rel = "{{$rel}}";
-        let idx = "{{$index}}";
+        let idx = "{{$idx}}";
         let data_rel = document.getElementById('q'+idx);
         data_rel.addEventListener('change', function(event) {
             let inputElem = document.getElementById('a'+idx);
@@ -36,20 +37,21 @@
             inputElem.dispatchEvent(new Event('input'));
         });
     });
+    */
 </script>
 @elseif (@$type === 'sort')
     @php
         $sortwords = explode('|',$question);
-        $sorts = ['sort-'.$index];
+        $sorts = ['sort-'.$idx];
     @endphp
-    <span>Q{{ ($index+1) }}.</span>
+    <span>Q{{ ($idx+1) }}.</span>
     <div id="{{$sorts[0]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mt-2 min-h-18">
     @foreach ($sortwords as $i => $word)
         <div data-val="{{($i+1)}}" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-4 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1; opacity:75%;"><span>{{($i+1)}}. {{$word}}</span></div>
     @endforeach
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('alpine:init', () => {
             let elemIDArr = @json($sorts);
             elemIDArr.forEach(function(elemID, i) {
                 let el = document.getElementById(elemID);
@@ -58,17 +60,17 @@
                     group: {
                         name: 'shared'
                     },
-                    onEnd: function (evt) {
+                    onEnd: function (evt) { 
                         let parent = document.getElementById(elemIDArr[0]);
                         let childs = parent.getElementsByTagName('div');
-                        let idx = "{{$index}}";
+                        let idx = "{{$idx}}";
                         let vals = [];
                         for (const child of childs) {
                             vals.push(child.getAttribute('data-val'));
                         }
                         let inputElem = document.getElementById('a'+idx);
                         inputElem.value = vals.join(',');
-                        inputElem.dispatchEvent(new Event('input'));
+                        inputElem.dispatchEvent(new Event('input')); 
                     },
                     ghostClass: 'blue-background-class'
                 });
@@ -80,9 +82,9 @@
         $dropparts = explode(':',$question);
         $dropprompt = $dropparts[0];
         $dropwords = explode('|',$dropparts[1]);
-        $drops = ['sort-'.$index.'-left','sort-'.$index.'-right'];
+        $drops = ['sort-'.$idx.'-left','sort-'.$idx.'-right'];
     @endphp
-        <span>Q{{ ($index+1) }}.</span>
+        <span>Q{{ ($idx+1) }}.</span>
     <!--<div class="grid w-full gap-6 md:grid-cols-2"> -->
         <div id="{{$drops[0]}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-18 mt-2" >
         @foreach ($dropwords as $i => $word)
@@ -94,7 +96,7 @@
         </div>
     <!-- </div> -->
     <script> 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('alpine:init', () => {
             let elemIDArr = @json($drops);
             
             elemIDArr.forEach(function(elemID, i) {
@@ -104,10 +106,10 @@
                     group: {
                         name: 'shared'
                     },
-                    onEnd: function (evt) {
+                    onEnd: function (evt) { 
                         let parent = document.getElementById(elemIDArr[1]);
                         let childs = parent.getElementsByTagName('div');
-                        let idx = "{{$index}}";
+                        let idx = "{{$idx}}";
                         let vals = [];
                         for (const child of childs) {
                             vals.push(child.getAttribute('data-val'));
@@ -119,23 +121,20 @@
                     ghostClass: 'blue-background-class'
                 };
                 //this doesn't work :( ensure the dropped items are always sorted
-                /* if (i == 1) {
-                    settings.sort = false;
-                }*/
                 new Sortable(el, settings);
             });
-        });
+        }); 
     </script>
 @elseif (@$type === 'match')
     @php
         $matchparts = explode(':',$question);
         $matchwords = explode('|',$matchparts[1]);
         $matchboxes = explode('|',$matchparts[0]);
-        $sortsleft = ['sort-'.$index.'-left'];
+        $sortsleft = ['sort-'.$idx.'-left'];
         $sortsright = [];
-        $sortsrightgroup = 'sort-'.$index.'-rightgroup'
+        $sortsrightgroup = 'sort-'.$idx.'-rightgroup'
     @endphp
-        <span>Q{{ ($index+1) }}.</span>
+        <span>Q{{ ($idx+1) }}.</span>
     <!--<div class="grid w-full gap-6 md:grid-cols-2"> -->
         <div>
             <div id="{{$sortsleft[0]}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-18 mt-2">
@@ -147,14 +146,14 @@
         <div id="{{$sortsrightgroup}}" class="flex justify-right">
             @foreach($matchboxes as $i => $box)
             @php
-                $sortsright[] = 'sort-'.$index.'-right'.$i;
+                $sortsright[] = 'sort-'.$idx.'-right'.$i;
             @endphp
                 <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mr-2 h-full w-full space-x-1 justify-center min-h-18 mt-2"><span style="position:absolute; opacity: 50%;" class="px-6 py-0 filtered">{{$box}}</span></div>
             @endforeach
         </div>
     <!-- </div> -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('alpine:init', () => {
             let elemIDArr = @json($sortsleft);
             let sortsRightGroup = "{{$sortsrightgroup}}";
             let settings = {
@@ -166,7 +165,7 @@
                 onEnd: function (evt) {
                     let parent = document.getElementById(sortsRightGroup);
                     let childs = parent.getElementsByClassName('list-group');
-                    let idx = "{{$index}}";
+                    let idx = "{{$idx}}";
                     let vals = [];
                     for (const child of childs) {
                         let buttons = child.getElementsByClassName('list-group-item');
