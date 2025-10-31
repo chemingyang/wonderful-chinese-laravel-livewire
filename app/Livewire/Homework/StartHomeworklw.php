@@ -76,8 +76,9 @@ class StartHomeworklw extends Component
 
     public function validateStep()
     {
-        if ($this->index === 0){
+        if ($this->index === -1){
             $this->form->started_at = date('Y-m-d H:i:s');
+            $this->index++; // index is synced asynchronously from the alpine variable, from -1 to 0. but the next button click will sync it
             $this->store();
         } 
         
