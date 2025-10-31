@@ -32,10 +32,10 @@
     </div>
     <flux:separator class="my-4"/>
     <div class="space-y-6 p-3">
-        <flux:button id="previous-btn" @click="indx = indx-1; $wire.set('index', indx);" variant="filled" class="w-2xs">
+        <flux:button id="previous-btn" x-show="indx > -1 && indx < maxindx" @click="indx = indx-1; $wire.set('index', indx);" variant="filled" class="w-2xs">
             Previous
         </flux:button>
-        <flux:button id="next-btn" @click="indx = indx+1; $wire.set('index', indx);" variant="primary" class="w-2xs float-end">
+        <flux:button id="next-btn" x-show="indx > -1 && indx < maxindx" @click="indx = indx+1; $wire.set('index', indx);" variant="primary" class="w-2xs float-end">
             Next
         </flux:button>
     </div>
@@ -44,13 +44,13 @@
         <flux:input wire:key="lesson_id" type="text" wire:model="form.lesson_id" />
         <flux:input wire:key="started_at" type="text" wire:model="form.started_at" />
         <flux:input wire:key="submitted_at" type="text" wire:model="form.submitted_at" />
-        <flux:button wire:click="validateStep" @click="indx = $wire.get('index');" x-show="indx === maxindx" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2 float-end"> 
+        <flux:button wire:click="validateStep" @click="indx = maxindx; $wire.set('index', indx);" x-show="indx === maxindx" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2 float-end"> 
             <span wire:loading.remove>Submit</span>
             <span wire:loading>
                 Loading..
             </span>
         </flux:button>
-        <flux:button wire:click="validateStep" x-show="indx === -1" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2"> 
+        <flux:button wire:click="validateStep" @click="indx = indx+1; $wire.set('index', indx);" x-show="indx === -1" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2"> 
             <span wire:loading.remove>Begin Lesson</span>
             <span wire:loading>
                 Loading..

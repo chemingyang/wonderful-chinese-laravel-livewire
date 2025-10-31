@@ -76,32 +76,16 @@ class StartHomeworklw extends Component
 
     public function validateStep()
     {
-        if ($this->index === -1){
+        if ($this->index === 0){
             $this->form->started_at = date('Y-m-d H:i:s');
             $this->store();
-            $this->index++;
-        } elseif ($this->index > -1 && $this->index < $this->maxindex){
-            //$this->store();
-        } elseif ($this->index === $this->maxindex){
+        } 
+        
+        if ($this->index === $this->maxindex){
             $this->form->submitted_at = date('Y-m-d H:i:s');
             $this->store();
             session()->flash('message', 'Homework stored successfully.');
             return redirect()->route('homeworks.homework-index');
-        }
-    }
-
-
-    public function nextStep()
-    {
-        $this->validateStep();
-        if ($this->index < $this->maxindex){
-            $this->index++;
-        }
-    }
-    public function prevStep()
-    {
-        if ($this->index > 0){
-            $this->index--;
         }
     }
 

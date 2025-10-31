@@ -3,30 +3,29 @@
     <div id="q{{$idx}}">Q{{ ($idx+1) }}.{!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}</div>
     <input id="a{{$idx}}" wire:model="form.answers.{{$rel}}" class="data-target inline border-1 border-color:#fff" style="width:200px; padding:5px; margin:5px" type="text" />
 <script>
-    //document.addEventListener('DOMContentLoaded', () => {
-    /*    console.log('abc');
+    document.addEventListener('DOMContentLoaded', () => {
+        // console.log('abc');
         let idx = "{{$idx}}";
         let data_rel = document.getElementById('q'+idx);
-        console.log(data_rel);
+        // console.log(data_rel);
         data_rel.addEventListener('keyup', function(event) {
-            console.log('in f-i-b keyup');
+            //console.log('in f-i-b keyup');
             let childs = this.children;
             let vals = [];
             for (const child of childs) {
                 vals.push(child.value);
             }
-            console.log(vals);
+            // console.log(vals);
             let inputElem = document.getElementById('a'+idx);
             inputElem.value = vals.join(',');
             inputElem.dispatchEvent(new Event('input'));
-        }); */
-    //});
+        }); 
+    });
 </script>
 @elseif (@$type === 'answer-question')
     <span>Q{{ ($idx+1) }}. {{ $question }}</span>
     <div id="q{{$idx}}" data-rel="{{$rel}}"><flux:textarea rows="10" columns="35" />
 <script>
-    /*
     document.addEventListener('DOMContentLoaded', () => {
         let rel = "{{$rel}}";
         let idx = "{{$idx}}";
@@ -37,7 +36,6 @@
             inputElem.dispatchEvent(new Event('input'));
         });
     });
-    */
 </script>
 @elseif (@$type === 'sort')
     @php
