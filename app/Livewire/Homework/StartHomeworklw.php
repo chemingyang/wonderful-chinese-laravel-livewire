@@ -76,18 +76,22 @@ class StartHomeworklw extends Component
 
     public function validateStep()
     {
-        if ($this->index === -1){
-            $this->form->started_at = date('Y-m-d H:i:s');
-            $this->index++; // index is synced asynchronously from the alpine variable, from -1 to 0. but the next button click will sync it
-            $this->store();
-        } 
-        
-        if ($this->index === $this->maxindex){
+        if ($this->index == $this->maxindex){
             $this->form->submitted_at = date('Y-m-d H:i:s');
             $this->store();
             session()->flash('message', 'Homework stored successfully.');
             return redirect()->route('homeworks.homework-index');
-        }
+        } else if ($this->index >= -1){
+            //dd(okay);
+            if (empty($this->form->started_at)) {
+                $this->form->started_at = date('Y-m-d H:i:s');
+                session()->flash('message', 'Homework started successfully.');
+            }
+            $this->store();
+            $this->index++; 
+        } 
+        
+        
     }
 
     public function render()

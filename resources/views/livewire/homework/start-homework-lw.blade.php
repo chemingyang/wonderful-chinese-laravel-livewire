@@ -2,7 +2,7 @@
 <div class="space-y-6 p-3">
     <flux:heading size="xl" x-text="$wire.lesson_title"></flux:heading>
 </div>
-<div wire:cloak x-data="{ indx: $wire.index, maxindx: @js($maxindex) }" id="main-content" class="overflow-y-auto overflow-x-hidden top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-w-3xl max-h-full">
+<div wire:cloak x-data="{ indx: @entangle('index'), maxindx: @js($maxindex) }" id="main-content" class="overflow-y-auto overflow-x-hidden top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-w-3xl max-h-full">
     <div x-show="indx == -1">
         <div id="prompt--1" class="space-y-6 p-3 section">
             <flux:heading size="xl">Hi <span x-text="$wire.student_name"><span>! Are you ready to begin this lesson?</flux:heading>
@@ -32,11 +32,14 @@
     </div>
     <flux:separator class="my-4"/>
     <div class="space-y-6 p-3">
-        <flux:button id="previous-btn" x-show="indx > -1 && indx < maxindx" @click="indx = indx-1; $wire.set('index', indx);" variant="filled" class="w-2xs">
+        <flux:button x-show="indx > -1 && indx < maxindx" @click="indx--; $wire.set('index',indx);" variant="filled" class="w-3xs">
             Previous
         </flux:button>
-        <flux:button id="next-btn" x-show="indx > -1 && indx < maxindx" @click="indx = indx+1; $wire.set('index', indx);" variant="primary" class="w-2xs float-end">
-            Next
+        <flux:button wire:click="validateStep" x-show="indx > -1 && indx < maxindx" wire:loading.class="opacity-50" variant="primary" class="w-3xs mt-2 float-end"> 
+            <span wire:loading.remove>Next</span>
+            <span wire:loading>
+                Loading..
+            </span>
         </flux:button>
     </div>
     <div>
@@ -50,7 +53,7 @@
                 Loading..
             </span>
         </flux:button>
-        <flux:button wire:click="validateStep" x-show="indx === -1" @click="indx++" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2"> 
+        <flux:button wire:click="validateStep" x-show="indx === -1" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2"> 
             <span wire:loading.remove>Begin Lesson</span>
             <span wire:loading>
                 Loading..
