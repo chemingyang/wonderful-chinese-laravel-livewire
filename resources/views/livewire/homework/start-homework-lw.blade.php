@@ -13,20 +13,11 @@
     </div>
     @foreach ($lessonmodules as $idx => $lessonmodule)
     <div x-data="{ idx: @js($idx) }" x-show="indx === idx">
-        <div id="prompt-{{$idx}}" class="space-y-6 p-3 section">
+        <div id="prompt-{{$idx}}" class="space-y-6 p-3 section inline-block">
             <flux:heading size="lg">{{ $lessonmodule->prompt }} </flux:heading>
-            @if ($lessonmodule->audio)
-            <audio id="player{{$idx}}" src="{{ asset('storage/' . $lessonmodule->audio) }}"></audio>
-            <flux:button size="xs" id="playbutton{{$idx}}" onclick="document.getElementById('player{{$idx}}').play()" class="p-0 border-0 bg-transparent">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
-                </svg>
-            </flux:button>
-            @endif
         </div>
         <div id="qa-{{$idx}}" class="space-y-6 p-3 section">
-            @include('partials.homework.homework-start-module-lw',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'idx' => $idx, 'rel' => $lessonmodule->id, 'chinese_phrase' => $lessonmodule->chinese_phrase, 'zhuyin' => $lessonmodule->zhuyin, 'pinyin' => $lessonmodule->pinyin])
+            @include('partials.homework.homework-start-module-lw',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'idx' => $idx, 'rel' => $lessonmodule->id, 'chinese_phrase' => $lessonmodule->chinese_phrase, 'zhuyin' => $lessonmodule->zhuyin, 'pinyin' => $lessonmodule->pinyin, 'audio' => $lessonmodule->audio])
             <flux:input id="a{{$idx}}" wire:key="answers.{{$lessonmodule->id}}" type="text" wire:model.defer="form.answers.{{$lessonmodule->id}}" />
         </div>
     </div>
