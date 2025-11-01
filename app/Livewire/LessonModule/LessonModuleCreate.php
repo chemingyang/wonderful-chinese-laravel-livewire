@@ -5,6 +5,7 @@ namespace App\Livewire\LessonModule;
 use Livewire\Component;
 use App\Models\Lesson;
 use App\Models\Character;
+use App\Models\LessonModule;
 use App\Livewire\Forms\LessonModule\LessonModuleForm;
 
 class LessonModuleCreate extends Component
@@ -22,7 +23,7 @@ class LessonModuleCreate extends Component
         if ($value === 'other') {
             // If current weight is 1-20, clear it for custom input
             // Otherwise, keep the existing custom value
-            if (is_numeric($this->form->weight) && $this->form->weight >= 1 && $this->form->weight <= 20) {
+           if (is_numeric($this->form->weight) && $this->form->weight >= 1 && $this->form->weight <= 20) {
                 $this->form->weight = '';
             }
         } else {
@@ -43,6 +44,24 @@ class LessonModuleCreate extends Component
     {
         // Clear character_id when lesson changes
         $this->form->character_id = null;
+        
+        // Initialize weight to the smallest integer greater than all other lessonmodules with the same lesson_id
+        if ($this->form->lesson_id) {
+            $maxWeight = LessonModule::where('lesson_id', $this->form->lesson_id)->max('weight') ?? 0;
+            $nextWeight = $maxWeight + 1;
+            
+            // If weight is not already set or is 0/null, set it to nextWeight
+            if (empty($this->form->weight) || $this->form->weight == 0) {
+                $this->form->weight = $nextWeight;
+                
+                // Set weightSelect based on the weight value
+                if ($nextWeight >= 1 && $nextWeight <= 20) {
+                    $this->weightSelect = (string)$nextWeight;
+                } else {
+                    $this->weightSelect = 'other';
+                }
+            }
+        }
     }
 
     public function store() {

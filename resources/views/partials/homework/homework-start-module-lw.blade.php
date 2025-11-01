@@ -21,7 +21,7 @@
     @endphp
     <div id="q{{$idx}}">Q{{ ($idx+1) }}.{!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}</div>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('alpine:init', () => {
         // console.log('abc');
         let idx = "{{$idx}}";
         let data_rel = document.getElementById('q'+idx);
@@ -44,7 +44,7 @@
     <span>Q{{ ($idx+1) }}. {{ $question }}</span>
     <div id="q{{$idx}}" data-rel="{{$rel}}"><flux:textarea rows="10" columns="35" />
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('alpine:init', () => {
         let rel = "{{$rel}}";
         let idx = "{{$idx}}";
         let data_rel = document.getElementById('q'+idx);
@@ -176,7 +176,11 @@
             @php
                 $sortsright[] = 'sort-'.$idx.'-right'.$i;
             @endphp
-                <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mr-2 h-full w-full space-x-1 justify-center min-h-18 mt-2"><span style="position:absolute; opacity: 50%;" class="px-6 py-0 filtered">{{$box}}</span></div>
+                <!-- Move span above the sortable container -->
+                <div class="flex flex-col mr-2 w-full">
+                    <span class="px-6 py-0 opacity-50 text-center">{{$box}}</span>
+                    <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-center min-h-18"></div>
+                </div>
             @endforeach
         </div>
     <!-- </div> -->
@@ -190,6 +194,13 @@
                     name: 'origin',
                     sort: false,
                 },
+                //filter: 'filtered',
+                //put: function (to, from, dragEl, evt) {
+                // Don't allow dropping if trying to drag a filtered element
+                //    if (dragEl.classList.contains('filtered')) {
+                //        return false;
+                //    }
+                //},
                 onEnd: function (evt) {
                     let parent = document.getElementById(sortsRightGroup);
                     let childs = parent.getElementsByClassName('list-group');
@@ -214,16 +225,34 @@
                 new Sortable(el, settings);
             });
             elemIDArr = @json($sortsright);
-            settings.filter = 'filtered';
-            settings.group.put = function (to) {
+            settings.group.put = function (to, from, dragEl, evt) {
+                // Don't allow dropping if trying to drag a filtered element
+                //if (dragEl.classList.contains('filtered')) {
+                //    return false;
+                //}
+                // Allow swapping if both containers have swap enabled
+                if (to.el.children.length > 0 && from.options.swap && to.options.swap) {
+                    return true;
+                }
+                // Otherwise only allow dropping if container is empty
                 return to.el.children.length <= 1;
             }
+            // Add swap plugin configuration
+            settings.swap = true; // Enable swap
+            settings.swapClass = 'sortable-swap-highlight'; // CSS class for swap indication
+            settings.swapThreshold = 1; // Threshold for swap to occur (1 = immediate)
             elemIDArr.forEach(function(elemID, i) {
+                console.log('in match');
                 let el = document.getElementById(elemID);
                 new Sortable(el, settings);
             });
         }); 
     </script>
+    <style>
+        .sortable-swap-highlight {
+            background-color: rgba(125, 125, 125, 0.3) !important;
+        }
+    </style>
 @else
     <span>invalid question type</span>
 @endif
