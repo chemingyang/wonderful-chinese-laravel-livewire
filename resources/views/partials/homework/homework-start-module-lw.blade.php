@@ -1,5 +1,15 @@
 <flux:fieldset>
-@if (@$type === 'fill-in-blank')
+@if (@$type === 'fill-in-blank' || @$type === 'fill-in-blank-x')
+    @php
+        if ($type === 'fill-in-blank-x') {
+            $charlength = mb_strlen($chinese_phrase);
+            $offset = intval($question)-1; 
+            $before = mb_substr($chinese_phrase, 0, $offset);
+            $after = mb_substr($chinese_phrase, $offset + 1, $charlength - $offset - 1);
+            $question = $before . '<>' . $after;
+            $question = $zhuyin.' / '.$pinyin.' : '.$question;
+        }        
+    @endphp
     <div id="q{{$idx}}">Q{{ ($idx+1) }}.{!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}</div>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -122,14 +132,26 @@
             });
         }); 
     </script>
-@elseif (@$type === 'match')
+@elseif (@$type === 'match' || @$type === 'match-x')
     @php
+        if ($type === 'match-x') {
+            $chinese_characters = mb_str_split($chinese_phrase) ?? [];
+            $zhuyin_characters = explode(' ',$zhuyin) ?? [];
+            $pinyin_characters = explode(' ',$pinyin) ?? [];
+            $boxes = [];
+            foreach ($zhuyin_characters as $i => $zhuyin_character) {
+                $boxes[] = $zhuyin_character . '/' . ($pinyin_characters[$i] ?? '');
+            }
+            shuffle($boxes);
+            shuffle($chinese_characters);
+            $question = implode('|', $boxes) . ':' . implode('|', $chinese_characters);
+        }
         $matchparts = explode(':',$question);
         $matchwords = explode('|',$matchparts[1]);
         $matchboxes = explode('|',$matchparts[0]);
         $sortsleft = ['sort-'.$idx.'-left'];
         $sortsright = [];
-        $sortsrightgroup = 'sort-'.$idx.'-rightgroup'
+        $sortsrightgroup = 'sort-'.$idx.'-rightgroup';
     @endphp
         <span>Q{{ ($idx+1) }}.</span>
     <!--<div class="grid w-full gap-6 md:grid-cols-2"> -->

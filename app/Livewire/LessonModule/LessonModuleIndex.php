@@ -21,7 +21,7 @@ class LessonModuleIndex extends Component
     public function render()
     {
         return view('livewire.lesson-module.lesson-module-index', [
-            'lessonmodules' => LessonModule::with('lesson')->get()
+            'lessonmodules' => LessonModule::with(['lesson', 'character'])->get()
         ]);
     }
 

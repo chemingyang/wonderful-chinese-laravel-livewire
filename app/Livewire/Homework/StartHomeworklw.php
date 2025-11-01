@@ -34,12 +34,13 @@ class StartHomeworklw extends Component
         $this->student_name = $this->student->name;
         $this->lessonmodules =
             DB::table('lesson_modules as lm')
-            ->leftJoin('lessons as l','lm.lesson_id','=','l.id')
+            ->join('lessons as l','lm.lesson_id','=','l.id')
+            ->leftJoin('characters as c','lm.character_id','=','c.id')
             ->where('l.id','=', $lesson_id)
             ->where('l.scheduled_at','<',now())
             ->where('l.completed_at','>',now())
             ->orderBy('lm.weight','ASC')
-            ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight')
+            ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight', 'c.chinese_phrase', 'c.zhuyin', 'c.pinyin', 'c.audio')
             ->get();
         $this->maxindex = count($this->lessonmodules);
         $this->homework = Homework::where('lesson_id', $lesson_id)->where('student_id', Auth::id())->first() ?? null;
@@ -59,8 +60,8 @@ class StartHomeworklw extends Component
     }
 
     public function store() { 
-        $this->form->answers = !empty($this->form->answers) ? json_encode($this->form->answers) : null;
-        $this->form->gradings = !empty($this->form->gradings) ? json_encode($this->form->gradings) : null;
+        //$this->form->answers = !empty($this->form->answers) ? json_encode($this->form->answers) : null;
+        //$this->form->gradings = !empty($this->form->gradings) ? json_encode($this->form->gradings) : null;
         
         if (empty($this->homework)) {
             $this->homework = $this->form->store();
