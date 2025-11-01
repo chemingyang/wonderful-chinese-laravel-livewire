@@ -47,7 +47,7 @@
         <flux:input wire:key="lesson_id" type="text" wire:model="form.lesson_id" />
         <flux:input wire:key="started_at" type="text" wire:model="form.started_at" />
         <flux:input wire:key="submitted_at" type="text" wire:model="form.submitted_at" />
-        <flux:button wire:click="validateStep" x-show="=== maxindx" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2 float-end"> 
+        <flux:button wire:click="validateStep" x-show="indx === maxindx" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2 float-end"> 
             <span wire:loading.remove>Submit</span>
             <span wire:loading>
                 Loading..

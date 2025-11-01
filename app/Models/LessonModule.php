@@ -16,7 +16,7 @@ class LessonModule extends Model
         'sort' => '請重新排序',
         'drop' => '請挑選適合的項目',
         'match' => '請放至正確的格子',
-        'fill-in-blank-x' => '請填入表格',
+        'fill-in-blank-x' => '請輸入空格',
         'match-x' => '請放至正確的格子',
     ];
 
