@@ -17,7 +17,9 @@
             <flux:heading size="lg">{{ $lessonmodule->prompt }} </flux:heading>
         </div>
         <div id="qa-{{$idx}}" class="space-y-6 p-3 section">
-            @include('partials.homework.homework-start-module-lw',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'idx' => $idx, 'rel' => $lessonmodule->id, 'chinese_phrase' => $lessonmodule->chinese_phrase, 'zhuyin' => $lessonmodule->zhuyin, 'pinyin' => $lessonmodule->pinyin, 'audio' => $lessonmodule->audio])
+            <template x-if="indx === idx">
+            @include('partials.homework.homework-start-module-lw',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'answer' => $form->answers[(string)$lessonmodule->id] ?? '', 'idx' => $idx, 'rel' => $lessonmodule->id, 'chinese_phrase' => $lessonmodule->chinese_phrase, 'zhuyin' => $lessonmodule->zhuyin, 'pinyin' => $lessonmodule->pinyin, 'audio' => $lessonmodule->audio])
+            </template>
             <flux:input id="a{{$idx}}" wire:key="answers.{{$lessonmodule->id}}" type="text" wire:model.defer="form.answers.{{$lessonmodule->id}}" />
         </div>
     </div>
