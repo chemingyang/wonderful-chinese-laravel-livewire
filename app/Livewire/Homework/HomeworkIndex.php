@@ -91,8 +91,4 @@ class HomeworkIndex extends Component
             'user_type' => $this->user->type,
         ]);
     }
-
-    public function clearSessionMessage() {
-        session()->forget('message');
-    }
 }

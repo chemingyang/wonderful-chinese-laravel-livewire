@@ -71,11 +71,7 @@ class StartHomeworklw extends Component
         }
     }
 
-    public function clearSessionMessage() {
-        session()->forget('message');
-    }
-
-    public function validateStep()
+    public function saveStep($increment)
     {
         if ($this->index == $this->maxindex){
             $this->form->submitted_at = date('Y-m-d H:i:s');
@@ -89,10 +85,8 @@ class StartHomeworklw extends Component
                 session()->flash('message', 'Homework started successfully.');
             }
             $this->store();
-            $this->index++; 
+            $this->index+=$increment; 
         } 
-        
-        
     }
 
     public function render()

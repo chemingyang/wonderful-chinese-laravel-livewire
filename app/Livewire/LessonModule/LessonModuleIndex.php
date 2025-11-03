@@ -24,8 +24,4 @@ class LessonModuleIndex extends Component
             'lessonmodules' => LessonModule::with(['lesson', 'character'])->get()
         ]);
     }
-
-    public function clearSessionMessage() {
-        session()->forget('message');
-    }
 }

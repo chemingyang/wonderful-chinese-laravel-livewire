@@ -34,10 +34,10 @@
     </div>
     <flux:separator class="my-4"/>
     <div class="space-y-6 p-3">
-        <flux:button x-show="indx > -1 && indx < maxindx" @click="indx--; $wire.set('index',indx);" variant="filled" class="w-3xs">
+        <flux:button wire:click="saveStep(-1)" x-show="indx > -1 && indx < maxindx" wire:loading.class="opacity-50" variant="filled" class="w-3xs">
             Previous
         </flux:button>
-        <flux:button wire:click="validateStep" x-show="indx > -1 && indx < maxindx" wire:loading.class="opacity-50" variant="primary" class="w-3xs mt-2 float-end"> 
+        <flux:button wire:click="saveStep(1)" x-show="indx > -1 && indx < maxindx" wire:loading.class="opacity-50" variant="primary" class="w-3xs mt-2 float-end"> 
             <span wire:loading.remove>Next</span>
             <span wire:loading>
                 Loading..
@@ -49,13 +49,13 @@
         <flux:input wire:key="lesson_id" type="text" wire:model="form.lesson_id" />
         <flux:input wire:key="started_at" type="text" wire:model="form.started_at" />
         <flux:input wire:key="submitted_at" type="text" wire:model="form.submitted_at" />
-        <flux:button wire:click="validateStep" x-show="indx === maxindx" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2 float-end"> 
+        <flux:button wire:click="saveStep(1)" x-show="indx === maxindx" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2 float-end"> 
             <span wire:loading.remove>Submit</span>
             <span wire:loading>
                 Loading..
             </span>
         </flux:button>
-        <flux:button wire:click="validateStep" x-show="indx === -1" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2"> 
+        <flux:button wire:click="saveStep(1)" x-show="indx === -1" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2"> 
             <span wire:loading.remove>Begin Lesson</span>
             <span wire:loading>
                 Loading..

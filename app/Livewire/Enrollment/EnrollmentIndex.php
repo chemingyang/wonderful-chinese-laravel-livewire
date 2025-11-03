@@ -24,8 +24,4 @@ class EnrollmentIndex extends Component
             'enrollments' => \App\Models\Enrollment::with('course','student')->get()
         ]);
     }
-
-    public function clearSessionMessage() {
-        session()->forget('message');
-    }
 }

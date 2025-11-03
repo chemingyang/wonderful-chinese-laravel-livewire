@@ -23,10 +23,6 @@ class CharacterIndex extends Component
         }
     }
 
-    public function clearSessionMessage() {
-        session()->forget('message');
-    }
-
     public function render()
     {   
         $characters = \App\Models\Character::all();

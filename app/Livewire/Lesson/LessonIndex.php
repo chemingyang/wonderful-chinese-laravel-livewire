@@ -19,11 +19,7 @@ class LessonIndex extends Component
             session()->flash('message', 'Lesson not found.');
         }
     }
-    
-    public function clearSessionMessage() {
-        session()->forget('message');
-    }
-    
+
     public function render()
     {
         return view('livewire.lesson.lesson-index',[
