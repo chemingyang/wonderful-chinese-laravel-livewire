@@ -1,4 +1,5 @@
 <section>
+<script src="{{ asset('js/start-homework.js') }}"></script>
 <div class="space-y-6 p-3">
     <flux:heading size="xl" x-text="$wire.lesson_title"></flux:heading>
 </div>
