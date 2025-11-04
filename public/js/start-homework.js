@@ -95,6 +95,20 @@ function createListGroupItem(index, word) {
 
     return div;
 }
+
+function getValsFromChildren(parent, notempty = false) {
+    let vals = [];
+    const childs = [...parent.getElementsByClassName('list-group-item')];
+    childs.forEach((child, _) => {
+        vals.push(child.getAttribute('data-val'));
+    });
+    // special handling for type==='match' each empty matchbox return 0 to keep its place in answer
+    if (notempty && vals.length === 0) {
+        vals.push("0");
+    }
+    return vals;
+}
+
 function makeSortable(elemIDArr, idx, parent_id, swap=false) {
     // consider maing elemIDArr not an array a check
     if (elemIDArr.length === 0) {
@@ -116,17 +130,23 @@ function makeSortable(elemIDArr, idx, parent_id, swap=false) {
                 name: 'shared'
             },
             onEnd: function (evt) {
-                console.log('hitting onend');
+                // console.log('hitting onend');
                 const parent = document.getElementById(parent_id);
                 if (!parent) {
-                    console.log('cannot find parent container by'+parent_id);
+                    console.log('cannot find parent/grandparent container by'+parent_id);
                     return;
                 }
-                const childs = parent.querySelectorAll('.list-group-item');
                 let vals = [];
-                for (const child of childs) {
-                    vals.push(child.getAttribute('data-val'));
+                // handling for match
+                if (!parent.classList.contains('list-group')) {
+                    const parents = [...parent.getElementsByClassName('list-group')];
+                    parents.forEach((each_parent, i) => {
+                        vals.push(...getValsFromChildren(each_parent, true));
+                    });
+                } else {
+                    vals.push(...getValsFromChildren(parent));
                 }
+
                 let inputElem = document.getElementById('a'+idx);
                 inputElem.value = vals.join(',');
                 inputElem.dispatchEvent(new Event('input'));
