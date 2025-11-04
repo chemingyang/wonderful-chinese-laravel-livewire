@@ -50,9 +50,12 @@ class Login extends Component
         Auth::login($user, $this->remember);
 
         RateLimiter::clear($this->throttleKey());
+        
         Session::regenerate();
-
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        
+        $this->redirect('/dashboard', navigate: true); // Use navigate: true for Livewire's SPA-like navigation
+        //force redirect to dashboard after loggiing in
+        //$this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }
 
     /**

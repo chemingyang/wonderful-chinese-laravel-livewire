@@ -22,7 +22,7 @@
     <div id="q{{$idx}}">Q{{ ($idx+1) }}.{!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}</div>
 <script>
     document.addEventListener('alpine:init', () => {
-        // console.log('abc');
+        console.log('hitting alpine init on fill in blank');
         let idx = "{{$idx}}";
         let data_rel = document.getElementById('q'+idx);
         // console.log(data_rel);
@@ -58,23 +58,27 @@
 @elseif (@$type === 'sort')
     @php
         $sortwords = explode('|',$question);
+        $wordorders = [];
         $sorts = ['sort-'.$idx];
-        if (empty($answer)) {
-            $answer = range(1, $sortwords.length);
-        }
+        //if (empty($answer)) {
+        //    $wordorders = range(1, count($sortwords));
+        //} else {
+        $wordorders = !empty($answer) ? explode(',',$answer) : [];
+        //}
     @endphp
     <span>Q{{ ($idx+1) }}.</span>
     <div x-data="{
-            answer: $wire.form.answers[@js($rel)],
+            wordorders: $wire.form.answers[@js($rel)] ? $wire.form.answers[@js($rel)].split(',') : [],
             init() {}
         }"
         x-init="$nextTick(() => {
-            insertWordBlocks(@js($question), @js($answer), @js($sorts[0]));
-            makeSortable(@js($sorts), @js($idx));
+            insertWordBlocks(@js($sortwords), wordorders, @js($sorts[0]));
+            makeSortable(@js($sorts), @js($idx), @js($sorts[0]));
         })"
         id="{{$sorts[0]}}"
         data-rel="{{$rel}}"
-        class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mt-2 min-h-18">
+        class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mt-2 min-h-18"
+    >
     </div>
 @elseif (@$type === 'drop')
     @php
@@ -83,47 +87,23 @@
         $dropwords = explode('|',$dropparts[1]);
         $drops = ['sort-'.$idx.'-left','sort-'.$idx.'-right'];
     @endphp
-        <span>Q{{ ($idx+1) }}.</span>
-    <!--<div class="grid w-full gap-6 md:grid-cols-2"> -->
-        <div id="{{$drops[0]}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-18 mt-2" >
-        @foreach ($dropwords as $i => $word)
-            <div data-val="{{($i+1)}}" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-4 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1; opacity:75%;"><span class="p-1">{{($i+1)}}. {{$word}}</span></div>
-        @endforeach
-        </div>
+    <span>Q{{ ($idx+1) }}.</span>
+    <div 
+        x-data="{
+            wordorders: $wire.form.answers[@js($rel)] ? $wire.form.answers[@js($rel)].split(',') : [],
+            init() {}
+        }"
+        x-init="$nextTick(() => {
+            insertWordBlocks(@js($dropwords), wordorders, @js($drops[0]), @js($drops[1]));
+            makeSortable(@js($drops), @js($idx), @js($drops[1]));
+        })"
+        id="{{$drops[0]}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-18 mt-2" 
+    >
+    </div>
+    <div class="flex flex-col mr-2 mt-3 w-full">
+        <span class="px-0 py-0 opacity-50 text-left">{{$dropprompt}}</span>
         <div id="{{$drops[1]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-center min-h-18 mt-2">
-            <span style="position:absolute; opacity: 50%;" class="px-6 py-0 filtered">{{$dropprompt}}</span>
-        </div>
-    <!-- </div> -->
-    <script> 
-        document.addEventListener('alpine:init', () => {
-            let elemIDArr = @json($drops);
-            
-            elemIDArr.forEach(function(elemID, i) {
-                let el = document.getElementById(elemID);
-                let settings = {
-                    animation: 150,
-                    group: {
-                        name: 'shared'
-                    },
-                    onEnd: function (evt) { 
-                        let parent = document.getElementById(elemIDArr[1]);
-                        let childs = parent.getElementsByTagName('div');
-                        let idx = "{{$idx}}";
-                        let vals = [];
-                        for (const child of childs) {
-                            vals.push(child.getAttribute('data-val'));
-                        }
-                        let inputElem = document.getElementById('a'+idx);
-                        inputElem.value = vals.join(',');
-                        inputElem.dispatchEvent(new Event('input'));
-                    },
-                    ghostClass: 'blue-background-class'
-                };
-                //this doesn't work :( ensure the dropped items are always sorted
-                new Sortable(el, settings);
-            });
-        }); 
-    </script>
+    </div>
 @elseif (@$type === 'match' || @$type === 'match-x')
     @php
         if ($type === 'match-x') {
@@ -143,93 +123,45 @@
         $matchboxes = explode('|',$matchparts[0]);
         $sortsleft = ['sort-'.$idx.'-left'];
         $sortsright = [];
+        foreach ($matchboxes as $i => $box) {
+            $sortsright[] = 'sort-'.$idx.'-right'.$i;
+        }
         $sortsrightgroup = 'sort-'.$idx.'-rightgroup';
+        //$wordorders = [];
+        //if (empty($answer)) {
+        //    $wordorders = range(1, $matchwords.length);
+        //} else {
+        //    $wordorders = explode(',',$answer);
+        //}
     @endphp
-        <span>Q{{ ($idx+1) }}.</span>
-    <!--<div class="grid w-full gap-6 md:grid-cols-2"> -->
-        <div>
-            <div id="{{$sortsleft[0]}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-18 mt-2">
-            @foreach($matchwords as $i => $word)
-                <div data-val="{{($i+1)}}" class="list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-4 m-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" style="z-index:1; opacity:75%;"><span>{{($i+1)}}. {{$word}}</span></div>
-            @endforeach
+    <span>Q{{ ($idx+1) }}.</span>
+    <div>
+        <div 
+            x-data="{
+                wordorders: $wire.form.answers[@js($rel)] ? $wire.form.answers[@js($rel)].split(',') : [],
+                init() {}
+            }"
+            x-init="$nextTick(() => {
+                //console.log(@js($matchboxes));
+                //console.log(@js($sortsright));
+                insertWordBlocks(@js($matchwords), wordorders, @js($sortsleft[0]), @js($sortsrightgroup));
+                makeSortable(@js($sortsleft), @js($idx), @js($sortsrightgroup));
+                makeSortable(@js($sortsright), @js($idx), @js($sortsrightgroup), true);
+            })"
+            id="{{$sortsleft[0]}}" 
+            class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-18 mt-2"
+        >
+        </div>
+    </div>
+    <div id="{{$sortsrightgroup}}" class="flex justify-right list-parent-group">
+        @foreach($matchboxes as $i => $box)
+            <!-- Move span above the sortable container -->
+            <div class="flex flex-col mr-2 w-full">
+                <span class="px-0 py-0 opacity-50 text-center">{{$box}}</span>
+                <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-center min-h-18"></div>
             </div>
-        </div>
-        <div id="{{$sortsrightgroup}}" class="flex justify-right">
-            @foreach($matchboxes as $i => $box)
-            @php
-                $sortsright[] = 'sort-'.$idx.'-right'.$i;
-            @endphp
-                <!-- Move span above the sortable container -->
-                <div class="flex flex-col mr-2 w-full">
-                    <span class="px-6 py-0 opacity-50 text-center">{{$box}}</span>
-                    <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-center min-h-18"></div>
-                </div>
-            @endforeach
-        </div>
-    <!-- </div> -->
-    <script>
-        document.addEventListener('alpine:init', () => {
-            let elemIDArr = @json($sortsleft);
-            let sortsRightGroup = "{{$sortsrightgroup}}";
-            let settings = {
-                animation: 150,
-                group: {
-                    name: 'origin',
-                    sort: false,
-                },
-                //filter: 'filtered',
-                //put: function (to, from, dragEl, evt) {
-                // Don't allow dropping if trying to drag a filtered element
-                //    if (dragEl.classList.contains('filtered')) {
-                //        return false;
-                //    }
-                //},
-                onEnd: function (evt) {
-                    let parent = document.getElementById(sortsRightGroup);
-                    let childs = parent.getElementsByClassName('list-group');
-                    let idx = "{{$idx}}";
-                    let vals = [];
-                    for (const child of childs) {
-                        let buttons = child.getElementsByClassName('list-group-item');
-                        let val = 0;
-                        if (buttons !== null && buttons.length == 1) { 
-                            val = parseInt(buttons[0].getAttribute('data-val'));
-                        }
-                        vals.push(val);
-                    }
-                    let inputElem = document.getElementById('a'+idx);
-                    inputElem.value = vals.join(',');
-                    inputElem.dispatchEvent(new Event('input'));
-                },
-                ghostClass: 'blue-background-class'
-            };
-            elemIDArr.forEach(function(elemID, i) {
-                let el = document.getElementById(elemID);
-                new Sortable(el, settings);
-            });
-            elemIDArr = @json($sortsright);
-            settings.group.put = function (to, from, dragEl, evt) {
-                // Don't allow dropping if trying to drag a filtered element
-                //if (dragEl.classList.contains('filtered')) {
-                //    return false;
-                //}
-                // Allow swapping if both containers have swap enabled
-                if (to.el.children.length > 0 && from.options.swap && to.options.swap) {
-                    return true;
-                }
-                // Otherwise only allow dropping if container is empty
-                return to.el.children.length <= 1;
-            }
-            // Add swap plugin configuration
-            settings.swap = true; // Enable swap
-            settings.swapClass = 'sortable-swap-highlight'; // CSS class for swap indication
-            settings.swapThreshold = 1; // Threshold for swap to occur (1 = immediate)
-            elemIDArr.forEach(function(elemID, i) {
-                let el = document.getElementById(elemID);
-                new Sortable(el, settings);
-            });
-        }); 
-    </script>
+        @endforeach
+    </div>
     <style>
         .sortable-swap-highlight {
             background-color: rgba(125, 125, 125, 0.3) !important;
