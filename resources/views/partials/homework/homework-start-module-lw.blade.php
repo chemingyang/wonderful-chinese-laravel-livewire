@@ -19,42 +19,23 @@
             $question = $zhuyin.' / '.$pinyin.' : '.$question;
         }        
     @endphp
-    <div id="q{{$idx}}">Q{{ ($idx+1) }}.{!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}</div>
-<script>
-    document.addEventListener('alpine:init', () => {
-        console.log('hitting alpine init on fill in blank');
-        let idx = "{{$idx}}";
-        let data_rel = document.getElementById('q'+idx);
-        // console.log(data_rel);
-        data_rel.addEventListener('keyup', function(event) {
-            //console.log('in f-i-b keyup');
-            let childs = this.children;
-            let vals = [];
-            for (const child of childs) {
-                vals.push(child.value);
-            }
-            // console.log(vals);
-            let inputElem = document.getElementById('a'+idx);
-            inputElem.value = vals.join(',');
-            inputElem.dispatchEvent(new Event('input'));
-        }); 
-    });
-</script>
+    <div
+        x-data="{
+            words: $wire.form.answers[@js($rel)] ? $wire.form.answers[@js($rel)].split(',') : [],
+            init() {}
+        }"
+        x-init="$nextTick(() => {
+            insertTextInput(words, @js($idx));
+            handleTextInput(@js($idx));
+        })"
+        id="q{{$idx}}"
+    >
+        <span>Q{{ ($idx+1) }}<span>
+        {!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}
+    </div>
 @elseif (@$type === 'answer-question')
     <span>Q{{ ($idx+1) }}. {{ $question }}</span>
     <div id="q{{$idx}}" data-rel="{{$rel}}"><flux:textarea rows="10" columns="35" />
-<script>
-    document.addEventListener('alpine:init', () => {
-        let rel = "{{$rel}}";
-        let idx = "{{$idx}}";
-        let data_rel = document.getElementById('q'+idx);
-        data_rel.addEventListener('change', function(event) {
-            let inputElem = document.getElementById('a'+idx);
-            inputElem.value = event.target.value;
-            inputElem.dispatchEvent(new Event('input'));
-        });
-    });
-</script>
 @elseif (@$type === 'sort')
     @php
         $sortwords = explode('|',$question);
@@ -158,13 +139,20 @@
             <!-- Move span above the sortable container -->
             <div class="flex flex-col mr-2 w-full">
                 <span class="px-0 py-0 opacity-50 text-center">{{$box}}</span>
-                <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-center min-h-18"></div>
+                <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-center min-h-18">
+                    <!-- <div style="visibility: hidden; height: 0;"></div> --> <!-- hack to ensure swap does not inhibit drop behavior -->
+                </div>
             </div>
         @endforeach
     </div>
     <style>
         .sortable-swap-highlight {
             background-color: rgba(125, 125, 125, 0.3) !important;
+        }
+        .sortable-list.empty-list {
+            min-height: 8rem; /* Adjust the value as needed */
+            /* Optional: add a border to visualize the drop area */
+            border: 1px dashed #ccc; 
         }
     </style>
 @else

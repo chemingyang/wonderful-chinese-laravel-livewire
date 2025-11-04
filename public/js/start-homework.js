@@ -1,17 +1,64 @@
+function insertTextInput(words, idx) {
+    const container_id = 'q'+idx;
+    const container = document.getElementById(container_id);
+    if (!container) {
+        console.warn('Container not found by id:'+container_id);
+        return;
+    }
+    const childs = [...container.getElementsByClassName('data-target')];
+    if (!childs) {
+        console.warn('input elements in container not found.'+childs);
+        return;
+    }
+    childs.forEach((child, i) => {
+        child.value = words[i] ?? '';
+    });
+}
+
+function handleTextInput(idx) {
+    //console.log('hitting fill in blank-(x) or answer question');
+    const container_id = 'q'+idx;
+    const container = document.getElementById(container_id);
+    if (!container) {
+        console.warn('Container not found by id:'+container_id);
+        return;
+    }
+    // console.log(data_rel);
+    container.addEventListener('keyup', function(event) {
+        //console.log('in f-i-b keyup');
+        const childs = [...this.getElementsByClassName('data-target')];
+        if (!childs) {
+            console.warn('input elements in container not found.'+childs);
+            return;
+        }
+        let vals = [];
+        childs.forEach(child => {
+            vals.push(child.value);
+        }) 
+        //console.log(vals);
+        const inputElemID = 'a'+idx
+        let inputElem = document.getElementById(inputElemID);
+        if (!inputElem) {
+            console.warn('input elem not found by id:'+inputElemID);
+            return;
+        }
+        inputElem.value = vals.join(',');
+        inputElem.dispatchEvent(new Event('input'));
+    }); 
+}
+
 function insertWordBlock(container, sortwords, wordorders) {
-    console.log('hitting insert word block');
-    if (!container || !sortwords || !wordorders || wordorders.length === 0) {
-        console.log('not running insertwordblock');
-        console.log(container);
-        console.log(sortwords);
-        console.log(wordorders);
+    if (!wordorders || wordorders.length === 0) {
+        return;
+    }
+    if (!container || !sortwords) {
+        console.warn('container or sortwords not found');
         return;
     }
     // handling for match, the variable should be a object array containing one word string
     if (typeof wordorders === 'string') {
         wordorders = Array.from({ length: 1 }, (_, i) => ((wordorders)));
     }
-    console.log('ready to sort by wordorders:'+wordorders.join(','));
     const nodes = sortwords.map((word, i) => {
         const orderIndex = wordorders.indexOf(String(i + 1)) ?? i;
         const position = orderIndex === -1 ? -1 : orderIndex;
@@ -44,36 +91,31 @@ function insertWordBlocks(sortwords, wordorders, container_id, to_container_id =
             // generate {'1','2','3',..'n'} object array matching sortwords' length
         const allwordorders = Array.from({ length: sortwords.length }, (_, i) => (( i + 1 ).toString()));
         //}
-        console.log(container_id);
-        console.log(sortwords);
-        console.log(wordorders);
-
         const notwordorders = allwordorders.filter(elem => !wordorders.includes(elem));
         
-        // handling for type='sort'
-        if (!to_container_id) {
+        if (!to_container_id) { // handling for type='sort'
             wordorders = wordorders.length > 0 ? wordorders : notwordorders;
             insertWordBlock(container, sortwords, wordorders);
-        // handling for 'match' & 'drop'
-        } else {
+        } else { // handling for 'match' & 'drop'
+            insertWordBlock(container, sortwords, notwordorders);
             const to_container = document.getElementById(to_container_id);
             if (!to_container) {
                 console.warn('To Container not found by id:'+to_container_id);
                 return;
             }
-            insertWordBlock(container, sortwords, notwordorders);
-
             if (to_container.classList.contains('list-group')) {
                 insertWordBlock(to_container, sortwords, wordorders);
             } else if (to_container.classList.contains('list-parent-group')) {
                 const to_containers = [...to_container.getElementsByClassName('list-group')];
                 if (!to_containers || to_containers.length == 0) {
-                    console.log('cannot find to containers');
+                    console.warn('cannot find to containers');
                     return;
                 }
                 to_containers.forEach((to_each_container, i) => {
                     insertWordBlock(to_each_container, sortwords, wordorders[i]);
                 });
+            } else {
+                console.warn('cannot find destination to_container(s)');
             }
         }
     } catch (error) {
@@ -118,10 +160,8 @@ function makeSortable(elemIDArr, idx, parent_id, swap=false) {
     elemIDArr.forEach(function(elemID, i) {
         let el = document.getElementById(elemID);
         if (!el) {
-            console.log('cannot find sort group');
+            console.warn('cannot find sort group');
             return;
-        } else {
-            console.log('found sort group');
         }
 
         let settings = {
@@ -146,7 +186,6 @@ function makeSortable(elemIDArr, idx, parent_id, swap=false) {
                 } else {
                     vals.push(...getValsFromChildren(parent));
                 }
-
                 let inputElem = document.getElementById('a'+idx);
                 inputElem.value = vals.join(',');
                 inputElem.dispatchEvent(new Event('input'));
@@ -160,14 +199,13 @@ function makeSortable(elemIDArr, idx, parent_id, swap=false) {
                     return true;
                 }
                 // Otherwise only allow dropping if container is empty
-                return to.el.children.length <= 1;
+                return to.el.children.length < 1;
             }
             // Add swap plugin configuration
             settings.swap = true; // Enable swap
             settings.swapClass = 'sortable-swap-highlight'; // CSS class for swap indication
-            settings.swapThreshold = 1; //
+            settings.swapThreshold = 0.75; //
         }
-
         new Sortable(el, settings);
     });
 }

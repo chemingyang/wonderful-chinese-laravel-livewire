@@ -21,7 +21,7 @@
             <template x-if="indx === idx">
             @include('partials.homework.homework-start-module-lw',['type' => $lessonmodule->type, 'question' => $lessonmodule->question, 'answer' => $form->answers[(string)$lessonmodule->id] ?? '', 'idx' => $idx, 'rel' => $lessonmodule->id, 'chinese_phrase' => $lessonmodule->chinese_phrase, 'zhuyin' => $lessonmodule->zhuyin, 'pinyin' => $lessonmodule->pinyin, 'audio' => $lessonmodule->audio])
             </template>
-            <flux:input id="a{{$idx}}" wire:key="answers.{{$lessonmodule->id}}" type="text" wire:model.defer="form.answers.{{$lessonmodule->id}}" />
+            <flux:input id="a{{$idx}}" wire:key="answers.{{$lessonmodule->id}}" type="text" wire:model.defer="form.answers.{{$lessonmodule->id}}" class="hidden" />
         </div>
     </div>
     @endforeach
@@ -35,10 +35,10 @@
     </div>
     <flux:separator class="my-4"/>
     <div class="space-y-6 p-3">
-        <flux:button wire:click="saveStep(-1)" x-show="indx > -1 && indx < maxindx" wire:loading.class="opacity-50" variant="filled" class="w-3xs">
+        <flux:button wire:click="saveStep(-1)" x-show="indx > -1 && indx < maxindx" wire:loading.class="opacity-50" variant="filled" class="w-5xs">
             Previous
         </flux:button>
-        <flux:button wire:click="saveStep(1)" x-show="indx > -1 && indx < maxindx" wire:loading.class="opacity-50" variant="primary" class="w-3xs mt-2 float-end"> 
+        <flux:button wire:click="saveStep(1)" x-show="indx > -1 && indx < maxindx" wire:loading.class="opacity-50" variant="primary" class="w-5xs mt-2 float-end"> 
             <span wire:loading.remove>Next</span>
             <span wire:loading>
                 Loading..
@@ -46,10 +46,10 @@
         </flux:button>
     </div>
     <div>
-        <flux:input wire:key="student_id" type="text" wire:model="form.student_id" />
-        <flux:input wire:key="lesson_id" type="text" wire:model="form.lesson_id" />
-        <flux:input wire:key="started_at" type="text" wire:model="form.started_at" />
-        <flux:input wire:key="submitted_at" type="text" wire:model="form.submitted_at" />
+        <flux:input wire:key="student_id" type="text" wire:model="form.student_id" class="hidden"/>
+        <flux:input wire:key="lesson_id" type="text" wire:model="form.lesson_id" class="hidden" />
+        <flux:input wire:key="started_at" type="text" wire:model="form.started_at" class="hidden" />
+        <flux:input wire:key="submitted_at" type="text" wire:model="form.submitted_at" class="hidden" />
         <flux:button wire:click="saveStep(1)" x-show="indx === maxindx" wire:loading.class="opacity-50" variant="primary" class="w-2xs mt-2 float-end"> 
             <span wire:loading.remove>Submit</span>
             <span wire:loading>
