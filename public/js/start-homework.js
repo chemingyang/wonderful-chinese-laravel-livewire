@@ -48,7 +48,7 @@ function insertWordBlocks(sortwords, wordorders, container_id, to_container_id =
         console.log(sortwords);
         console.log(wordorders);
 
-        const notwordorders = allwordorders.filter(elem => !sortwords.includes(elem));
+        const notwordorders = allwordorders.filter(elem => !wordorders.includes(elem));
         
         // handling for type='sort'
         if (!to_container_id) {
