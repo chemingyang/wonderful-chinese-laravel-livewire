@@ -25,12 +25,12 @@ class CharacterIndex extends Component
 
     public function render()
     {   
-        $characters = \App\Models\Character::all();
-        foreach ($characters as $character) {
-            $lesson = Lesson::find($character->lesson_id);
-            $character->lesson_title = $lesson->title;
-        }
-        
+        $characters = \App\Models\Character::with('lesson:id,title')->get();
+        //foreach ($characters as $character) {
+        //    $lesson = Lesson::find($character->lesson_id);
+        //    $character->lesson_title = $lesson->title;
+        //}
+        //dd($characters);
         return view('livewire.character.character-index', [
             'characters' => $characters,
         ]);

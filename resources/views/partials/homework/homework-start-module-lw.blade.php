@@ -93,7 +93,7 @@
             $pinyin_characters = explode(' ',$pinyin) ?? [];
             $boxes = [];
             foreach ($zhuyin_characters as $i => $zhuyin_character) {
-                $boxes[] = $zhuyin_character . '/' . ($pinyin_characters[$i] ?? '');
+                $boxes[] = $zhuyin_character . ' ' . ($pinyin_characters[$i] ?? '');
             }
             shuffle($boxes);
             shuffle($chinese_characters);
@@ -138,7 +138,11 @@
         @foreach($matchboxes as $i => $box)
             <!-- Move span above the sortable container -->
             <div class="flex flex-col mr-1 w-full h-full">
-                <span class="px-3 py-0 opacity-50 text-center">{{$box}}</span>
+                @php
+                    $boxpart = explode(' ',$box);
+                @endphp
+                <span class="flex px-1 pt-1 opacity-50 text-center justify-center">{{$boxpart[0]}}</span>
+                <span class="flex px-1 pt-1 opacity-50 text-center justify-center">{{$boxpart[1] ?? ''}}</span>
                 <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-bottom min-h-18">
                     <!-- <div style="visibility: hidden; height: 0;"></div> --> <!-- hack to ensure swap does not inhibit drop behavior -->
                 </div>

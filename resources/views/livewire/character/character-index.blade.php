@@ -61,7 +61,7 @@
                             {{ $character->pinyin }}
                         </td>
                         <td class="px-5 py-2">
-                            {{ $character->lesson_title ?? "unassigned" }}
+                            {{ $character->lesson->title ?? "unassigned" }}
                         </td>
                         <td class="px-5 py-2">
                             {{ $character->english_translation }}
