@@ -58,7 +58,7 @@
         })"
         id="{{$sorts[0]}}"
         data-rel="{{$rel}}"
-        class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mt-2 min-h-18"
+        class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 mt-2 min-h-24"
     >
     </div>
 @elseif (@$type === 'drop')
@@ -78,12 +78,12 @@
             insertWordBlocks(@js($dropwords), wordorders, @js($drops[0]), @js($drops[1]));
             makeSortable(@js($drops), @js($idx), @js($drops[1]));
         })"
-        id="{{$drops[0]}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-18 mt-2" 
+        id="{{$drops[0]}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left h-24 min-h-24 mt-2" 
     >
     </div>
     <div class="flex flex-col mr-2 mt-3 w-full">
         <span class="px-0 py-0 opacity-50 text-left">{{$dropprompt}}</span>
-        <div id="{{$drops[1]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-center min-h-18 mt-2">
+        <div id="{{$drops[1]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-24 w-full space-x-1 justify-center min-h-24 mt-2"></div>
     </div>
 @elseif (@$type === 'match' || @$type === 'match-x')
     @php
@@ -130,7 +130,7 @@
                 makeSortable(@js($sortsright), @js($idx), @js($sortsrightgroup), true);
             })"
             id="{{$sortsleft[0]}}" 
-            class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-18 mt-2"
+            class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 justify-left min-h-24 h-24 mt-2"
         >
         </div>
     </div>
@@ -143,7 +143,7 @@
                 @endphp
                 <span class="flex px-1 pt-1 opacity-50 text-center justify-center">{{$boxpart[0]}}</span>
                 <span class="flex px-1 pt-1 opacity-50 text-center justify-center">{{$boxpart[1] ?? ''}}</span>
-                <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer h-full w-full space-x-1 justify-bottom justify-center min-h-18">
+                <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer h-full w-full space-x-1 justify-bottom justify-center min-h-24 h-24">
                     <!-- <div style="visibility: hidden; height: 0;"></div> --> <!-- hack to ensure swap does not inhibit drop behavior -->
                 </div>
             </div>
