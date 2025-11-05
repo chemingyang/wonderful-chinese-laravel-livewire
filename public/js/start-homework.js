@@ -65,7 +65,7 @@ function insertWordBlock(container, sortwords, wordorders) {
 
         return {
             position: position,
-            element: createListGroupItem(i + 1, word)
+            element: createListGroupItem(i + 1, word, sortwords.length)
         };
     });
     // Sort by position and append elements
@@ -122,11 +122,11 @@ function insertWordBlocks(sortwords, wordorders, container_id, to_container_id =
         console.error('Error inserting word blocks:', error);
     }
 }
-function createListGroupItem(index, word) {
+function createListGroupItem(index, word, wordcount) {
     // Create main div
     const div = document.createElement('div');
     div.setAttribute('data-val', index);
-    div.className = 'list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-1 py-1 m-1 min-w-3 w-full item-center justify-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800';
+    div.className = 'flex list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-1 py-1 m-1 w-1/'+wordcount+' item-center justify-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800';
     div.style.zIndex = '1';
     div.style.opacity = '75%';
     // Create span

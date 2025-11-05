@@ -143,7 +143,7 @@
                 @endphp
                 <span class="flex px-1 pt-1 opacity-50 text-center justify-center">{{$boxpart[0]}}</span>
                 <span class="flex px-1 pt-1 opacity-50 text-center justify-center">{{$boxpart[1] ?? ''}}</span>
-                <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-bottom min-h-18">
+                <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer h-full w-full space-x-1 justify-bottom justify-center min-h-18">
                     <!-- <div style="visibility: hidden; height: 0;"></div> --> <!-- hack to ensure swap does not inhibit drop behavior -->
                 </div>
             </div>
