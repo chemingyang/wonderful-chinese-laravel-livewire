@@ -132,7 +132,7 @@ function createListGroupItem(index, word, wordcount) {
     // Create span
     const span = document.createElement('span');
     span.textContent = `${index}. ${word}`;
-    span.className = 'flex px-2 py-2 text-center justify-center text-xl';
+    span.className = 'flex px-4 py-4 text-center justify-center text-xl';
     // Append span to div
     div.appendChild(span);
 
