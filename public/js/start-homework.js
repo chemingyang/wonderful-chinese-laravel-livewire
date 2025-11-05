@@ -126,13 +126,33 @@ function createListGroupItem(index, word, wordcount) {
     // Create main div
     const div = document.createElement('div');
     div.setAttribute('data-val', index);
-    div.className = 'flex list-group-item focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-1 py-1 m-1 w-1/'+wordcount+' item-center justify-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800';
+    div.className = `
+        list-group-item 
+        flex 
+        items-center 
+        justify-center 
+        aspect-square 
+        w-24 
+        h-24 
+        text-white 
+        bg-green-700 
+        hover:bg-green-800 
+        focus:ring-4 
+        focus:ring-green-300 
+        font-medium 
+        rounded-lg 
+        text-sm 
+        m-1 
+        dark:bg-green-600 
+        dark:hover:bg-green-700 
+        dark:focus:ring-green-800
+    `.replace(/\s+/g, ' ').trim();
     div.style.zIndex = '1';
     div.style.opacity = '75%';
     // Create span
     const span = document.createElement('span');
     span.textContent = `${index}. ${word}`;
-    span.className = 'flex px-4 py-4 text-center justify-center text-xl';
+    span.className = 'flex px-1 py-1 text-center justify-center text-xl';
     // Append span to div
     div.appendChild(span);
 
