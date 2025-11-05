@@ -137,9 +137,9 @@
     <div id="{{$sortsrightgroup}}" class="flex justify-right list-parent-group">
         @foreach($matchboxes as $i => $box)
             <!-- Move span above the sortable container -->
-            <div class="flex flex-col mr-2 w-full">
-                <span class="px-0 py-0 opacity-50 text-center">{{$box}}</span>
-                <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-center min-h-18">
+            <div class="flex flex-col mr-1 w-full h-full">
+                <span class="px-3 py-0 opacity-50 text-center">{{$box}}</span>
+                <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer p-1 h-full w-full space-x-1 justify-bottom min-h-18">
                     <!-- <div style="visibility: hidden; height: 0;"></div> --> <!-- hack to ensure swap does not inhibit drop behavior -->
                 </div>
             </div>
