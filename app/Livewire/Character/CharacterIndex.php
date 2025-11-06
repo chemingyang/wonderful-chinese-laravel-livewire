@@ -6,9 +6,76 @@ use Livewire\Component;
 use App\Models\Lesson;
 use App\Models\Character;
 use Illuminate\Support\Facades\Storage;
+use Livewire\WithFileUploads;
+use League\Csv\Reader;
 
 class CharacterIndex extends Component
 {
+    use WithFileUploads;
+
+    public $showImportModal = false;
+    public $csvFile;
+
+    public function importCharacters()
+    {
+        $this->validate([
+            'csvFile' => 'required|file|mimes:csv|max:1024', // max 1MB
+        ]);
+
+        try {
+            $csv = Reader::from($this->csvFile->path(), 'r');
+            $csv->setHeaderOffset(0);
+
+            $records = $csv->getRecords();
+            $imported = 0;
+
+
+
+            foreach ($records as $index => $record) {
+            //dd($record);
+                try{
+                    // Validate required fields
+                    if (empty($record['chinese_phrase']) || empty($record['lesson_id'])) {
+                        throw Exception('no chinese phrase');
+                        continue;
+                    }
+                    // Validate lesson_id exists
+                    if (!Lesson::find($record['lesson_id'])) {
+                        $errors[] = "Row " . ($index + 2) . ": Lesson ID {$record['lesson_id']} not found";
+                        throw Exception('lesson_id not a valid lesson id');
+                        continue;
+                    }
+
+                    Character::create([
+                        'chinese_phrase' => $record['chinese_phrase'],
+                        'zhuyin' => $record['zhuyin'],
+                        'pinyin' => $record['pinyin'],
+                        'lesson_id' => $record['lesson_id'],
+                        'english_translation' => $record['translation'] ?? null,
+                    ]);
+
+                    $imported++;
+                }  catch (\Exception $e) {
+                    $errors[] = "Row " . ($index + 2) . ": " . $e->getMessage();
+                }
+            }
+
+            $this->showImportModal = false;
+            $this->reset('csvFile');
+
+            // Show success message with any errors
+            $message = "Successfully imported {$imported} characters.";
+            if (!empty($errors)) {
+                $message .= " However, there were some errors:\n" . implode("\n", $errors);
+                session()->flash('warning', $message);
+            } else {
+                session()->flash('message', $message);
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error importing characters: ' . $e->getMessage());
+        }
+    }
+
     public function delete($id) {
         $character = Character::find($id);
         if ($character) {
