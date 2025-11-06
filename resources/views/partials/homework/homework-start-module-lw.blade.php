@@ -30,12 +30,12 @@
         })"
         id="q{{$idx}}"
     >
-        <span>Q{{ ($idx+1) }}<span>
-        {!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff" style="width:80px; padding:5px; margin:5px" />',$question); !!}
+        <span class="text-xl">Q{{ ($idx+1) }}<span>
+        {!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff text-xl" style="width:80px; padding:5px; margin:5px" />',$question); !!}
     </div>
 @elseif (@$type === 'answer-question')
-    <span>Q{{ ($idx+1) }}. {{ $question }}</span>
-    <div id="q{{$idx}}" data-rel="{{$rel}}"><flux:textarea rows="10" columns="35" />
+    <span clss="text-xl">Q{{ ($idx+1) }}. {{ $question }}</span>
+    <div id="q{{$idx}}" data-rel="{{$rel}}"><flux:textarea rows="10" columns="35" class="text-xl" />
 @elseif (@$type === 'sort')
     @php
         $sortwords = explode('|',$question);

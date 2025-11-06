@@ -7,16 +7,16 @@
 <div wire:cloak x-data="{ indx: @entangle('index'), maxindx: @js($maxindex) }" id="main-content" class="overflow-y-auto overflow-x-hidden top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-w-3xl max-h-full">
     <div x-show="indx == -1">
         <div id="prompt--1" class="space-y-6 p-3 section">
-            <flux:heading size="xl">Hi <span x-text="$wire.student_name"><span>! Are you ready to begin this lesson?</flux:heading>
+            <flux:heading size="lg">Hi <span x-text="$wire.student_name"><span>! Are you ready to begin this lesson?</flux:heading>
         </div>
         <div id="qa--1" class="space-y-6 p-3 section">
-            <flux:heading size="md">Please click "Next" to start.</flux:heading>
+            <flux:heading size="lg">Please click "Next" to start.</flux:heading>
         </div>
     </div>
     @foreach ($lessonmodules as $idx => $lessonmodule)
     <div x-data="{ idx: @js($idx) }" x-show="indx === idx">
         <div id="prompt-{{$idx}}" class="space-y-6 p-3 section inline-block">
-            <flux:heading size="lg">{{ $lessonmodule->prompt }} </flux:heading>
+            <flux:heading size="xl">{{ $lessonmodule->prompt }} </flux:heading>
         </div>
         <div id="qa-{{$idx}}" class="space-y-6 p-3 section">
             <template x-if="indx === idx">
