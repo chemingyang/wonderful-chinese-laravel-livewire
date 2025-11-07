@@ -39,7 +39,7 @@ class LessonIndex extends Component
                     }
 
                     // Validate course_id exists
-                    if (!Course::find($record['course_id'])) {
+                    if (!Course::getByID($record['course_id'])) {
                         $errors[] = "Row " . ($index + 2) . ": Course ID {$record['course_id']} not found";
                         continue;
                     }

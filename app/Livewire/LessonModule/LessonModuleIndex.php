@@ -42,6 +42,7 @@ class LessonModuleIndex extends Component
             $errors = [];
 
             foreach ($records as $index => $record) {
+                //dd($record);
                 try {
                     // Validate required fields
                     if (empty($record['type']) || empty($record['lesson_id'])) {
@@ -50,13 +51,13 @@ class LessonModuleIndex extends Component
                     }
 
                     // Validate lesson_id exists
-                    if (!Lesson::find($record['lesson_id'])) {
+                    if (!Lesson::findByID($record['lesson_id'])) {
                         $errors[] = "Row " . ($index + 2) . ": Lesson ID {$record['lesson_id']} not found";
                         continue;
                     }
 
                     // Validate character_id if present
-                    if (!empty($record['character_id']) && !Character::find($record['character_id'])) {
+                    if (!empty($record['character_id']) && !Character::findByID($record['character_id'])) {
                         $errors[] = "Row " . ($index + 2) . ": Character ID {$record['character_id']} not found";
                         continue;
                     }
@@ -64,9 +65,10 @@ class LessonModuleIndex extends Component
                     LessonModule::create([
                         'type' => $record['type'],
                         'lesson_id' => $record['lesson_id'],
-                        'character_id' => $record['character_id'] ?: null,
+                        'character_id' => !empty($record['character_id']) ? $record['character_id'] : null,
                         'question' => $record['question'] ?? null,
                         'answer_key' => $record['answer_key'] ?? null,
+                        'weight' => 1,
                     ]);
 
                     $imported++;

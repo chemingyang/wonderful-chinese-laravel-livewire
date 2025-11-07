@@ -45,7 +45,7 @@
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Weight
-                    </th>                    
+                    </th>
                     <th scope="col" class="px-6 py-3">
                         Note
                     </th>
@@ -95,7 +95,7 @@
                         @endrole
                     </tr>
                @empty
-                    <tr>  
+                    <tr>
                         <td colspan="8" class="px-6 py-4 text-center text-gray-500">
                             No lesson Module available.
                         </td>

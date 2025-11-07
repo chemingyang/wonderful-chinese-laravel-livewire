@@ -23,13 +23,11 @@ class CharacterIndex extends Component
         ]);
 
         try {
-            $csv = Reader::from($this->csvFile->path(), 'r');
+            $csv = Reader::createFromPath($this->csvFile->path());
             $csv->setHeaderOffset(0);
 
             $records = $csv->getRecords();
             $imported = 0;
-
-
 
             foreach ($records as $index => $record) {
             //dd($record);
@@ -40,7 +38,7 @@ class CharacterIndex extends Component
                         continue;
                     }
                     // Validate lesson_id exists
-                    if (!Lesson::find($record['lesson_id'])) {
+                    if (!Lesson::findByID($record['lesson_id'])) {
                         $errors[] = "Row " . ($index + 2) . ": Lesson ID {$record['lesson_id']} not found";
                         throw Exception('lesson_id not a valid lesson id');
                         continue;
