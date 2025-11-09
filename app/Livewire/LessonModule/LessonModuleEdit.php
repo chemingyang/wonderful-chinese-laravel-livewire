@@ -3,6 +3,8 @@
 namespace App\Livewire\LessonModule;
 
 use Livewire\Component;
+use Livewire\WithFileUploads;
+
 use App\Models\LessonModule;
 use App\Models\Lesson;
 use App\Models\Character;
@@ -10,6 +12,8 @@ use App\Livewire\Forms\LessonModule\LessonModuleForm;
 
 class LessonModuleEdit extends Component
 {
+    use WithFileUploads;
+
     public LessonModuleForm $form;
     public $lessons;
     public $weightSelect = null;

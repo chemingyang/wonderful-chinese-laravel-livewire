@@ -26,6 +26,24 @@
                 <flux:select.option value="" wire:key="">Please select a lesson first</flux:select.option>
             @endif
         </flux:select>
+        <flux:input
+            wire:model="form.audio"
+            label="Audio"
+            type="file"
+            accept="audio/*" 
+        />
+        @if ($form->lessonmodule->audio)
+            <div class="flex items-center gap-2">
+                <audio id="player-edit" src="{{ asset('storage/' . $form->lessonmodule->audio) }}"></audio>
+                <flux:button size="xs" onclick="document.getElementById('player-edit').play()" class="p-0 border-0 bg-transparent">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+                    </svg>
+                </flux:button>
+                <span class="text-sm text-gray-400">Current audio</span>
+            </div>
+        @endif
         <flux:textarea
             wire:model="form.question"
             label="Question"

@@ -70,7 +70,7 @@ class CharacterIndex extends Component
                 session()->flash('message', $message);
             }
         } catch (\Exception $e) {
-            session()->flash('error', 'Error importing characters: ' . $e->getMessage());
+            session()->flash('warning', 'Error importing characters: ' . $e->getMessage());
         }
     }
 

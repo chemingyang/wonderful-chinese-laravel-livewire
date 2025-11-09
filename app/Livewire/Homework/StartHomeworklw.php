@@ -40,18 +40,18 @@ class StartHomeworklw extends Component
             ->where('l.scheduled_at','<',now())
             ->where('l.completed_at','>',now())
             ->orderBy('lm.weight','ASC')
-            ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight', 'c.chinese_phrase', 'c.zhuyin', 'c.pinyin', 'c.audio')
+            ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight', 'lm.audio', 'c.chinese_phrase', 'c.zhuyin', 'c.pinyin', 'c.audio as wordaudio')
             ->get();
         $this->maxindex = count($this->lessonmodules);
         $this->homework = Homework::where('lesson_id', $lesson_id)->where('student_id', Auth::id())->first() ?? null;
         if (!empty($this->homework)) {
-            if (!empty($this->homework->graded_at)) {
-                session()->flash('message', 'Homework already graded.');
-                return redirect()->route('homeworks.homework-index');
-            } else {
+            //if (!empty($this->homework->graded_at)) {
+            //    session()->flash('message', 'Homework already graded.');
+            //    return redirect()->route('homeworks.homework-index');
+            //} else {
                 $this->form->setHomework($this->homework);
                 $this->index = 0;
-            }
+            //}
         } else {
             $this->form->lesson_id = $lesson_id;
             $this->form->student_id = Auth::id();
@@ -93,10 +93,10 @@ class StartHomeworklw extends Component
     {
         //dd($this->homework);
         //prepare lessonmodules for display
-        $lms = null;
+        //$lms = null;
         foreach ($this->lessonmodules as $lm) {
             $lm->prompt = LessonModule::VALID_LESSON_MODULE_TYPES[$lm->type];
-            $lms[] = $lm;
+            //$lms[] = $lm;
         }
         return view('livewire.homework.start-homework-lw');
     }
