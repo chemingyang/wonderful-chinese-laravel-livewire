@@ -50,9 +50,26 @@ class LessonModuleIndex extends Component
                         continue;
                     }
 
+                    if (!in_array($record['type'],implode(',', array_keys(LessonModule::VALID_LESSON_MODULE_TYPES)))) {
+                        $errors[] = "Row " . ($index + 2) . ": Incorrect type fields";
+                        continue;
+                    }
+
                     // Validate lesson_id exists
                     if (!Lesson::findByID($record['lesson_id'])) {
                         $errors[] = "Row " . ($index + 2) . ": Lesson ID {$record['lesson_id']} not found";
+                        continue;
+                    }
+
+                    // Validate question does not repeat
+                    if (substr($record['type'], -1) != 'x' && LessonModule::where('question', $record['question'])->first()) {
+                        $errors[] = "Row " . ($index + 2) . ": Question {$record['question']} exists.";
+                        continue;
+                    }
+
+                    // Validate character_id does not repeat for x-type
+                    if (substr($record['type'], -1) == 'x' && LessonModule::where('character_id', $record['character_id'])->first()) {
+                        $errors[] = "Row " . ($index + 2) . ": Character id {$record['character_id']} exist.";
                         continue;
                     }
 

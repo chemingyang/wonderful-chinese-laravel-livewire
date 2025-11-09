@@ -26,6 +26,12 @@
                 <flux:select.option value="" wire:key="">Please select a lesson first</flux:select.option>
             @endif
         </flux:select>
+        <flux:input
+            wire:model="form.audio"
+            label="Audio"
+            type="file"
+            accept="audio/*" 
+        />
         <flux:textarea
             wire:model="form.question"
             label="Question"
