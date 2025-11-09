@@ -22,10 +22,6 @@ class CourseIndex extends Component
             session()->flash('message', 'Course not found.');
         }
     }
-    
-    public function clearSessionMessage() {
-        session()->forget('message');
-    }
 
     public function render()
     {

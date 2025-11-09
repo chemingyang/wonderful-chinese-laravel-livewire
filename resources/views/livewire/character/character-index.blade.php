@@ -1,13 +1,21 @@
 <section>
     @role('admin')
-    <div class="flex justify-end mr-6 pb-4">
+    <div class="flex justify-end mr-6 pb-4 space-x-4">
+        <button wire:click="$set('showImportModal', true)" class="text-indigo-500 hover:text-indigo-700 font-medium">
+            <span class="inline-flex mr-1">    
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                </svg>
+                <label>Import Characters</label>
+            </span>
+        </button>
         <a href="{{ route('characters.create') }}" class="text-indigo-500 hover:text-indigo-700 font-medium">
-        <span class="inline-flex mr-1">    
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 22" stroke-width="2.5" stroke="currentColor" class="size-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            <label>Add Character</label>
-        </span>
+            <span class="inline-flex mr-1">    
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 22" stroke-width="2.5" stroke="currentColor" class="size-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <label>Add Character</label>
+            </span>
         </a>
     </div>
     @endrole
@@ -61,7 +69,7 @@
                             {{ $character->pinyin }}
                         </td>
                         <td class="px-5 py-2">
-                            {{ $character->lesson_title ?? "unassigned" }}
+                            {{ $character->lesson->title ?? "unassigned" }}
                         </td>
                         <td class="px-5 py-2">
                             {{ $character->english_translation }}
@@ -97,4 +105,38 @@
         </table>
         @include('partials.message-modal')
     </div>
+    <flux:modal wire:model="showImportModal">
+        <flux:heading>Import Characters</flux:heading>
+        <form wire:submit="importCharacters" enctype="multipart/form-data">
+            <flux:field class="px-5 py-2 space-x-2">
+                <flux:input type="file" wire:model="csvFile" accept=".csv" />
+            </flux:field>
+            <div class="text-sm text-gray-600 px-5 py-2 space-x-2">
+                <p>File must be a CSV with these columns:</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li>chinese_character</li>
+                    <li>zhuyin</li>
+                    <li>pinyin</li>
+                    <li>lesson_id</li>
+                    <li>translation</li>
+                </ul>
+            </div>
+            <div class="mt-4 flex justify-end px-5 py-2 space-x-2">
+                <button wire:click="$set('showImportModal', false)">Cancel</button>
+                <flux:button type="submit">Import</flux:button>
+            </div>
+        </form>
+    </flux:modal>
+    <div>
+        @include('partials.message-modal')
+    </div>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 </section>

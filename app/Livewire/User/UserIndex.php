@@ -18,10 +18,6 @@ class UserIndex extends Component
             session()->flash('message', 'User not found.');
         }
     }
-    
-    public function clearSessionMessage() {
-        session()->forget('message');
-    }
 
     public function render()
     {

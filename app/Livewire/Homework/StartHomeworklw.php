@@ -34,12 +34,13 @@ class StartHomeworklw extends Component
         $this->student_name = $this->student->name;
         $this->lessonmodules =
             DB::table('lesson_modules as lm')
-            ->leftJoin('lessons as l','lm.lesson_id','=','l.id')
+            ->join('lessons as l','lm.lesson_id','=','l.id')
+            ->leftJoin('characters as c','lm.character_id','=','c.id')
             ->where('l.id','=', $lesson_id)
             ->where('l.scheduled_at','<',now())
             ->where('l.completed_at','>',now())
             ->orderBy('lm.weight','ASC')
-            ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight')
+            ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight', 'c.chinese_phrase', 'c.zhuyin', 'c.pinyin', 'c.audio')
             ->get();
         $this->maxindex = count($this->lessonmodules);
         $this->homework = Homework::where('lesson_id', $lesson_id)->where('student_id', Auth::id())->first() ?? null;
@@ -59,8 +60,8 @@ class StartHomeworklw extends Component
     }
 
     public function store() { 
-        $this->form->answers = !empty($this->form->answers) ? json_encode($this->form->answers) : null;
-        $this->form->gradings = !empty($this->form->gradings) ? json_encode($this->form->gradings) : null;
+        //$this->form->answers = !empty($this->form->answers) ? json_encode($this->form->answers) : null;
+        //$this->form->gradings = !empty($this->form->gradings) ? json_encode($this->form->gradings) : null;
         
         if (empty($this->homework)) {
             $this->homework = $this->form->store();
@@ -70,24 +71,22 @@ class StartHomeworklw extends Component
         }
     }
 
-    public function clearSessionMessage() {
-        session()->forget('message');
-    }
-
-    public function validateStep()
+    public function saveStep($increment)
     {
-        if ($this->index === -1){
-            $this->form->started_at = date('Y-m-d H:i:s');
-            $this->index++; // index is synced asynchronously from the alpine variable, from -1 to 0. but the next button click will sync it
-            $this->store();
-        } 
-        
-        if ($this->index === $this->maxindex){
+        if ($this->index == $this->maxindex){
             $this->form->submitted_at = date('Y-m-d H:i:s');
             $this->store();
             session()->flash('message', 'Homework stored successfully.');
             return redirect()->route('homeworks.homework-index');
-        }
+        } else if ($this->index >= -1){
+            //dd(okay);
+            if (empty($this->form->started_at)) {
+                $this->form->started_at = date('Y-m-d H:i:s');
+                session()->flash('message', 'Homework started successfully.');
+            }
+            $this->store();
+            $this->index+=$increment; 
+        } 
     }
 
     public function render()

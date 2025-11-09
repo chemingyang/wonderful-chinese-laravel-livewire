@@ -15,4 +15,9 @@ class Lesson extends Model
 
     // --- IGNORE ----
     protected $hidden = ['created_at', 'updated_at'];
+
+    public static function getByID(int|string $id)
+    {
+        return once(fn () => self::find($id));
+    }
 }

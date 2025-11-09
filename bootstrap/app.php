@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -20,5 +22,18 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (\Throwable $e, $request) {
+            if ($e instanceof AccessDeniedHttpException || 
+                ($e instanceof HttpException && $e->getStatusCode() === 403)) {
+                
+                if ($request->expectsJson()) {
+                    return response()->json([
+                        'message' => 'You are not authorized to access this resource.'
+                    ], 403);
+                }
+
+                return redirect()->route('dashboard')
+                    ->with('error', 'You are not authorized to access that page.');
+            }
+        });
     })->create();

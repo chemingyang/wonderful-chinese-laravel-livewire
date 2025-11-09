@@ -24,9 +24,9 @@ class HomeworkForm extends Form
         $data = $this->validate([
             'lesson_id' => 'required|exists:lessons,id',
             'student_id' => 'required|exists:users,id', // could this be students.id?
-            'answers' => 'nullable|json',
+            'answers' => 'nullable|array',
             'answers.*' => 'nullable|string|max:225',
-            'gradings' => 'nullable|json',
+            'gradings' => 'nullable|array',
             'gradings.*' => 'nullable|string|max:225',
             'started_at' => 'nullable|date',
             'submitted_at' => 'nullable|date',
@@ -41,8 +41,10 @@ class HomeworkForm extends Form
         $this->homework = $homework;
         $this->lesson_id = $homework->lesson_id;
         $this->student_id = $homework->student_id;
-        $this->answers = $homework->answers ? json_decode($homework->answers) : [];
-        $this->gradings = $homework->gradings ? json_decode($homework->gradings) : [];
+        //$this->answers = $homework->answers ? json_decode($homework->answers) : [];
+        //$this->gradings = $homework->gradings ? json_decode($homework->gradings) : [];
+        $this->answers = $homework->answers;
+        $this->gradings = $homework->gradings;
         $this->started_at = $homework->started_at;
         $this->submitted_at = $homework->submitted_at;
         $this->graded_at = $homework->graded_at;
@@ -53,9 +55,9 @@ class HomeworkForm extends Form
         $data = $this->validate([
             'lesson_id' => 'required|exists:lessons,id',
             'student_id' => 'required|exists:users,id', // could this be students.id?
-            'answers' => 'nullable|json',
+            'answers' => 'nullable|array',
             'answers.*' => 'nullable|string|max:225',
-            'gradings' => 'nullable|json',
+            'gradings' => 'nullable|array',
             'gradings.*' => 'nullable|string|max:225',
             'started_at' => 'nullable|date',
             'submitted_at' => 'nullable|date',
