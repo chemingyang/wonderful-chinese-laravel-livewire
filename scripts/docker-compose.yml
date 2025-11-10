@@ -1,0 +1,69 @@
+services:
+  app:
+    build:
+      context: ./wonderful-chinese
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - 9000:9000
+    depends_on:
+      - db
+    env_file:
+      - ./wonderful-chinese/.env
+    volumes:
+      - storage:/usr/share/nginx/html/storage:rw
+      - public:/usr/share/nginx/html/public:rw
+  queue-worker:
+    build:
+      context: ./wonderful-chinese
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: php artisan queue:work
+    environment:
+      IS_WORKER: "true"
+    env_file:
+      - ./wonderful-chinese/.env
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - storage:/usr/share/nginx/html/storage:rw
+      - public:/usr/share/nginx/html/public:rw
+  nginx:
+    image: nginx:1-alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx.conf:/etc/nginx/templates/default.conf.template
+      - storage:/usr/share/nginx/html/storage:rw
+      - public:/usr/share/nginx/html/public:ro
+  db:
+    image: mariadb:latest
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+        MARIADB_DATABASE: ${DB_DATABASE}
+        MARIADB_USER: ${DB_USERNAME}
+        MARIADB_PASSWORD: ${DB_PASSWORD}
+        MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+        - db-data:/var/lib/mariadb
+  redis:
+    image: bitnami/redis:latest
+    platform: linux/amd64
+    ports:
+      - 6379:6379
+    restart: always
+    volumes:
+      - redis-data:/bitnami/redis/data
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+volumes:
+  storage:
+  public:
+  db-data:
+  redis-data:
