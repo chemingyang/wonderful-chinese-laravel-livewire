@@ -50,7 +50,7 @@ class LessonModuleIndex extends Component
                         continue;
                     }
 
-                    if (!in_array($record['type'],implode(',', array_keys(LessonModule::VALID_LESSON_MODULE_TYPES)))) {
+                    if (!in_array($record['type'], array_keys(LessonModule::VALID_LESSON_MODULE_TYPES))) {
                         $errors[] = "Row " . ($index + 2) . ": Incorrect type fields";
                         continue;
                     }

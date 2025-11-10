@@ -44,6 +44,9 @@
                         Audio
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Image
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Answer Key
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -88,6 +91,13 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
                                     </svg>
                                 </flux:button>
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td class="px-5 py-2">
+                            @if ($lessonmodule->image)
+                            <img src="{{ asset('storage/' . $lessonmodule->image) }}" alt="{{ $lessonmodule->type }} image" class="h-8 w-8 rounded-md object-fit"> 
                             @else
                                 -
                             @endif

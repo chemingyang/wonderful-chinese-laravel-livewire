@@ -44,6 +44,22 @@
                 <span class="text-sm text-gray-400">Current audio</span>
             </div>
         @endif
+        <flux:input
+            wire:model="form.image"
+            label="Image"
+            type="file"
+            accept="image/*" 
+        />
+        @if ($form->image)
+            <div class="mt-2">
+                <img src="{{ $form->image->temporaryUrl() }}" alt="Image Preview" class="h-64 w-64 object-cover rounded-lg">
+            </div>
+        @endif
+        @if ($form->lessonmodule->image)
+            <div class="flex">
+                <img src="{{ asset('storage/' . $form->lessonmodule->image) }}" alt="{{ $form->lessonmodule->title }} image" @class(['h-64 w-64 object-cover rounded-lg', 'opacity-20' => $form->image])>
+            </div>
+        @endif
         <flux:textarea
             wire:model="form.question"
             label="Question"

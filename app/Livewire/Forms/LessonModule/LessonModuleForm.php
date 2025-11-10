@@ -16,6 +16,7 @@ class LessonModuleForm extends Form
     public $lesson_id = null;
     public $character_id = null;
     public $audio = null;
+    public $image = null;
     public $question = null;
     public $answer_key = null;
     public $weight = null; 
@@ -27,11 +28,11 @@ class LessonModuleForm extends Form
         $this->type = $lessonmodule->type;
         $this->lesson_id = $lessonmodule->lesson_id;
         $this->character_id = $lessonmodule->character_id;
-        $this->audio = null; // Don't set audio file from existing, only display current audio
         $this->question = $lessonmodule->question;
         $this->answer_key = $lessonmodule->answer_key;
         $this->weight = $lessonmodule->weight;
         $this->note = $lessonmodule->note;
+        // do not set audio or image here.
     }
 
     public function store() {
@@ -40,6 +41,7 @@ class LessonModuleForm extends Form
             'lesson_id' => 'required|exists:lessons,id',
             'character_id' => 'nullable|exists:characters,id',
             'audio' => 'nullable|mimes:mp3|max:1024',
+            'image' => 'nullable|image|max:1024', // 1MB Max
             'question' => [
                 'nullable',
                 Rule::requiredIf(function () {
@@ -57,6 +59,10 @@ class LessonModuleForm extends Form
             $data['audio'] = $this->audio->store('lesson_modules', 'public');
         }
 
+        if ($this->image) {
+            $data['image'] = $this->image->store('lesson_modules', 'public');
+        }
+
         LessonModule::create($data);
         $this->reset();
     }
@@ -67,6 +73,7 @@ class LessonModuleForm extends Form
             'lesson_id' => 'required|exists:lessons,id',
             'character_id' => 'nullable|exists:characters,id',
             'audio' => 'nullable|mimes:mp3|max:1024',
+            'image' => 'nullable|image|max:1024',
             'question' => [
                 'nullable',
                 Rule::requiredIf(function () {
@@ -87,6 +94,15 @@ class LessonModuleForm extends Form
                 Storage::disk('public')->delete($this->lessonmodule->audio); // Delete old audio
             }
             $data['audio'] = $this->audio->store('lesson_modules', 'public');
+        }
+
+        $data['image'] = $this->lessonmodule->image; // keep existing image if no new image is uploaded
+
+        if ($this->image) {
+            if ($this->lessonmodule->image) {
+                Storage::disk('public')->delete($this->lessonmodule->image); // delete old image
+            }
+            $data['image'] = $this->image->store('lesson_modules', 'public');
         }
 
         $this->lessonmodule->update($data);

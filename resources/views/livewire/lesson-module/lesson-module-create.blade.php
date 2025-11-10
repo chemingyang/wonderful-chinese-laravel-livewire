@@ -32,6 +32,12 @@
             type="file"
             accept="audio/*" 
         />
+        <flux:input
+            wire:model="form.image"
+            label="Image"
+            type="file"
+            accept="image/*" 
+        />
         <flux:textarea
             wire:model="form.question"
             label="Question"

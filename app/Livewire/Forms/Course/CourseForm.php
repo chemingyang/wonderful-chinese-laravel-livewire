@@ -54,10 +54,10 @@ class CourseForm extends Form
         $data['slug'] = str()->slug($data['title']);
         if (empty($data['slug'])) $data['slug'] = str()->slug($data['description']); //update the slug if the title has changed, but TBD how do we know it is unique? //update the slug if the title has changed, but TBD how do we know it is unique?
 
-        $data['image'] = $this->course->image; // keep existing image if no new image is uploaded
-
         // tried handled through middleware convertemptystringtonull but no good
         if (empty($data['teacher_id'])) $data['teacher_id'] = null;
+
+        $data['image'] = $this->course->image; // keep existing image if no new image is uploaded
 
         if ($this->image) {
             if ($this->course->image) {

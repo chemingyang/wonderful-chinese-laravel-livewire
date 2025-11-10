@@ -8,7 +8,7 @@ use App\Models\Character;
 
 class LessonModule extends Model
 {   
-    protected $fillable = ['type', 'lesson_id', 'character_id', 'audio', 'question', 'answer_key', 'weight', 'note'];
+    protected $fillable = ['type', 'lesson_id', 'character_id', 'audio', 'image', 'question', 'answer_key', 'weight', 'note'];
 
     const VALID_LESSON_MODULE_TYPES = [
         'fill-in-blank' => '請輸入空格',
