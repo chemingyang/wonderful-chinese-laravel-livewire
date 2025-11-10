@@ -8,6 +8,9 @@
         </svg>
     </flux:button>
     @endif
+    @if ($image)
+    <img src="{{ asset('storage/' . $image) }}" alt="{{ $idx}} image" class="h-64 w-64 rounded-lg" />
+    @endif
 @if (@$type === 'fill-in-blank' || @$type === 'fill-in-blank-x')
     @php
         if ($type === 'fill-in-blank-x') {
@@ -34,9 +37,26 @@
         {!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff text-xl" style="width:80px; padding:5px; margin:5px" />',$question); !!}
     </div>
 @elseif (@$type === 'answer-question')
-    <span clss="text-xl">Q{{ ($idx+1) }}. {{ $question }}</span>
-    <div id="q{{$idx}}" data-rel="{{$rel}}"><flux:textarea rows="10" columns="35" class="text-xl" />
-@elseif (@$type === 'sort')
+    @php
+        $questions = explode('|',$question);
+    @endphp
+    <div
+        x-data="{
+            words: $wire.form.answers[@js($rel)] ? $wire.form.answers[@js($rel)].split(',') : [],
+            init() {}
+        }"
+        x-init="$nextTick(() => {
+            insertTextInput(words, @js($idx));
+            handleTextInput(@js($idx));
+        })"
+        id="q{{$idx}}"
+    >
+        @foeach ($questions as $p => $q)
+        <span clss="text-xl">Q{{ ($idx+1) }}-{{ ($p+1)}}. {{ $q }}</span>
+        <flux:textarea rows="2" columns="30" class="data-target text-xl" />
+        @endforeach
+    </div>
+    @elseif (@$type === 'sort')
     @php
         $sortwords = explode('|',$question);
         $wordorders = [];
