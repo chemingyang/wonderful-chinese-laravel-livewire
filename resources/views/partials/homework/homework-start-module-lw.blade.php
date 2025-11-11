@@ -9,7 +9,7 @@
     </flux:button>
     @endif
     @if ($image)
-    <img src="{{ asset('storage/' . $image) }}" alt="{{ $idx}} image" class="h-64 w-64 rounded-lg" />
+    <img src="{{ asset('storage/' . $image) }}" alt="{{ $idx}} image" class="rounded-lg justify-center" />
     @endif
 @if (@$type === 'fill-in-blank' || @$type === 'fill-in-blank-x')
     @php
@@ -51,7 +51,7 @@
         })"
         id="q{{$idx}}"
     >
-        @foeach ($questions as $p => $q)
+        @foreach ($questions as $p => $q)
         <span clss="text-xl">Q{{ ($idx+1) }}-{{ ($p+1)}}. {{ $q }}</span>
         <flux:textarea rows="2" columns="30" class="data-target text-xl" />
         @endforeach

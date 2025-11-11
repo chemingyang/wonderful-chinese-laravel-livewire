@@ -40,7 +40,7 @@ class StartHomeworklw extends Component
             ->where('l.scheduled_at','<',now())
             ->where('l.completed_at','>',now())
             ->orderBy('lm.weight','ASC')
-            ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight', 'lm.audio', 'c.chinese_phrase', 'c.zhuyin', 'c.pinyin', 'c.audio as wordaudio')
+            ->select('lm.id', 'lm.type', 'lm.lesson_id', 'lm.question', 'lm.answer_key', 'lm.weight', 'lm.audio', 'lm.image', 'c.chinese_phrase', 'c.zhuyin', 'c.pinyin', 'c.audio as wordaudio')
             ->get();
         $this->maxindex = count($this->lessonmodules);
         $this->homework = Homework::where('lesson_id', $lesson_id)->where('student_id', Auth::id())->first() ?? null;
