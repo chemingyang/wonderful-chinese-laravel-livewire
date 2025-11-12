@@ -69,7 +69,8 @@ class LessonModuleEdit extends Component
         $lessonmodule = LessonModule::findByID($id);
         if ($lessonmodule && $lessonmodule->audio) {
             @Storage::disk('public')->delete($lessonmodule->audio);
-            $lessonmodule = $lessonmodule->update(['audio' => null]);
+            $lessonmodule->audio = null;
+            $lessonmodule->update(['audio' => null]);
             $this->form->lessonmodule = $lessonmodule;
             session()->flash('message', 'Audio deleted successfully.');
         }

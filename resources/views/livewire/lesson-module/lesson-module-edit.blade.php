@@ -33,7 +33,7 @@
             accept="audio/*" 
         />
         @if ($form->lessonmodule->audio)
-        <div class="flex justify-between align-items-center gap-3" id="audio-div">
+        <div class="flex justify-between align-items-center gap-3">
             <div class="flex items-center gap-2">
                 <audio id="player-edit" src="{{ asset('storage/' . $form->lessonmodule->audio) }}"></audio>
                 <flux:button size="xs" onclick="document.getElementById('player-edit').play()" class="p-0 border-0 bg-transparent">
