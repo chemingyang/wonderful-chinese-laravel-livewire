@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\LessonModule;
 use App\Models\Lesson;
 use App\Models\Character;
+use Livewire\Attributes\Confirm;
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
 use League\Csv\Reader;
@@ -113,8 +114,14 @@ class LessonModuleIndex extends Component
 
     public function delete($id)
     {
-        $lessonmodule = LessonModule::find($id);
+        $lessonmodule = LessonModule::findByID($id);
         if ($lessonmodule) {
+            if ($lessonmodule->audio) {
+                Storage::disk('public')->delete($lessonmodule->audio);
+            }
+            if ($lessonmodule->image) {
+                Storage::disk('public')->delete($lessonmodule->image);
+            }
             $lessonmodule->delete();
             session()->flash('message', 'Lesson deleted successfully.');
         } else {

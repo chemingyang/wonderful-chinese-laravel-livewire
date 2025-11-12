@@ -4,7 +4,8 @@ namespace App\Livewire\LessonModule;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
-
+use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\Confirm;
 use App\Models\LessonModule;
 use App\Models\Lesson;
 use App\Models\Character;
@@ -59,6 +60,30 @@ class LessonModuleEdit extends Component
             if (!$character || $character->lesson_id != $this->form->lesson_id) {
                 $this->form->character_id = null;
             }
+        }
+    }
+
+
+    public function deleteAudio($id)
+    {
+        $lessonmodule = LessonModule::findByID($id);
+        if ($lessonmodule && $lessonmodule->audio) {
+            @Storage::disk('public')->delete($lessonmodule->audio);
+            $lessonmodule = $lessonmodule->update(['audio' => null]);
+            $this->form->lessonmodule = $lessonmodule;
+            session()->flash('message', 'Audio deleted successfully.');
+        }
+    }
+
+    public function deleteImage($id)
+    {
+        $lessonmodule = LessonModule::findByID($id);
+        if ($lessonmodule && $lessonmodule->image) {
+            Storage::disk('public')->delete($lessonmodule->image);
+            $lessonmodule->image = null;
+            $lessonmodule->update(['image' => null]);
+            $this->form->lessonmodule = $lessonmodule;
+            session()->flash('message', 'Image deleted successfully.');
         }
     }
 

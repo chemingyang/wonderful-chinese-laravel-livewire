@@ -33,6 +33,7 @@
             accept="audio/*" 
         />
         @if ($form->lessonmodule->audio)
+        <div class="flex justify-between align-items-center gap-3" id="audio-div">
             <div class="flex items-center gap-2">
                 <audio id="player-edit" src="{{ asset('storage/' . $form->lessonmodule->audio) }}"></audio>
                 <flux:button size="xs" onclick="document.getElementById('player-edit').play()" class="p-0 border-0 bg-transparent">
@@ -43,6 +44,12 @@
                 </flux:button>
                 <span class="text-sm text-gray-400">Current audio</span>
             </div>
+            <button type="button" 
+                @click="confirm('Are you sure you want to delete this audio?')" 
+                wire:click="deleteAudio({{ $form->lessonmodule->id }})" 
+                class="flex float-right text-xs font-semiboldtext-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-1 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+            >Remove Audio</button>
+        </div>
         @endif
         <flux:input
             wire:model="form.image"
@@ -52,13 +59,20 @@
         />
         @if ($form->image)
             <div class="mt-2">
-                <img src="{{ $form->image->temporaryUrl() }}" alt="Image Preview" class="h-64 w-64 object-cover rounded-lg">
+                <img src="{{ $form->image->temporaryUrl() }}" alt="Image Preview" class="w-80 object-cover rounded-lg">
             </div>
         @endif
         @if ($form->lessonmodule->image)
-            <div class="flex">
-                <img src="{{ asset('storage/' . $form->lessonmodule->image) }}" alt="{{ $form->lessonmodule->title }} image" @class(['h-64 w-64 object-cover rounded-lg', 'opacity-20' => $form->image])>
-            </div>
+            <div class="flex justify-between items-center gap-3">
+                <div class="flex">
+                    <img src="{{ asset('storage/' . $form->lessonmodule->image) }}" alt="{{ $form->lessonmodule->title }} image" @class(['w-80 object-cover rounded-lg', 'opacity-20' => $form->image])>
+                </div>
+                <button type="button" 
+                    @click="confirm('Are you sure you want to delete this image?')" 
+                    wire:click="deleteImage({{ $form->lessonmodule->id }})" 
+                    class="justify-end text-xs font-semiboldtext-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-1 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                >Remove Image</button>
+            </div>  
         @endif
         <flux:textarea
             wire:model="form.question"

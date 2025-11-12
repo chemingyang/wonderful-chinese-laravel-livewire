@@ -30,6 +30,11 @@ class LessonModule extends Model
         return $this->belongsTo(Character::class);
     }
 
+    public static function findByID(int|string $id)
+    {
+        return once(fn () => self::find($id));
+    }
+
     // --- IGNORE ----
     protected $hidden = ['created_at', 'updated_at'];
 }
