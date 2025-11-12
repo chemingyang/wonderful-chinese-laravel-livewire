@@ -38,7 +38,7 @@
     </div>
 @elseif (@$type === 'answer-question')
     @php
-        $questions = explode('|',$question);
+        $questions = array_map('trim', explode('|',$question));
     @endphp
     <div
         x-data="{
@@ -58,7 +58,7 @@
     </div>
     @elseif (@$type === 'sort')
     @php
-        $sortwords = explode('|',$question);
+        $sortwords = array_map('trim', explode('|',$question));
         $wordorders = [];
         $sorts = ['sort-'.$idx];
         //if (empty($answer)) {
@@ -85,7 +85,7 @@
     @php
         $dropparts = explode(':',$question);
         $dropprompt = $dropparts[0];
-        $dropwords = explode('|',$dropparts[1]);
+        $dropwords = array_map('trim', explode('|',$dropparts[1]));
         $drops = ['sort-'.$idx.'-left','sort-'.$idx.'-right'];
     @endphp
     <span>Q{{ ($idx+1) }}.</span>
@@ -120,8 +120,8 @@
             $question = implode('|', $boxes) . ':' . implode('|', $chinese_characters);
         }
         $matchparts = explode(':',$question);
-        $matchwords = explode('|',$matchparts[1]);
-        $matchboxes = explode('|',$matchparts[0]);
+        $matchwords = array_map('trim', explode('|',$matchparts[1]));
+        $matchboxes = array_map('trim', explode('|',$matchparts[0]));
         $sortsleft = ['sort-'.$idx.'-left'];
         $sortsright = [];
         foreach ($matchboxes as $i => $box) {

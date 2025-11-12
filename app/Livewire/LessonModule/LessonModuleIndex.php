@@ -41,42 +41,43 @@ class LessonModuleIndex extends Component
             $records = $csv->getRecords();
             $imported = 0;
             $errors = [];
+            $notices = [];
 
             foreach ($records as $index => $record) {
                 //dd($record);
                 try {
                     // Validate required fields
                     if (empty($record['type']) || empty($record['lesson_id'])) {
-                        $errors[] = "Row " . ($index + 2) . ": Missing required fields";
+                        $notices[] = "Row " . ($index + 2) . ": Missing required fields";
                         continue;
                     }
 
                     if (!in_array($record['type'], array_keys(LessonModule::VALID_LESSON_MODULE_TYPES))) {
-                        $errors[] = "Row " . ($index + 2) . ": Incorrect type fields";
+                        $notices[] = "Row " . ($index + 2) . ": Incorrect type fields";
                         continue;
                     }
 
                     // Validate lesson_id exists
                     if (!Lesson::findByID($record['lesson_id'])) {
-                        $errors[] = "Row " . ($index + 2) . ": Lesson ID {$record['lesson_id']} not found";
+                        $notices[] = "Row " . ($index + 2) . ": Lesson ID {$record['lesson_id']} not found";
                         continue;
                     }
 
                     // Validate question does not repeat
                     if (substr($record['type'], -1) != 'x' && LessonModule::where('question', $record['question'])->first()) {
-                        $errors[] = "Row " . ($index + 2) . ": Question {$record['question']} exists.";
+                        $notices[] = "Row " . ($index + 2) . ": Question {$record['question']} exists.";
                         continue;
                     }
 
                     // Validate character_id does not repeat for x-type
                     if (substr($record['type'], -1) == 'x' && LessonModule::where('character_id', $record['character_id'])->first()) {
-                        $errors[] = "Row " . ($index + 2) . ": Character id {$record['character_id']} exist.";
+                        $notices[] = "Row " . ($index + 2) . ": Character id {$record['character_id']} exist.";
                         continue;
                     }
 
                     // Validate character_id if present
                     if (!empty($record['character_id']) && !Character::findByID($record['character_id'])) {
-                        $errors[] = "Row " . ($index + 2) . ": Character ID {$record['character_id']} not found";
+                        $notices[] = "Row " . ($index + 2) . ": Character ID {$record['character_id']} not found";
                         continue;
                     }
 
@@ -97,11 +98,12 @@ class LessonModuleIndex extends Component
 
             $this->showImportModal = false;
             $this->reset('csvFile');
-
+            $skipped = count($notices);
             // Show success message with any errors
-            $message = "Successfully imported {$imported} lesson modules.";
+            $message = "Successfully imported {$imported} lesson modules, and skipped {$skipped}." . "\n";
             if (!empty($errors)) {
-                $message .= " However, there were some errors:\n" . implode("\n", $errors);
+                $message .= " errors:" . implode("\n", $errors) . "\n";
+                // $message .= " notices:" . implode("\n", $notices) . "\n";
                 session()->flash('warning', $message);
             } else {
                 session()->flash('message', $message);
