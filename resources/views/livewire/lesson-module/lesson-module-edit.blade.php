@@ -1,27 +1,27 @@
 <section>
     <form method="PUT" wire:submit="update" class="flex flex-col max-w-md mx-auto gap-6 bg-slate-900 shadow-2xl rounded-2xl p-4">
-        <flux:select wire:model="form.type" :filter="false" label="Module Type">
+        <flux:select @change="others.checked = false; otherid.disabled = true;" wire:model="form.type" :filter="false" label="Module Type">
             <flux:select.option value="" wire:key="">select a lesson module type</flux:select.option>
             @foreach (array_keys(\App\Models\LessonModule::VALID_LESSON_MODULE_TYPES) as $type)
-                <flux:select.option value="{{ $type }}" wire:key="{{ $type }}">{{ ucfirst($type) }}</flux:select.option>
+            <flux:select.option value="{{ $type }}" wire:key="{{ $type }}">{{ ucfirst($type) }}</flux:select.option>
             @endforeach
         </flux:select>
-        <flux:select wire:model.live="form.lesson_id" :filter="false" label="Lesson">
+        <flux:select @change="others.checked = false; otherid.disabled = true;" wire:model.live="form.lesson_id" :filter="false" label="Lesson">
             <flux:select.option value="" wire:key="">Select a lesson</flux:select.option>
             @foreach ($this->lessons as $lesson)
-                <flux:select.option value="{{ $lesson->id }}" wire:key="{{ $lesson->id }}">
-                    {{ $lesson->title }}
-                </flux:select.option>
+            <flux:select.option value="{{ $lesson->id }}" wire:key="{{ $lesson->id }}">
+                {{ $lesson->title }}
+            </flux:select.option>
             @endforeach
         </flux:select>
         <flux:select wire:model="form.character_id" :filter="false" label="Character" :disabled="!$this->form->lesson_id">
             <flux:select.option value="" wire:key="">Select a character (optional)</flux:select.option>
             @if ($this->form->lesson_id)
-                @foreach ($this->characters as $character)
-                    <flux:select.option value="{{ $character->id }}" wire:key="{{ $character->id }}">
-                        {{ $character->chinese_phrase }} ({{ $character->pinyin }})
-                    </flux:select.option>
-                @endforeach
+            @foreach ($this->characters as $character)
+            <flux:select.option value="{{ $character->id }}" wire:key="{{ $character->id }}">
+                {{ $character->chinese_phrase }} ({{ $character->pinyin }})
+            </flux:select.option>
+            @endforeach
             @else
                 <flux:select.option value="" wire:key="">Please select a lesson first</flux:select.option>
             @endif
@@ -57,8 +57,8 @@
             accept="image/*" 
         />
         <flux:field variant="inline">
-            <flux:checkbox wire:model="others" :disabled="!$this->form->lesson_id||!in_array($this->form->type,['fill-in-blank','answer-question'])" wire:change="getOtherModules()" />
-            <flux:select :filter="false" :disabled="!$this->others" wire:change="setFormImage($event.target.value)">
+            <flux:checkbox id="others" wire:model="others" :disabled="!$this->form->lesson_id" wire:change="getOtherModules()" />
+            <flux:select id="otherid" wire:model="otherid" :filter="false" :disabled="!$this->others || !$this->form->lesson_id" wire:change="setFormImage()">
                 <flux:select.option value="" wire:key="">Use other lesson module's images (optional)</flux:select.option>
                 @if (!empty($othermodules))
                     @foreach ($othermodules as $othermodule)
@@ -133,4 +133,16 @@
             </flux:button>
         </div>
     </form>
+    <div>
+        @include('partials.message-modal')
+    </div>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 </section>

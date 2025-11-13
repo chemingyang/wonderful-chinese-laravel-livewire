@@ -72,16 +72,18 @@ class LessonModuleEdit extends Component
                 ->whereIn('type', ['fill-in-blank','answer-question'])
                 ->whereNotNull('image')
                 ->get(['id','question']);
+        } else {
+            $this->othermodules = null;
         }
     }
 
-    public function setFormImage($val) 
+    public function setFormImage() 
     {
-        if (empty($val)) {
+        if (empty($this->otherid)) {
             $this->form->image = null;
             return;
         }
-        $lm = LessonModule::findByID($val);
+        $lm = LessonModule::findByID($this->otherid);
         if (!empty($lm) && !empty($lm->image)) {
             $this->form->image = $lm->image;
         } else {
