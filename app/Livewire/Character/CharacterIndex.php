@@ -28,6 +28,7 @@ class CharacterIndex extends Component
 
             $records = $csv->getRecords();
             $imported = 0;
+            $updated = 0;
 
             foreach ($records as $index => $record) {
             //dd($record);
@@ -44,15 +45,29 @@ class CharacterIndex extends Component
                         continue;
                     }
 
-                    Character::create([
-                        'chinese_phrase' => $record['chinese_phrase'],
-                        'zhuyin' => $record['zhuyin'],
-                        'pinyin' => $record['pinyin'],
-                        'lesson_id' => $record['lesson_id'],
-                        'english_translation' => $record['translation'] ?? null,
-                    ]);
+                    $char = Character::where('chinese_phrase', $record['chinese_phrase'])->first();
 
-                    $imported++;
+                    if (!empty($char)) {
+                        $char->Update([
+                            'chinese_phrase' => $record['chinese_phrase'],
+                            'zhuyin' => $record['zhuyin'],
+                            'pinyin' => $record['pinyin'],
+                            'lesson_id' => $record['lesson_id'],
+                            'english_translation' => $record['translation'] ?? null,
+                        ]);
+                        $updated++;
+                    } else {
+                        Character::Create([
+                            'chinese_phrase' => $record['chinese_phrase'],
+                            'zhuyin' => $record['zhuyin'],
+                            'pinyin' => $record['pinyin'],
+                            'lesson_id' => $record['lesson_id'],
+                            'english_translation' => $record['translation'] ?? null,
+                        ]);
+                        $imported++;
+                    }
+
+                    
                 }  catch (\Exception $e) {
                     $errors[] = "Row " . ($index + 2) . ": " . $e->getMessage();
                 }
@@ -62,7 +77,7 @@ class CharacterIndex extends Component
             $this->reset('csvFile');
 
             // Show success message with any errors
-            $message = "Successfully imported {$imported} characters.";
+            $message = "Successfully imported {$imported} characters; updated {$updated}.";
             if (!empty($errors)) {
                 $message .= " However, there were some errors:\n" . implode("\n", $errors);
                 session()->flash('warning', $message);

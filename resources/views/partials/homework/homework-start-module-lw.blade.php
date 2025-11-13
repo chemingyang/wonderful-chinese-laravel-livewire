@@ -15,7 +15,11 @@
     @php
         if ($type === 'fill-in-blank-x') {
             $charlength = mb_strlen($chinese_phrase);
-            $offset = intval($question)-1; 
+            if (is_numeric($question) && intval($question) <= $charlength) {
+                $offset = intval($question)-1;
+            } else {
+                $offset = rand(0, charlength-1);
+            }
             $before = mb_substr($chinese_phrase, 0, $offset);
             $after = mb_substr($chinese_phrase, $offset + 1, $charlength - $offset - 1);
             $question = $before . '<>' . $after;
@@ -52,7 +56,7 @@
         id="q{{$idx}}"
     >
         @foreach ($questions as $p => $q)
-        <span clss="text-xl">Q{{ ($idx+1) }}-{{ ($p+1)}}. {{ $q }}</span>
+        <span class="text-xl">Q{{ ($idx+1) }}-{{ ($p+1)}}. {{ $q }}</span>
         <flux:textarea rows="2" columns="30" class="data-target text-xl" />
         @endforeach
     </div>
