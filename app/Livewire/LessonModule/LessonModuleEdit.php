@@ -18,6 +18,8 @@ class LessonModuleEdit extends Component
     public LessonModuleForm $form;
     public $lessons;
     public $weightSelect = null;
+    public $others = false;
+    public $othermodules = null;
     
     public function mount(LessonModule $lessonmodule) {
         $this->form->setLessonModule($lessonmodule);
@@ -63,6 +65,29 @@ class LessonModuleEdit extends Component
         }
     }
 
+    public function getOtherModules()
+    {
+        if ($this->others && $this->form->lesson_id && in_array($this->form->type, ['fill-in-blank','answer-question'])) {
+            $this->othermodules = LessonModule::where('lesson_id', $this->form->lesson_id)
+                ->whereIn('type', ['fill-in-blank','answer-question'])
+                ->whereNotNull('image')
+                ->get(['id','question']);
+        }
+    }
+
+    public function setFormImage($val) 
+    {
+        if (empty($val)) {
+            $this->form->image = null;
+            return;
+        }
+        $lm = LessonModule::findByID($val);
+        if (!empty($lm) && !empty($lm->image)) {
+            $this->form->image = $lm->image;
+        } else {
+            session()->flash('warning', 'Cannot set the image.');
+        }
+    }
 
     public function deleteAudio($id)
     {
@@ -80,6 +105,11 @@ class LessonModuleEdit extends Component
     {
         $lessonmodule = LessonModule::findByID($id);
         if ($lessonmodule && $lessonmodule->image) {
+            //need to make sure no other lesson module is using this image
+            if (LessonModule::where('image', $lessonmodule->image)->count() > 1) {
+                session()->flash('warning', 'other module references this image');
+                return;
+            }
             Storage::disk('public')->delete($lessonmodule->image);
             $lessonmodule->image = null;
             $lessonmodule->update(['image' => null]);

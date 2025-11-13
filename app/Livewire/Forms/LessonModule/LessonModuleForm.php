@@ -35,7 +35,7 @@ class LessonModuleForm extends Form
                 'exists:characters,id',
             ],
             'audio' => 'nullable|mimes:mp3|max:1024',
-            'image' => 'nullable|image|max:1024', // 1MB Max
+            // 'image' => 'nullable|image|max:1024', // 1MB Max
             'question' => [
                 'nullable',
                 Rule::requiredIf(function () {
@@ -89,6 +89,7 @@ class LessonModuleForm extends Form
             if ($this->lessonmodule->audio) {
                 Storage::disk('public')->delete($this->lessonmodule->audio); // Delete old audio
             }
+
             $data['audio'] = $this->audio->store('lesson_modules', 'public');
         }
 
@@ -96,9 +97,15 @@ class LessonModuleForm extends Form
 
         if ($this->image) {
             if ($this->lessonmodule->image) {
-                Storage::disk('public')->delete($this->lessonmodule->image); // delete old image
+                if (LessonModule::where('image', $this->lessonmodule->image)->count() === 1) {
+                    Storage::disk('public')->delete($this->lessonmodule->image); // delete old image    
+                }
             }
-            $data['image'] = $this->image->store('lesson_modules', 'public');
+            if (gettype($this->image) != 'string') {
+                $data['image'] = $this->image->store('lesson_modules', 'public');
+            } else {
+                $data['image'] = $this->image;
+            }
         }
 
         $this->lessonmodule->update($data);

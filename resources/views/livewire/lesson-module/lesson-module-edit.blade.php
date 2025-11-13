@@ -56,9 +56,26 @@
             type="file"
             accept="image/*" 
         />
+        <flux:field variant="inline">
+            <flux:checkbox wire:model="others" :disabled="!$this->form->lesson_id||!in_array($this->form->type,['fill-in-blank','answer-question'])" wire:change="getOtherModules()" />
+            <flux:select :filter="false" :disabled="!$this->others" wire:change="setFormImage($event.target.value)">
+                <flux:select.option value="" wire:key="">Use other lesson module's images (optional)</flux:select.option>
+                @if (!empty($othermodules))
+                    @foreach ($othermodules as $othermodule)
+                    <flux:select.option value="{{ $othermodule->id }}" wire:key="{{ $othermodule->id }}">
+                        {{ $othermodule->question }}
+                    </flux:select.option>
+                    @endforeach
+                @endif
+            </flux:select>
+        </flux:field>
         @if ($form->image)
             <div class="mt-2">
+                @if (gettype($form->image) != 'string')
                 <img src="{{ $form->image->temporaryUrl() }}" alt="Image Preview" class="w-80 object-cover rounded-lg">
+                @else
+                <img src="{{ asset('storage/' . $form->image) }}" alt="Image Preview" class="w-80 object-cover rounded-lg">
+                @endif
             </div>
         @endif
         @if ($form->lessonmodule->image)
