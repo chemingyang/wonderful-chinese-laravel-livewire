@@ -63,8 +63,8 @@ class LessonModuleIndex extends Component
                         continue;
                     }
 
-                    // Validate question does not repeat
-                    if (substr($record['type'], -1) != 'x' && LessonModule::where('question', $record['question'])->first()) {
+                    // Validate question does not repeat for the same lesson
+                    if (substr($record['type'], -1) != 'x' && LessonModule::where('question', $record['question'])->where('lesson_id', $record['lesson_id'])->first()) {
                         $notices[] = "Row " . ($index + 2) . ": Question {$record['question']} exists.";
                         continue;
                     }
@@ -101,9 +101,9 @@ class LessonModuleIndex extends Component
             $skipped = count($notices);
             // Show success message with any errors
             $message = "Successfully imported {$imported} lesson modules, and skipped {$skipped}." . "\n";
-            if (!empty($errors)) {
+            if (!empty($errors) || !empty($notices)) {
                 $message .= " errors:" . implode("\n", $errors) . "\n";
-                // $message .= " notices:" . implode("\n", $notices) . "\n";
+                $message .= " notices:" . implode("\n", $notices) . "\n";
                 session()->flash('warning', $message);
             } else {
                 session()->flash('message', $message);

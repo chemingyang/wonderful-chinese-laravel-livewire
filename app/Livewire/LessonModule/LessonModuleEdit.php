@@ -19,8 +19,9 @@ class LessonModuleEdit extends Component
     public $lessons;
     public $weightSelect = null;
     public $others = false;
+    public $otherid = null;
     public $othermodules = null;
-    
+
     public function mount(LessonModule $lessonmodule) {
         $this->form->setLessonModule($lessonmodule);
         $this->lessons = Lesson::all();

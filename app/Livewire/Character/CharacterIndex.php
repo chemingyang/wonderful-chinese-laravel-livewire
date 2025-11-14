@@ -29,19 +29,21 @@ class CharacterIndex extends Component
             $records = $csv->getRecords();
             $imported = 0;
             $updated = 0;
+            $skipped = 0;
 
             foreach ($records as $index => $record) {
             //dd($record);
                 try{
                     // Validate required fields
                     if (empty($record['chinese_phrase']) || empty($record['lesson_id'])) {
-                        throw Exception('no chinese phrase');
+                        $errors[] = "Row " . ($index + 2) . ": Lesson ID {$record['lesson_id']} or chinese phrase not found";
+                        $skipped++;
                         continue;
                     }
                     // Validate lesson_id exists
                     if (!Lesson::findByID($record['lesson_id'])) {
                         $errors[] = "Row " . ($index + 2) . ": Lesson ID {$record['lesson_id']} not found";
-                        throw Exception('lesson_id not a valid lesson id');
+                        $skipped++;
                         continue;
                     }
 
@@ -67,7 +69,6 @@ class CharacterIndex extends Component
                         $imported++;
                     }
 
-                    
                 }  catch (\Exception $e) {
                     $errors[] = "Row " . ($index + 2) . ": " . $e->getMessage();
                 }
@@ -77,7 +78,7 @@ class CharacterIndex extends Component
             $this->reset('csvFile');
 
             // Show success message with any errors
-            $message = "Successfully imported {$imported} characters; updated {$updated}.";
+            $message = "Successfully imported {$imported} characters; updated {$updated}; skipped {$skipped}.";
             if (!empty($errors)) {
                 $message .= " However, there were some errors:\n" . implode("\n", $errors);
                 session()->flash('warning', $message);
