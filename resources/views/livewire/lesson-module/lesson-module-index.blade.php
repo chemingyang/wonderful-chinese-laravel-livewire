@@ -57,7 +57,7 @@
                     </th>
                     @role('admin')
                     <th scope="col" class="px-6 py-3">
-                        Actions
+                        <span class="flex justify-center">Actions</span>
                     </th>
                     @else
                     <th></th>
