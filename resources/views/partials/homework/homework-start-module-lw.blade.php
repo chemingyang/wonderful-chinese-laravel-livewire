@@ -1,15 +1,19 @@
 <flux:fieldset>
     @if ($audio)
-    <audio id="player{{$idx}}" src="{{ asset('storage/' . $audio) }}"></audio>
-    <flux:button size="xs" id="playbutton{{$idx}}" onclick="document.getElementById('player{{$idx}}').play()" class="p-0 border-0 bg-transparent">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
-        </svg>
-    </flux:button>
+    <div class="mt-1 mb-4">
+        <audio id="player{{$idx}}" src="{{ asset('storage/' . $audio) }}"></audio>
+        <flux:button size="xs" id="playbutton{{$idx}}" onclick="document.getElementById('player{{$idx}}').play()" class="p-0 border-0 bg-transparent">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+            </svg>
+        </flux:button>
+    </div>
     @endif
     @if ($image)
-    <img src="{{ asset('storage/' . $image) }}" alt="{{ $idx}} image" class="rounded-lg justify-center" />
+    <div class="mb-6">
+        <img src="{{ asset('storage/' . $image) }}" alt="{{ $idx}} image" class="rounded-lg justify-center" />
+    </div>
     @endif
 @if (@$type === 'fill-in-blank' || @$type === 'fill-in-blank-x')
     @php
@@ -24,7 +28,7 @@
             $after = mb_substr($chinese_phrase, $offset + 1, $charlength - $offset - 1);
             $question = $before . '<>' . $after;
             $question = $zhuyin.' / '.$pinyin.' : '.$question;
-        }        
+        }
     @endphp
     <div
         x-data="{
@@ -37,7 +41,7 @@
         })"
         id="q{{$idx}}"
     >
-        <span class="text-xl">Q{{ ($idx+1) }}<span>
+        <span class="text-xl">Q.{{ ($idx+1) }}<span>
         {!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff text-xl" style="width:80px; padding:5px; margin:5px" />',$question); !!}
     </div>
 @elseif (@$type === 'answer-question')
@@ -56,7 +60,7 @@
         id="q{{$idx}}"
     >
         @foreach ($questions as $p => $q)
-        <span class="text-xl">Q{{ ($idx+1) }}-{{ ($p+1)}}. {{ $q }}</span>
+        <span class="text-xl">Q.{{ ($idx+1).(count($questions) > 1 ? '-'.($p+1) : '').' '.$q }}</span>
         <flux:textarea rows="2" columns="30" class="data-target text-xl" />
         @endforeach
     </div>
@@ -71,7 +75,7 @@
         $wordorders = !empty($answer) ? explode(',',$answer) : [];
         //}
     @endphp
-    <span>Q{{ ($idx+1) }}.</span>
+    <span class="text-xl">Q.{{ ($idx+1) }}.</span>
     <div x-data="{
             wordorders: $wire.form.answers[@js($rel)] ? $wire.form.answers[@js($rel)].split(',') : [],
             init() {}
@@ -92,7 +96,7 @@
         $dropwords = array_map('trim', explode('|',$dropparts[1]));
         $drops = ['sort-'.$idx.'-left','sort-'.$idx.'-right'];
     @endphp
-    <span>Q{{ ($idx+1) }}.</span>
+    <span class="text-xl">Q.{{ ($idx+1) }}.</span>
     <div 
         x-data="{
             wordorders: $wire.form.answers[@js($rel)] ? $wire.form.answers[@js($rel)].split(',') : [],
@@ -139,7 +143,7 @@
         //    $wordorders = explode(',',$answer);
         //}
     @endphp
-    <span>Q{{ ($idx+1) }}.</span>
+    <span class="text-xl">Q.{{ ($idx+1) }}.</span>
     <div>
         <div 
             x-data="{
@@ -160,17 +164,16 @@
     </div>
     <div id="{{$sortsrightgroup}}" class="flex justify-right list-parent-group">
         @foreach($matchboxes as $i => $box)
-            <!-- Move span above the sortable container -->
-            <div class="flex flex-col mr-1 w-full h-full">
-                @php
-                    $boxpart = explode(' ',$box);
-                @endphp
-                <span class="flex pt-1 opacity-50 text-center justify-center h-3">{{$boxpart[0]}}</span>
-                <span class="flex pt-1 opacity-50 text-center justify-center h-4">{{$boxpart[1] ?? ''}}</span>
-                <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer h-full w-full space-x-1 justify-bottom justify-center min-h-28 h-28 px-1 py-1 mt-2">
-                    <!-- <div style="visibility: hidden; height: 0;"></div> --> <!-- hack to ensure swap does not inhibit drop behavior -->
-                </div>
+        <div class="flex flex-col mr-1 w-full h-full">
+            @php
+                $boxpart = explode(' ',$box);
+            @endphp
+            <span class="flex pt-1 opacity-50 text-center justify-center h-3">{{$boxpart[0]}}</span>
+            <span class="flex pt-1 opacity-50 text-center justify-center h-4">{{$boxpart[1] ?? ''}}</span>
+            <div id="{{$sortsright[$i]}}" data-rel="{{$rel}}" class="flex list-group border border-gray-200 rounded-lg cursor-pointer h-full w-full space-x-1 justify-bottom justify-center min-h-28 h-28 px-1 py-1 mt-2">
+                <!-- <div style="visibility: hidden; height: 0;"></div> --> <!-- hack to ensure swap does not inhibit drop behavior -->
             </div>
+        </div>
         @endforeach
     </div>
 @else

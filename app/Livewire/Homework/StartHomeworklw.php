@@ -44,13 +44,14 @@ class StartHomeworklw extends Component
             ->get();
         $this->maxindex = count($this->lessonmodules);
         $this->homework = Homework::where('lesson_id', $lesson_id)->where('student_id', Auth::id())->first() ?? null;
+
         if (!empty($this->homework)) {
             //if (!empty($this->homework->graded_at)) {
             //    session()->flash('message', 'Homework already graded.');
             //    return redirect()->route('homeworks.homework-index');
             //} else {
                 $this->form->setHomework($this->homework);
-                $this->index = 0;
+                $this->index = is_numeric($this->form->step) && intval($this->form->step) > 0 ? intval($this->form->step) : 0;
             //}
         } else {
             $this->form->lesson_id = $lesson_id;
@@ -61,8 +62,8 @@ class StartHomeworklw extends Component
 
     public function store() { 
         //$this->form->answers = !empty($this->form->answers) ? json_encode($this->form->answers) : null;
-        //$this->form->gradings = !empty($this->form->gradings) ? json_encode($this->form->gradings) : null;
-        
+        //$this->form->gradings = !empty($this->form->gradings) ? json_encode($this->form->gradings) : null;    
+
         if (empty($this->homework)) {
             $this->homework = $this->form->store();
             $this->form->setHomework($this->homework);
@@ -86,23 +87,16 @@ class StartHomeworklw extends Component
             }
             $this->store();
             $this->index+=$increment; 
+            $this->form->step = $this->index;
         } 
     }
 
     public function render()
     {
         //dd($this->homework);
-        //prepare lessonmodules for display
-        //$lms = null;
         foreach ($this->lessonmodules as $lm) {
             $lm->prompt = LessonModule::VALID_LESSON_MODULE_TYPES[$lm->type];
-            //$lms[] = $lm;
         }
         return view('livewire.homework.start-homework-lw');
     }
-
-    //public function updateWordOrder($val)
-    //{
-    //    $this->wordorder = $val;
-    //}
 }

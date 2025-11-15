@@ -36,14 +36,12 @@
     </div>
     <flux:separator class="my-4"/>
     <div class="space-y-6 p-3">
-        <flux:button wire:click="saveStep(-1)" x-show="indx > -1 && indx < maxindx" wire:loading.class="opacity-50" variant="filled" class="w-5xs">
-            Previous
+        <flux:button wire:click="saveStep(-1)" x-show="indx > -1 && indx < maxindx" wire:loading.class="opacity-50" variant="filled" class="w-3xs">
+            <span>上一題</span>
         </flux:button>
-        <flux:button wire:click="saveStep(1)" x-show="indx > -1 && indx < maxindx" wire:loading.class="opacity-50" variant="primary" class="w-5xs mt-2 float-end"> 
-            <span wire:loading.remove>Next</span>
-            <span wire:loading>
-                Loading..
-            </span>
+        <flux:button wire:click="saveStep(1)" x-show="indx > -1 && indx < maxindx" wire:loading.class="opacity-50" variant="primary" class="w-3xs mt-2 float-end"> 
+            <span wire:loading.remove>下一題</span>
+            <span wire:loading>Loading..</span>
         </flux:button>
     </div>
     <div>
