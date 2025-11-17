@@ -17,6 +17,10 @@ class LessonModuleIndex extends Component
 
     public $showImportModal = false;
     public $csvFile;
+    public $selected_lesson = null;
+    public $lessonmodules = null;
+    public $lessons = null;
+    public $characters = null;
 
     public function importLessonModules()
     {
@@ -145,10 +149,25 @@ class LessonModuleIndex extends Component
         }
     }
     
+    public function mount() {
+        $lessons = Lesson::get(['id','title'])->toArray();
+        $characters = Character::get(['id','chinese_phrase'])->toArray();
+        $lessons_arr = [];
+        $characters_arr = [];
+        foreach ($lessons as $lesson) {
+            $lessons_arr[$lesson['id']] = $lesson['title'];
+        }
+        foreach ($characters as $character) {
+            $characters_arr[$character['id']] = $character['chinese_phrase'];
+        }
+        $this->lessons = $lessons_arr;
+        $this->characters = $characters_arr;
+        //dd([$this->lessons, $this->characters]);
+        $this->lessonmodules = LessonModule::all();
+    }
+
     public function render()
     {
-        return view('livewire.lesson-module.lesson-module-index', [
-            'lessonmodules' => LessonModule::with(['lesson', 'character'])->get()
-        ]);
+        return view('livewire.lesson-module.lesson-module-index');
     }
 }

@@ -15,7 +15,7 @@ class CharacterIndex extends Component
 
     public $showImportModal = false;
     public $csvFile;
-
+    public $selected_lesson = null;
     public function importCharacters()
     {
         $this->validate([
@@ -106,7 +106,12 @@ class CharacterIndex extends Component
 
     public function render()
     {   
-        $characters = \App\Models\Character::with('lesson:id,title')->get();
+        $characters = \App\Models\Character::all();
+        $lessons = \App\Models\Lesson::all();
+        $lessons_arr = [];
+        foreach ($lessons as $lesson) {
+            $lessons_arr[$lesson['id']] = $lesson['title'];
+        }
         //foreach ($characters as $character) {
         //    $lesson = Lesson::find($character->lesson_id);
         //    $character->lesson_title = $lesson->title;
@@ -114,6 +119,7 @@ class CharacterIndex extends Component
         //dd($characters);
         return view('livewire.character.character-index', [
             'characters' => $characters,
+            'lessons'=> $lessons_arr,
         ]);
     }
 }
