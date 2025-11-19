@@ -33,8 +33,8 @@ services:
     image: nginx:1-alpine
     restart: unless-stopped
     ports:
-      - 8008:80
-      - 4430:443
+      - 80:80
+      - 443:443
     volumes:
       - ./nginx.conf:/etc/nginx/templates/default.conf.template
       - ./wonderful-chinese/storage:/usr/share/nginx/html/storage:rw
@@ -50,7 +50,7 @@ services:
       MARIADB_PASSWORD: ${DB_PASSWORD}
       MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - ./db-data:/var/lib/mariadb
+      - db-data:/var/lib/mysql
   redis:
     image: bitnami/redis:latest
     platform: linux/amd64
@@ -65,3 +65,4 @@ services:
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
 volumes:
   redis-data:
+  db-data:
