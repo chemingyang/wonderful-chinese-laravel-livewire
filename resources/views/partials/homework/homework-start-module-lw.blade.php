@@ -42,7 +42,7 @@
         id="q{{$idx}}"
     >
         <span class="text-xl">Q.{{ ($idx+1) }}<span>
-        {!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff text-xl" style="width:80px; padding:5px; margin:5px" />',$question); !!}
+        {!! str_replace('<>','<input type="text" class="data-target inline border-1 border-color:#fff text-xl" style="width:' . ($type === 'fill-in-blank' ? 160 : 80) . 'px; padding:5px; margin:5px" />',$question); !!}
     </div>
 @elseif (@$type === 'answer-question')
     @php
@@ -61,7 +61,7 @@
     >
         @foreach ($questions as $p => $q)
         <span class="text-xl">Q.{{ ($idx+1).(count($questions) > 1 ? '-'.($p+1) : '').' '.$q }}</span>
-        <flux:textarea rows="2" columns="30" class="data-target text-xl" />
+        <flux:textarea rows="2" columns="30" class="data-target text-xl mt-1 mb-2" />
         @endforeach
     </div>
     @elseif (@$type === 'sort')
@@ -123,7 +123,7 @@
             foreach ($zhuyin_characters as $i => $zhuyin_character) {
                 $boxes[] = $zhuyin_character . ' ' . ($pinyin_characters[$i] ?? '');
             }
-            shuffle($boxes);
+            // shuffle($boxes);
             shuffle($chinese_characters);
             $question = implode('|', $boxes) . ':' . implode('|', $chinese_characters);
         }
