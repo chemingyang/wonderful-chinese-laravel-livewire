@@ -3,9 +3,19 @@
 namespace App\Livewire\Word;
 
 use Livewire\Component;
+use App\Models\Word;
 
 class WordIndex extends Component
 {
+    public $levels = null;
+    public $words = null;
+    public $selected_level = null;
+
+    public function mount() {
+        $this->levels = array_keys(Word::VALID_LEVELS);
+        $this->words = Word::all();
+    }
+
     public function delete($id) {
         $word = Word::findByID($id);
         if ($word) {
@@ -18,10 +28,6 @@ class WordIndex extends Component
 
     public function render()
     {
-        $words = \App\Models\Word::all();
-
-        return view('livewire.word.word-index', [
-            'words' => $words,
-        ]);
+        return view('livewire.word.word-index');
     }
 }

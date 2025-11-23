@@ -1,5 +1,5 @@
 <section>
-    <form method="PUT" wire:submit="update" class="flex flex-col max-w-md mx-auto gap-6 bg-slate-900 shadow-2xl rounded-2xl p-4">
+    <form method="PUSH" wire:submit="store" class="flex flex-col max-w-md mx-auto gap-6 bg-slate-900 shadow-2xl rounded-2xl p-4">
         <flux:select wire:model="form.level" :filter="false" label="Level">
             <flux:select.option value="" wire:key="">Select a Level</flux:select.option>
             @foreach ($this->levels as $level)
@@ -78,7 +78,7 @@
         
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">
-                {{ 'Update Word' }}
+                {{ 'Create Word' }}
             </flux:button>
         </div>
     </form>

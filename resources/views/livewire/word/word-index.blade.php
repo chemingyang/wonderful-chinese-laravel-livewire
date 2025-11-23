@@ -1,5 +1,15 @@
 <section>
     <div class="flex justify-between align-items-center gap-3">
+        <div class="flex pb-2">
+            <flux:select :filter="false" wire:model.live="selected_level">
+                <flux:select.option value="" wire:key="">Select a level</flux:select.option>
+                @foreach ($levels as $level)
+                    <flux:select.option value="{{ $level }}" wire:key="{{ $level }}">
+                        {{ $level }}
+                    </flux:select.option>
+                @endforeach
+            </flux:select>
+        </div>
         @role('admin')
         <div class="flex justify-end pb-2 space-x-4">
             <!--
@@ -10,9 +20,8 @@
                     </svg>
                     <label>Import Words</label>
                 </span>
-            </button>
-            -->
-            <button onclick="{{ route('words.index') }}" class="text-indigo-500 hover:text-indigo-700 font-medium">
+            </button> -->
+            <a href="{{ route('words.create') }}" class="text-indigo-500 hover:text-indigo-700 font-medium">
                 <span class="inline-flex mr-1">    
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 22" stroke-width="2.5" stroke="currentColor" class="size-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -70,7 +79,8 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse (@$words as $i => $word)
+                @forelse (@$this->words as $i => $word)
+                @if (empty($selected_level) || $word->level === $selected_level)
                    <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                         <th scope="row" class="px-5 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $word->id }}
@@ -124,6 +134,7 @@
                         <td></td>
                         @endrole
                     </tr>
+                @endif    
                 @empty
                     <tr>
                         <td colspan="6" class="px-6 py-4 text-center text-gray-500">

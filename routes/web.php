@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
         Route::get('lessonmodules/{lessonmodule}/edit', \App\Livewire\LessonModule\LessonModuleEdit::class)->name('lessonmodules.edit');
         Route::get('characters/create', \App\Livewire\Character\CharacterCreate::class)->name('characters.create');
         Route::get('characters/{character}/edit', \App\Livewire\Character\CharacterEdit::class)->name('characters.edit');
+        Route::get('words/create', \App\Livewire\Word\WordCreate::class)->name('words.create');
         Route::get('words/{word}/edit', \App\Livewire\Word\WordEdit::class)->name('words.edit');
     });
 
