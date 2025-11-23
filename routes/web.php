@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
         Route::get('courses', \App\Livewire\Course\CourseIndex::class)->name('courses.index');
         Route::get('lessons', \App\Livewire\Lesson\LessonIndex::class)->name('lessons.index');
         Route::get('characters', \App\Livewire\Character\CharacterIndex::class)->name('characters.index');
+        Route::get('words', \App\Livewire\Word\WordIndex::class)->name('words.index');
         Route::get('users', \App\Livewire\User\UserIndex::class)->name('users.index');
         Route::get('enrollments', \App\Livewire\Enrollment\EnrollmentIndex::class)->name('enrollments.index');
         Route::get('lessonmodules', \App\Livewire\LessonModule\LessonModuleIndex::class)->name('lessonmodules.index');
@@ -56,6 +57,7 @@ Route::middleware('auth')->group(function () {
         Route::get('lessonmodules/{lessonmodule}/edit', \App\Livewire\LessonModule\LessonModuleEdit::class)->name('lessonmodules.edit');
         Route::get('characters/create', \App\Livewire\Character\CharacterCreate::class)->name('characters.create');
         Route::get('characters/{character}/edit', \App\Livewire\Character\CharacterEdit::class)->name('characters.edit');
+        Route::get('words/{word}/edit', \App\Livewire\Word\WordEdit::class)->name('words.edit');
     });
 
     Route::group(['middleware' => ['role:student|teacher']], function () {
