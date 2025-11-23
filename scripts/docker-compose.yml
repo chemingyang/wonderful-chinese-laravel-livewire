@@ -33,9 +33,10 @@ services:
     image: nginx:1-alpine
     restart: unless-stopped
     ports:
-      - 80:80
+      - 8008:80
       - 443:443
     volumes:
+      - ./.htpasswd:/etc/nginx/.htpasswd
       - ./nginx.conf:/etc/nginx/templates/default.conf.template
       - ./wonderful-chinese/storage:/usr/share/nginx/html/storage:rw
       - ./wonderful-chinese/public:/usr/share/nginx/html/public:ro
