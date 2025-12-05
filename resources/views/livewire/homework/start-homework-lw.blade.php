@@ -16,7 +16,7 @@
     @foreach ($lessonmodules as $idx => $lessonmodule)
     <div x-data="{ idx: @js($idx) }" x-show="indx === idx">
         <div id="prompt-{{$idx}}" class="space-y-6 p-3 section inline-block">
-            <flux:heading size="xl">{{ $lessonmodule->prompt }} </flux:heading>
+            <flux:heading size="lg">{{ $lessonmodule->prompt }} </flux:heading>
         </div>
         <div id="qa-{{$idx}}" class="space-y-6 p-3 section">
             <template x-if="indx === idx">
