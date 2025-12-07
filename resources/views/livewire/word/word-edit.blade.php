@@ -59,7 +59,7 @@
             autofocus
             placeholder="translation"  
         />
-        <flux:select wire:model="form.book_id" :filter="false" label="Book ID`">
+        <flux:select wire:model="form.book_id" :filter="false" label="Book ID">
             <flux:select.option value="" wire:key="">Select a Book ID</flux:select.option>
             @foreach ($this->book_ids as $book_id)
                 <flux:select.option value="{{ $book_id }}" wire:key="{{ $book_id }}">
@@ -75,6 +75,13 @@
                 </flux:select.option>
             @endforeach
         </flux:select>
+        <flux:input
+            wire:model="form.stroke_code"
+            label="Stroke Code"
+            type="text"
+            autofocus
+            placeholder="stroke code"  
+        />
         
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">

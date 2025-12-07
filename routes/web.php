@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
         Route::get('users', \App\Livewire\User\UserIndex::class)->name('users.index');
         Route::get('enrollments', \App\Livewire\Enrollment\EnrollmentIndex::class)->name('enrollments.index');
         Route::get('lessonmodules', \App\Livewire\LessonModule\LessonModuleIndex::class)->name('lessonmodules.index');
+        Route::get('cards', \App\Livewire\Cards\CardsIndex::class)->name('cards.index');
     });
     Route::group(['middleware' => ['role:admin']], function () {
         Route::get('courses/create', \App\Livewire\Course\CourseCreate::class)->name('courses.create');

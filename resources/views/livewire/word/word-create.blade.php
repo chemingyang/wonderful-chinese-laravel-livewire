@@ -75,7 +75,13 @@
                 </flux:select.option>
             @endforeach
         </flux:select>
-        
+        <flux:input
+            wire:model="form.stroke_code"
+            label="Stroke Code"
+            type="text"
+            autofocus
+            placeholder="stroke code"  
+        />
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">
                 {{ 'Create Word' }}

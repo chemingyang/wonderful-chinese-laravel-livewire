@@ -19,6 +19,7 @@ class WordForm extends Form
     public $category = '';
     public $english = '';
     public $lesson_id = '';
+    public $stroke_code = '';
     public $book_id = ''; 
     private $validation_rule = [
             'level' => 'required|string|max:255',
@@ -30,6 +31,7 @@ class WordForm extends Form
             'zhuyin' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'english' => 'nullable|string|max:255',
+            'stroke_code' => 'nullable|string|max:255',
             'book_id' => 'nullable|string|max:255',
             'lesson_id' => 'nullable|string|max:255',
         ];
@@ -46,7 +48,8 @@ class WordForm extends Form
         $this->category = $word->category;
         $this->english = $word->english ?? '';
         $this->book_id = $word->book_id ?? '';
-        $this->lesson_id = $world->lesson_id ?? '';
+        $this->lesson_id = $word->lesson_id ?? '';
+        $this->stroke_code = $word->stroke_code ?? '';
     }
 
     public function store() {

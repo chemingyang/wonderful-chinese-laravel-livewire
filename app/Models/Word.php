@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Word extends Model
 {
-    protected $fillable = ['level', 'type', 'subtype', 'traditional', 'simplified', 'zhuyin', 'pinyin', 'category', 'english', 'book_id', 'lesson_id'];
+    protected $fillable = ['level', 'type', 'subtype', 'traditional', 'simplified', 'zhuyin', 'pinyin', 'category', 'english', 'book_id', 'lesson_id', 'stroke_code'];
 
     const VALID_LEVELS = [
         '萌芽級' => '萌芽級',

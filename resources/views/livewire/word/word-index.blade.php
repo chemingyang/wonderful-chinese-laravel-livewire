@@ -69,6 +69,9 @@
                     <th scope="col" class="px-6 py-3">
                         Lesson
                     </th>
+                    <th scope="col" class="px-6 py-3">
+                        Stroke
+                    </th>
                     @role('admin')
                     <th scope="col" class="px-6 py-3">
                         <span class="flex justify-center">Actions</span>
@@ -115,6 +118,9 @@
                         <td class="px-5 py-2">
                             {{ $word->lesson_id }}
                         </td>
+                        <td class="px-5 py-2">
+                            {{ $word->stroke_code }}
+                        </td>   
                         @role('admin')
                         <td class="px-5 py-2 space-x-2">
                             <div class="flex item-center justify-center">
