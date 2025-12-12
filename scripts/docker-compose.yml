@@ -40,15 +40,7 @@ services:
       - ./nginx.conf:/etc/nginx/templates/default.conf.template
       - ./wonderful-chinese/storage:/usr/share/nginx/html/storage:rw
       - ./wonderful-chinese/public:/usr/share/nginx/html/public:ro
-      - certbot/conf:/etc/letsencrypt
-      - certbot/www:/var/www/certbot
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes: 
-      - certbot/conf:/etc/letsencrypt
-      - certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email tweedybirdster@gmail.com -d wonderful-learning.ca --agree-tos
+      - /etc/letsencrypt:/etc/letsencrypt
   db:
     image: mariadb:latest
     restart: always
