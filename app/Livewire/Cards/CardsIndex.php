@@ -4,8 +4,11 @@ namespace App\Livewire\Cards;
 
 use Livewire\Component;
 use App\Models\Word;
-use BaconQrCode\Renderer\Image\Png;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
+use Illuminate\Support\Facades\Storage;
 
 class CardsIndex extends Component
 {
@@ -21,12 +24,14 @@ class CardsIndex extends Component
         foreach ($this->words as $word) {
             if (!empty($word->stroke_code)) {
                 $url = "https://stroke-order.learningweb.moe.edu.tw/dictView.jsp?ID=" . $word->stroke_code;
-                $renderer = new Png(); // Or use GDLibRenderer/ImagickImageBackEnd
-                $renderer->setHeight(128);
-                $renderer->setWidth(128);
-
+                $renderer = new ImageRenderer(
+                    new RendererStyle(400),
+                    new ImagickImageBackEnd()
+                );
                 $writer = new Writer($renderer);
-                $writer->write($url, 'storage/stroke_codes/' . $word->traditional . '.png');
+                $content = $writer->writeString($url);
+                Storage::disk('public')->put('stroke_code/' . $word->id . '.png', $content);
+
 
 
             } else {
