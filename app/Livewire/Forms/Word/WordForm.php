@@ -5,6 +5,12 @@ namespace App\Livewire\Forms\Word;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 use App\Models\Word;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class WordForm extends Form
 {
@@ -52,9 +58,24 @@ class WordForm extends Form
         $this->stroke_code = $word->stroke_code ?? '';
     }
 
+    public function createQRCode($stroke_code) {
+        if (!File::exists(public_path('stroke_code/'.$stroke_code.'.png'))) {
+            $url = "https://stroke-order.learningweb.moe.edu.tw/dictView.jsp?ID=" . $stroke_code;
+            $renderer = new ImageRenderer(
+                new RendererStyle(200),
+                new ImagickImageBackEnd()
+            );
+            $writer = new Writer($renderer);
+            $content = $writer->writeString($url);
+            Storage::disk('public')->put('stroke_code/' . $stroke_code . '.png', $content);
+        }
+    }
+
     public function store() {
         $data = $this->validate($this->validation_rule);
-
+        if (!empty($data['stroke_code'])) {
+            $this->createQRCode($data['stroke_code']);
+        }
         // see function update
         Word::create($data);
         $this->reset();
@@ -62,7 +83,9 @@ class WordForm extends Form
 
     public function update() {
         $data = $this->validate($this->validation_rule);
-
+        if (!empty($data['stroke_code'])) {
+            $this->createQRCode($data['stroke_code']);
+        }
         $this->word->update($data);
         $this->reset();
     }
