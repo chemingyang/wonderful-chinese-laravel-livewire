@@ -2,6 +2,8 @@ FROM php:8.4-fpm
 
 # Update package list and install dependencies
 RUN apt-get update && apt-get install -y \
+    libmagickwand-dev --no-install-recommends \
+    imagemagick \
     libzip-dev \
     libpng-dev \
     mariadb-client \
@@ -9,7 +11,9 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     npm \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
