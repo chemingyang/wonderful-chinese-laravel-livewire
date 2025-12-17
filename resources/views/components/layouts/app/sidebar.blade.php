@@ -23,6 +23,7 @@
                     <flux:navlist.item icon="chat-bubble-bottom-center-text" :href="route('lessonmodules.index')" :current="request()->routeIs('lessonmodules.*')" wire:navigate>{{ __('Lesson Modules') }}</flux:navlist.item>
                     <flux:navlist.item icon="chat-bubble-left-right" :href="route('characters.index')" :current="request()->routeIs('characters.*')" wire:navigate>{{ __('Characters') }}</flux:navlist.item>
                     <flux:navlist.item icon="language" :href="route('words.index')" :current="request()->routeIs('words.*')" wire:navigate>{{ __('Words') }}</flux:navlist.item>
+                    <flux:navlist.item icon="credit-card" :href="route('cards.index')" :current="request()->routeIs('cards.*')" wire:navigate>{{ __('Cards') }}</flux:navlist.item>
                     @endrole
                     @hasanyrole('student|teacher')
                     <flux:navlist.item icon="pencil-square" :href="route('homeworks.homework-index')" :current="request()->routeIs('homeworks.*')" wire:navigate>{{ __('Homework') }}</flux:navlist.item>
