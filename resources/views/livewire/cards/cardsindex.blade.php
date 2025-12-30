@@ -1,8 +1,15 @@
 <section>
     <div class="flex justify-end mr-6 pb-4">
+        @if ($offset > 0)
+        <a href="{{ route('cards.index', ['offset' => $offset-1]) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">
+        <span class="inline-flex mr-1">    
+            <label>Previous Card</label>
+        </span>
+        </a>&nbsp;|&nbsp;
+         @endif
         <a href="{{ route('cards.index', ['offset' => $offset+1]) }}" class="text-indigo-500 hover:text-indigo-700 font-medium">
         <span class="inline-flex mr-1">    
-            <label>Next Page</label>
+            <label>Next Card</label>
         </span>
         </a>
     </div>
