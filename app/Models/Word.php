@@ -108,4 +108,74 @@ class Word extends Model
     {
         return once(fn () => self::find($id));
     }
+
+    // --- View helper accessors (computed once per model instance) ---
+    public function getSanitizedEnglishAttribute(): string
+    {
+        $english = $this->english ?? '';
+
+        return preg_replace('/\s*\/\s*/', '/', trim(preg_replace('/\([^)]*\)/', '', $english)));
+    }
+
+    public function getEnglishWordCountAttribute(): int
+    {
+        $english = $this->sanitized_english;
+        $words = array_filter(preg_split('/[\/\s]+/', $english), function ($w) { return $w !== ''; });
+
+        return count($words);
+    }
+
+    public function getTraditionalCharsAttribute(): string
+    {
+        return explode('/', $this->traditional ?? '')[0] ?? '';
+    }
+
+    public function getTraditionalFullWidthCountAttribute(): int
+    {
+        $traditional = $this->traditional_chars;
+        $chars = preg_split('//u', $traditional, -1, PREG_SPLIT_NO_EMPTY);
+        $count = 0;
+        foreach ($chars as $c) {
+            if (preg_match('/\p{Han}/u', $c)) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+    public function getTraditionalFontSizeAttribute(): string
+    {
+        $fullWidthCount = $this->traditional_full_width_count;
+
+        if ($fullWidthCount <= 2) {
+            return '56px';
+        }
+
+        return match ($fullWidthCount) {
+            3 => '46px',
+            4 => '36px',
+            5 => '26px',
+            default => '20px',
+        };
+    }
+
+    public function getEnglishFontSizeAttribute(): string
+    {
+        $count = $this->english_word_count;
+
+        if ($count >= 12) {
+            return '12px';
+        }
+
+        if ($count >= 9) {
+            return '15px';
+        }
+
+        if ($count >= 7) {
+            return '18px';
+        }
+
+        return '20px';
+    }
 }
