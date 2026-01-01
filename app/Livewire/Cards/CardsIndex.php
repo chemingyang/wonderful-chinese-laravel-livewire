@@ -6,6 +6,9 @@ use Livewire\Component;
 use Livewire\Attributes\Url;
 use App\Models\Word;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CardsIndex extends Component
 {
@@ -58,6 +61,38 @@ class CardsIndex extends Component
     {
         $this->offset = (string)max(0, intval($this->offset) - 1);
         $this->loadWords();
+    }
+    
+
+    public function pdf(): void
+    {
+        $pdf = Pdf::loadView('pdf.cards', ['words' => $this->words]);
+
+        $filename = "cards_{$this->offset}.pdf";
+
+        try {
+            // Ensure the pdf directory exists on the public disk
+            Storage::disk('public')->makeDirectory('pdf');
+
+            $written = Storage::disk('public')->put('pdf/' . $filename, $pdf->output());
+
+            if (! $written) {
+                Log::error('CardsIndex PDF write failed', ['filename' => $filename, 'offset' => $this->offset]);
+                $this->dispatch('cards-pdf-error', message: 'Failed to save PDF');
+                return;
+            }
+
+            $publicUrl = asset("storage/pdf/{$filename}");
+
+            Log::info('CardsIndex PDF saved', ['filename' => $filename, 'url' => $publicUrl]);
+
+            // Notify the browser to download the file
+            $this->dispatch('cards-pdf-ready', url: $publicUrl, filename: $filename);
+
+        } catch (\Throwable $e) {
+            Log::error('CardsIndex PDF error', ['exception' => $e]);
+            $this->dispatch('cards-pdf-error', message: 'Failed to generate PDF');
+        }
     }
     
     public function render()

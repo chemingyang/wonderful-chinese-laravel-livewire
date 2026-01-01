@@ -1,12 +1,15 @@
 <section>
     <div class="flex justify-end mr-6 pb-4">
-        @if ($offset > 0)
+        <a wire:click="pdf" class="text-indigo-500 hover:text-indigo-700 font-medium" download>
+            <span class="inline-flex mr-1">    
+                <label>Create PDF</label>
+            </span>
+        </a>&nbsp;|&nbsp;
         <a href="{{ route('cards.index', ['offset' => $offset-1]) }}" wire:click.prevent="previous" class="text-indigo-500 hover:text-indigo-700 font-medium">
         <span class="inline-flex mr-1">    
             <label>Previous Card</label>
         </span>
         </a>&nbsp;|&nbsp;
-         @endif
         <a href="{{ route('cards.index', ['offset' => $offset+1]) }}" wire:click.prevent="next" class="text-indigo-500 hover:text-indigo-700 font-medium">
         <span class="inline-flex mr-1">    
             <label>Next Card</label>
@@ -60,4 +63,32 @@
             height: 240px;
         }
     </style>
+
+    <script>
+        // Listen for the PDF being ready and trigger a download in the browser
+        window.addEventListener('cards-pdf-ready', function (e) {
+            var url = e.detail.url;
+            var filename = e.detail.filename || 'cards.pdf';
+
+            try {
+                var a = document.createElement('a');
+                a.href = url;
+                a.setAttribute('download', filename);
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+                // Fallback: open in new tab after a brief delay
+                setTimeout(function () { window.open(url, '_blank'); }, 200);
+            } catch (err) {
+                console.error('Download failed, opening in new tab', err);
+                window.open(url, '_blank');
+            }
+        });
+
+        window.addEventListener('cards-pdf-error', function (e) {
+            var message = e.detail.message || 'Failed to create PDF';
+            alert(message);
+        });
+    </script>
 </section>
