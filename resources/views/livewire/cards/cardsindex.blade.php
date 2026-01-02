@@ -37,58 +37,68 @@
     </div>
     @endforeach
     <style>
-        .front {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px;
-            width: 160px;
-            height: 240px;
-
-        }
-        .back {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px;
-            width: 160px;
-            height: 240px;
-        }
+    .front {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+        width: 160px;
+        height: 240px;
+    }
+    .back {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+        width: 160px;
+        height: 240px;
+    }
     </style>
 
     <script>
         // Listen for the PDF being ready and trigger a download in the browser
         window.addEventListener('cards-pdf-ready', function (e) {
             var url = e.detail.url;
-            var filename = e.detail.filename || 'cards.pdf';
-
+            // var filename = e.detail.filename || 'cards.pdf';
+            console.log('PDF ready for download:', url);
             try {
-                var a = document.createElement('a');
-                a.href = url;
-                a.setAttribute('download', filename);
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
+                // var a = document.createElement('a');
+                // a.href = url;
+                // a.setAttribute('download', filename);
+                // document.body.appendChild(a);
+                // a.click();
+                // a.remove();
 
                 // Fallback: open in new tab after a brief delay
                 setTimeout(function () { window.open(url, '_blank'); }, 200);
             } catch (err) {
                 console.error('Download failed, opening in new tab', err);
-                window.open(url, '_blank');
+                // window.open(url, '_blank');
             }
         });
 
         window.addEventListener('cards-pdf-error', function (e) {
-            var message = e.detail.message || 'Failed to create PDF';
-            alert(message);
+            // Provide the user with a clearer message and guidance
+            var message = e.detail.message || 'Failed to save PDF on the server';
+            var details = e.detail.details || '';
+            var full = 'Failed to save PDF. ' + message;
+
+            if (details) {
+                full += '\n\nDetails: ' + details;
+            }
+
+            full += '\n\nSuggestion: Check server logs (storage/logs/laravel.log) for more details and verify that the `storage` directory is writable and has enough space.';
+
+            // Use a simple alert for now; could be replaced with a toast/modal in future
+            alert(full);
         });
     </script>
 </section>
