@@ -17,7 +17,7 @@
         </a>
     </div>
     @foreach ($words as $word)
-    <div class="flex">
+    <div cclass="flex">
         <flux:badge class="space-y-6 front inline-block">
             <div style="margin-bottom:0px;"><span>{{ $word->level }}&nbsp;{{$word->subtype}}</span></div>
             <div style="min-height:86px; margin-bottom:0px; display:flex; align-items:center; justify-content:center;"><span style="font-size: 20px; display:inline-block; width:100%; text-align:center;">{{ explode('/',$word->pinyin)[0] }}</span></div>
