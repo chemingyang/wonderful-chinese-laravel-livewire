@@ -121,10 +121,6 @@ class CardsIndex extends Component
 
 
         $pdf->loadView('pdf.cards', ['words' => $this->words]);
-        //$pdf->loadHTML('<h1>Test</h1>'); // Temporarily load minimal HTML to test PDF generation
-        //$output =$pdf->stream();
-
-        // dd($output);
 
         $filename = "cards_{$this->offset}.pdf";
 
