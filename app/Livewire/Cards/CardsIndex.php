@@ -18,7 +18,7 @@ class CardsIndex extends Component
     #[Url]
     public $offset = '0';
     private $step = 1;
-    
+
     public function mount()
     {
         // Allow a bit more execution time for slow environments
@@ -53,30 +53,26 @@ class CardsIndex extends Component
 
     public function next(): void
     {
-        $this->offset = (string)(intval($this->offset) + 1);
+        $this->offset = (string) (intval($this->offset) + 1);
         $this->loadWords();
     }
 
     public function previous(): void
     {
-        $this->offset = (string)max(0, intval($this->offset) - 1);
+        $this->offset = (string) max(0, intval($this->offset) - 1);
         $this->loadWords();
     }
-    
+
 
     public function pdf(): void
     {
         // Initialize DomPDF options (enable remote assets & HTML5 parser)
         $options = Pdf::getDomPDF()->getOptions();
-        //if ($options !== null) {
         $options->set('isFontSubsettingEnabled', true);
         $options->set('isPhpEnabled', true);
         $options->set('isRemoteEnabled', true);
         $options->set('isHtml5ParserEnabled', true);
-        //}
-
         $pdf = Pdf::setPaper('a4', 'landscape');
-        //if ($options !== null) {
         $pdf->getDomPDF()->setOptions($options);
         //}
         /*
@@ -132,17 +128,36 @@ class CardsIndex extends Component
 
         $filename = "cards_{$this->offset}.pdf";
 
-        try{
-            Storage::disk('public')->put("pdf/{$filename}", $pdf->output());
+        try {
+            // Ensure the pdf directory exists on the public disk
+            Storage::disk('public')->makeDirectory('pdf');
+
+            $written = Storage::disk('public')->put("pdf/{$filename}", $pdf->output());
+
+            if (!$written) {
+                Log::error('CardsIndex PDF write failed', ['filename' => $filename, 'offset' => $this->offset]);
+                $this->dispatch('cards-pdf-error', message: 'Failed to save PDF');
+                return;
+            }
+
+            $publicUrl = asset("storage/pdf/{$filename}");
+
+            Log::info('CardsIndex PDF saved', ['filename' => $filename, 'url' => $publicUrl]);
+
+            // Notify the browser to download the file
+            $this->dispatch('cards-pdf-ready', url: $publicUrl, filename: $filename);
+
         } catch (\Exception $e) {
             Log::error("Failed to create PDF file: " . $e->getMessage());
+            $this->dispatch('cards-pdf-error', message: 'Failed to generate PDF');
         } finally {
             Log::info("PDF generation attempted for offset {$this->offset}, filename: {$filename}");
         }
-        
+
+
         // Storage::disk('public')->put("pdf/{$filename}", $output);
     }
-    
+
     public function render()
     {
         return view('livewire.cards.cardsindex');
