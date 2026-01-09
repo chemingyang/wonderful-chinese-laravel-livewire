@@ -33,7 +33,7 @@ services:
     image: nginx:1-alpine
     restart: unless-stopped
     ports:
-      - 8008:80
+      - 80:80
       - 443:443
     volumes:
       - ./.htpasswd:/etc/nginx/.htpasswd
@@ -52,7 +52,7 @@ services:
       MARIADB_PASSWORD: ${DB_PASSWORD}
       MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - db-data:/var/lib/mysql
+      - ./db-data:/var/lib/mysql
   redis:
     image: bitnami/redis:latest
     platform: linux/amd64
@@ -67,5 +67,3 @@ services:
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
 volumes:
   redis-data:
-  db-data:
-  certbot:
