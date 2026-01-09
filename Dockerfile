@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y \
     imagemagick \
     libzip-dev \
     libpng-dev \
+    libfreetype-dev \
+    libjpeg62-turbo-dev \
     mariadb-client \
     libpq-dev \
     nodejs \
@@ -13,7 +15,11 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && pecl install imagick \
-    && docker-php-ext-enable imagick
+    && docker-php-ext-enable imagick \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-enable gd \
+    && apt-get clean;
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
