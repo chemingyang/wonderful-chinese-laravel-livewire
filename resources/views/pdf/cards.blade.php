@@ -15,26 +15,29 @@
         }
 
         .front {
-
+            display: inline-block;
+            justify-content: center;
+            align-items: center;
             border: 1px solid #bbb;
             border-radius: 10px;
             padding: 10px;
             /* reduced padding for more usable area */
-            margin: 10px;
+            margin: 5px 20px 5px 20px;
             /* reduced margin so more cards fit per row */
-            width: 180px;
-            height: 305px;
+            width: 190px;
+            height: 300px;
         }
 
         .back {
+            display: inline-block;
             border: 1px solid #bbb;
             border-radius: 10px;
             padding: 10px;
             /* reduced padding */
-            margin: 10px;
+            margin: 5px 20px 5px 20px;
             /* reduced margin */
-            width: 180px;
-            height: 305px;
+            width: 190px;
+            height: 300px;
         }
 
         .back img {
@@ -42,11 +45,11 @@
         }
     </style>
 </head>
-
 <body>
-    @foreach ($words as $word)
-        <div class="justify-end mr-6 pb-4">
-            <flux:badge class="space-y-6 front inline-block">
+    <div style="text-align: center; padding-top: 15px;">
+        <div style="display: block; margin-top: 5px; padding-top: 5px; width: 100%;">
+            @foreach ($words as $word)    
+            <flux:badge class="space-y-6 front">
                 <div
                     style="margin-bottom:0px; font-size: 18px; font-family: 'Noto Sans TC'; display:inline-block; width:100%; text-align:center;">
                     <span>
@@ -58,17 +61,9 @@
                         style="font-family: 'Noto Sans TC'; font-size: 20px; display:inline-block; width:100%; text-align:center;">{{ explode('/', $word->pinyin)[0] }}
                     </span>
                 </div>
-                @php
-                    // Scale up the traditional font a bit to make characters more readable in print
-                    //preg_match('/^(\d+)(\w*)$/', trim((string) ($word->traditional_font_size ?? '96px')), $m);
-                    //$tNum = 96;
-                    $tUnit = 'px';
-                    // tScaled = (int) max(12, round($tNum * 1.20));
-                    $tScaled = '96';
-                @endphp
                 <div style="min-height:160px;">
                     <span
-                        style="font-size: {{ $tScaled }}{{ $tUnit }}; 
+                        style="font-size: {{ $word->traditional_font_size_for_print ?? '96px' }}; 
                                 padding: 6px 0px; 
                                 line-height: 0.95; 
                                 font-family: 'Noto Sans TC'; 
@@ -85,9 +80,13 @@
                     </span>
                 </div>
             </flux:badge>
+            @endforeach
+        </div>
+        <div style="display: block; margin-top: 5px; padding-top: 5px; width: 100%;">
+            @foreach ($words as $word)
             <flux:badge class="space-y-6 back inline-block">
                 <div
-                    style="height: 60px; margin:0px; padding: 0px; font-size: 16px; font-family: 'Noto Sans TC'; line-height: 1.15; white-space: normal; overflow-wrap: anywhere; word-break: break-word; display:inline-block; width:100%; text-align:center;">
+                    style="height: 60px; margin:0px; padding: 0px; font-size: 20px; font-family: 'Noto Sans TC'; line-height: 1.0; white-space: normal; overflow-wrap: anywhere; word-break: break-word; display:inline-block; width:100%; text-align:center;">
                     <span>
                         {{ $word->category }}<br>{{ $word->sanitized_english }}
                     </span>
@@ -115,8 +114,9 @@
                     </span>
                 </div>
             </flux:badge>
+            @endforeach
         </div>
-    @endforeach
+    </div>
 </body>
 
 </html>

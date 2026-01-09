@@ -160,6 +160,23 @@ class Word extends Model
         };
     }
 
+    public function getTraditionalFontSizeForPrintAttribute(): string
+    {
+        $fullWidthCount = $this->traditional_full_width_count;
+
+        if ($fullWidthCount <= 1) {
+            return '96px';
+        }
+
+        return match ($fullWidthCount) {
+            2 => '80px',
+            3 => '66px',
+            4 => '50px',
+            5 => '34px',
+            default => '24px',
+        };
+    }
+
     public function getEnglishFontSizeAttribute(): string
     {
         $count = $this->english_word_count;

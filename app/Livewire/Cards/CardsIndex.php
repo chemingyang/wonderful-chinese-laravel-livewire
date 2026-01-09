@@ -17,7 +17,7 @@ class CardsIndex extends Component
 
     #[Url]
     public $offset = '0';
-    private $step = 1;
+    private $step = 4;
 
     public function mount()
     {
