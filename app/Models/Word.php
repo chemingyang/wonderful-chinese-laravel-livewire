@@ -130,6 +130,29 @@ class Word extends Model
         return explode('/', $this->traditional ?? '')[0] ?? '';
     }
 
+    public function getTraditionalNoBracketUniqueCharsAttribute(): string
+    {
+        $first = preg_replace('/\([^)]*\)/', '', $this->traditional_chars ?? '');
+        $chars = preg_split('//u', $first, -1, PREG_SPLIT_NO_EMPTY);
+        $uniques = array_unique($chars);
+        return implode('',$uniques);
+    }
+
+    public function getTraditionalNoBracketUniqueFullWidthCountAttribute(): int
+    {
+        $traditional = $this->traditional_no_bracket_unique_chars;
+        $chars = preg_split('//u', $traditional, -1, PREG_SPLIT_NO_EMPTY);
+        $count = 0;
+        foreach ($chars as $c) {
+            if (preg_match('/\p{Han}/u', $c)) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+
     public function getTraditionalFullWidthCountAttribute(): int
     {
         $traditional = $this->traditional_chars;
